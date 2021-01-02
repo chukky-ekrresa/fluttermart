@@ -16,6 +16,7 @@ export interface IUser {
 export interface IShop {
 	address: string;
 	dispatchRider: string;
+	enabled: string;
 	name: string;
 	ownerId: string;
 	createdAt: Date;
