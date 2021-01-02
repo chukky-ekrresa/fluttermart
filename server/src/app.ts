@@ -9,6 +9,7 @@ import createHttpError from 'http-errors';
 import ENV_VARS from './config/env';
 import { ErrorHandler } from './config/error';
 import { initialiseDatabase } from './config/database';
+import appRouter from './api/routes';
 
 initialiseDatabase();
 
@@ -22,6 +23,8 @@ app.use(helmet());
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', appRouter);
 
 app.use((_req, _res, next) => {
 	next(createHttpError(404, { message: 'Resource not found' }));
