@@ -4,12 +4,12 @@ import { InternalServerError } from 'http-errors';
 import ENV_VARS from './env';
 import { logger } from './logger';
 
-const { MAIL_SENDER, MJ_APIKEY_PRIVATE, MJ_APIKEY_PUBLIC } = ENV_VARS;
+const { MAIL_SENDER, MJ_APIKEY_PRIVATE, MJ_APIKEY_PUBLIC, NODE_ENV } = ENV_VARS;
 const mailJetClient = mailJet.connect(MJ_APIKEY_PUBLIC, MJ_APIKEY_PRIVATE);
 
 export async function sendEmail(input: IEmailInput) {
 	return await mailJetClient
-		.post('send', { version: 'v3.1' })
+		.post('send', { version: 'v3.1', perform_api_call: NODE_ENV !== 'test' })
 		.request({
 			Messages: [
 				{
