@@ -6,6 +6,7 @@ export interface IUser {
 	email: string;
 	emailVerified: boolean | number;
 	enabled?: boolean;
+	id: string;
 	password: string;
 	phoneNumber: string;
 	phoneNumberVerified: boolean | number;
@@ -43,8 +44,6 @@ export interface IProduct {
 	createdAt: Date;
 	updatedAt: Date;
 }
-
-export type Token = Record<string, any>;
 
 export type ApiResponse = TypedResponse<{
 	data?: any[] | Record<string, any> | string;

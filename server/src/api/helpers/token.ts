@@ -1,10 +1,10 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 
 import ENV_VARS from '../../config/env';
-import { Token } from '../types';
+import { IUser } from '../types';
 
 export function issueAccessToken(
-	payload: Token,
+	payload: Partial<IUser>,
 	secret: string = ENV_VARS.ACCESS_TOKEN_SECRET,
 	options: SignOptions = {}
 ) {
