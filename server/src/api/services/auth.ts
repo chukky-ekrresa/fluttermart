@@ -1,9 +1,11 @@
 import { BadRequest, Unauthorized } from 'http-errors';
 import bcrypt from 'bcrypt';
 
-import { createUser, getUserByEmail } from '../repositories/userRepo';
+import * as UserRepo from '../repositories/userRepo';
 import { IUser } from '../types';
 import { issueAccessToken } from '../helpers/token';
+import { generateOTP } from '../helpers/otp';
+import { sendEmail } from '../../config/email';
 
 export async function confirmUserAccount(payload: any) {
 	return payload;
@@ -11,7 +13,7 @@ export async function confirmUserAccount(payload: any) {
 
 export async function signUp(userPayload: IUser) {
 	const { email: userEmail, password } = userPayload;
-	const user = await getUserByEmail(userEmail);
+	const user = await UserRepo.getUserByEmail(userEmail);
 
 	if (user) {
 		throw new BadRequest(`user with email ${userEmail} exists`);
@@ -19,14 +21,24 @@ export async function signUp(userPayload: IUser) {
 
 	userPayload.password = await bcrypt.hash(password, 10);
 
-	await createUser(userPayload);
+	const newUserPromise = UserRepo.createUser(userPayload);
+	const otpPromise = generateOTP();
 
-	//TODO: Send email verification mail containing OTP
+	const [otp, newUser] = await Promise.all([otpPromise, newUserPromise]);
+
+	const saveUserOtpPromise = UserRepo.saveUserOtp(newUser.id, otp);
+	const emailPromise = sendEmail({
+		html: `<h2>${otp}</h2>`,
+		to: newUser.email,
+		subject: 'Email Verification',
+	});
+
+	await Promise.all([saveUserOtpPromise, emailPromise]);
 }
 
 export async function login(payload: ILogin) {
 	const { email: userEmail, password } = payload;
-	const user = await getUserByEmail(userEmail);
+	const user = await UserRepo.getUserByEmail(userEmail);
 
 	if (!user) {
 		throw new Unauthorized('invalid email/password');

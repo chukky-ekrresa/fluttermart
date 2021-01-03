@@ -5,8 +5,9 @@ export interface IUser {
 	lastName: string;
 	email: string;
 	emailVerified: boolean | number;
-	enabled?: boolean;
+	enabled: boolean;
 	id: string;
+	otp: string | null;
 	password: string;
 	phoneNumber: string;
 	phoneNumberVerified: boolean | number;
