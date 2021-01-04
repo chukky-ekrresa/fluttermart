@@ -11,7 +11,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function saveUserOtp(id: string, otp: string) {
-	return await User.findOneAndUpdate({ id }, { otp }).lean();
+	return await User.findOneAndUpdate({ _id: id }, { otp }, { new: true }).lean();
 }
 
 export async function removeUserOtp(id: string) {
