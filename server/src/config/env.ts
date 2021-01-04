@@ -24,7 +24,6 @@ const envVarsSchema = Joi.object({
 	}),
 	NODE_ENV: Joi.string(),
 	PORT: Joi.string(),
-	BASE_URL: Joi.string(),
 });
 
 const { error, value } = envVarsSchema.validate(process.env, {

@@ -1,18 +1,18 @@
 import { Response } from 'express';
 
 export interface IUser {
-	firstName: string;
-	lastName: string;
 	email: string;
 	emailVerified: boolean | number;
 	enabled: boolean;
+	firstName: string;
 	id: string;
+	lastLogin?: Date;
+	lastName: string;
 	otp: string | null;
 	password: string;
 	phoneNumber: string;
 	phoneNumberVerified: boolean | number;
 	role: 'customer' | 'vendor' | 'dispatch';
-	lastLogin?: Date;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
