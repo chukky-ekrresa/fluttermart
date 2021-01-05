@@ -18,7 +18,7 @@ const userSchema = new Schema(
 		phoneNumber: { type: String, default: null },
 		phoneNumberVerified: { type: Boolean, default: false },
 		password: { type: String, required: true },
-		roles: [
+		role: [
 			{
 				type: String,
 				enum: ['customer', 'dispatch', 'vendor'],
