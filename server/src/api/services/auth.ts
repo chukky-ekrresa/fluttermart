@@ -59,6 +59,8 @@ export async function signUp(userPayload: IUser) {
 	});
 
 	await Promise.all([saveUserOtpPromise, emailPromise]);
+
+	return newUser._id;
 }
 
 interface ILogin {

@@ -4,8 +4,8 @@ import { ApiResponse } from '../types';
 import * as AuthService from '../services/auth';
 
 export async function signUpHandler(req: Request, res: ApiResponse) {
-	await AuthService.signUp(req.body);
-	res.status(201).json({ status: 201, message: 'user registration was successful!' });
+	const userId = await AuthService.signUp(req.body);
+	res.status(201).json({ status: 201, message: 'user registration was successful!', data: userId });
 }
 
 export async function loginHandler(req: Request, res: ApiResponse) {
