@@ -7,8 +7,18 @@ import { issueAccessToken } from '../helpers/token';
 import { generateOTP } from '../helpers/otp';
 import { sendEmail } from '../../config/email';
 
-export async function confirmUserAccount(payload: any) {
-	return payload;
+export async function verifyUserAccount(payload: IVerify) {
+	const { otp, userId } = payload;
+	const user = await UserRepo.verifyOtp(otp, userId);
+
+	if (!user) {
+		throw new BadRequest('Invalid request');
+	}
+
+	const { _id: id, email, firstName, lastName, role } = user;
+	await UserRepo.removeUserOtp(id);
+
+	return issueAccessToken({ id, email, firstName, lastName, role });
 }
 
 export async function login(payload: ILogin) {
@@ -21,17 +31,17 @@ export async function login(payload: ILogin) {
 
 	if (!user.enabled && !user.emailVerified) {
 		throw new Unauthorized(
-			'your account is not active. Please verify your email or contact fluttermart'
+			'Your account is not active. Please verify your email or contact fluttermart'
 		);
 	}
 
 	const passwordExists = await bcrypt.compare(password, user.password);
 
 	if (!passwordExists) {
-		throw new Unauthorized('invalid email/password');
+		throw new Unauthorized('Invalid email/password');
 	}
 
-	const { id, email, firstName, lastName, role } = user;
+	const { _id: id, email, firstName, lastName, role } = user;
 
 	return issueAccessToken({ id, email, firstName, lastName, role });
 }
@@ -66,4 +76,9 @@ export async function signUp(userPayload: IUser) {
 interface ILogin {
 	email: string;
 	password: string;
+}
+
+interface IVerify {
+	userId: string;
+	otp: string;
 }

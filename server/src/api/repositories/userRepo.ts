@@ -15,5 +15,9 @@ export async function saveUserOtp(id: string, otp: string) {
 }
 
 export async function removeUserOtp(id: string) {
-	return await User.findOneAndUpdate({ id }, { otp: null }).lean();
+	return await User.findOneAndUpdate({ _id: id }, { otp: null }).lean();
+}
+
+export async function verifyOtp(otp: string, userId: string) {
+	return await User.findOne({ _id: userId, otp }).lean();
 }

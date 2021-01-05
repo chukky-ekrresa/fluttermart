@@ -18,13 +18,11 @@ const userSchema = new Schema(
 		phoneNumber: { type: String, default: null },
 		phoneNumberVerified: { type: Boolean, default: false },
 		password: { type: String, required: true },
-		role: [
-			{
-				type: String,
-				enum: ['customer', 'dispatch', 'vendor'],
-				default: 'customer',
-			},
-		],
+		role: {
+			type: String,
+			enum: ['customer', 'dispatch', 'vendor'],
+			default: 'customer',
+		},
 	},
 	{ timestamps: true }
 );

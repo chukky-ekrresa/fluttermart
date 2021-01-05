@@ -16,3 +16,10 @@ export const LOGIN = {
 		password: Joi.string().min(6).max(100).required(),
 	}),
 };
+
+export const VERIFY_ACCOUNT = {
+	[Segments.BODY]: Joi.object().keys({
+		otp: Joi.string().trim().required(),
+		userId: Joi.string().required(),
+	}),
+};
