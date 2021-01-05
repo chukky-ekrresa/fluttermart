@@ -16,7 +16,7 @@ export async function verifyUserAccount(payload: IVerify) {
 	}
 
 	const { _id: id, email, firstName, lastName, role } = user;
-	await UserRepo.removeUserOtp(id);
+	await UserRepo.removeUserOtpAndEnableUser(id);
 
 	return issueAccessToken({ id, email, firstName, lastName, role });
 }

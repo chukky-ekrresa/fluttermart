@@ -14,8 +14,11 @@ export async function saveUserOtp(id: string, otp: string) {
 	return await User.findOneAndUpdate({ _id: id }, { otp }, { new: true }).lean();
 }
 
-export async function removeUserOtp(id: string) {
-	return await User.findOneAndUpdate({ _id: id }, { otp: null }).lean();
+export async function removeUserOtpAndEnableUser(id: string) {
+	return await User.findOneAndUpdate(
+		{ _id: id },
+		{ otp: null, emailVerified: true, enabled: true }
+	).lean();
 }
 
 export async function verifyOtp(otp: string, userId: string) {
