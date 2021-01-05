@@ -1,14 +1,18 @@
+import { Response } from 'express';
+
 export interface IUser {
-	firstName: string;
-	lastName: string;
 	email: string;
 	emailVerified: boolean | number;
-	enabled?: boolean;
+	enabled: boolean;
+	firstName: string;
+	id: string;
+	lastLogin?: Date;
+	lastName: string;
+	otp: string | null;
 	password: string;
 	phoneNumber: string;
 	phoneNumberVerified: boolean | number;
 	role: 'customer' | 'vendor' | 'dispatch';
-	lastLogin?: Date;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
@@ -16,6 +20,7 @@ export interface IUser {
 export interface IShop {
 	address: string;
 	dispatchRider: string;
+	enabled: string;
 	name: string;
 	ownerId: string;
 	createdAt: Date;
@@ -40,3 +45,13 @@ export interface IProduct {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+export type ApiResponse = TypedResponse<{
+	data?: any[] | Record<string, any> | string;
+	message: string;
+	status: number;
+}>;
+
+type TypedResponse<T> = Omit<Response, 'json' | 'status'> & {
+	json(data: T): TypedResponse<T>;
+} & { status(code: number): TypedResponse<T> };
