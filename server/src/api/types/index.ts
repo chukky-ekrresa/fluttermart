@@ -6,7 +6,6 @@ export interface IUser {
 	enabled: boolean;
 	firstName: string;
 	id: string;
-	lastLogin?: Date;
 	lastName: string;
 	otp: string | null;
 	password: string;
@@ -19,10 +18,11 @@ export interface IUser {
 
 export interface IShop {
 	address: string;
-	dispatchRider: string;
+	country: string;
+	dispatchRider: IUser | string;
 	enabled: string;
 	name: string;
-	ownerId: string;
+	ownerId: IUser | string;
 	createdAt: Date;
 	updatedAt: Date;
 }

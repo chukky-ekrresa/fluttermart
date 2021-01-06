@@ -5,6 +5,7 @@ import * as UserRepo from '../repositories/userRepo';
 import { IUser } from '../types';
 import { issueAccessToken } from '../helpers/token';
 import { generateOTP } from '../helpers/otp';
+import { logger } from '../../config/logger';
 import { sendEmail } from '../../config/email';
 
 export async function verifyUserAccount(payload: IVerify) {
@@ -16,7 +17,8 @@ export async function verifyUserAccount(payload: IVerify) {
 	}
 
 	const { _id: id, email, firstName, lastName, role } = user;
-	await UserRepo.removeUserOtpAndEnableUser(id);
+
+	logger.info(`User ${id} login time: ${new Date().toUTCString()}`);
 
 	return issueAccessToken({ id, email, firstName, lastName, role });
 }
@@ -42,6 +44,8 @@ export async function login(payload: ILogin) {
 	}
 
 	const { _id: id, email, firstName, lastName, role } = user;
+
+	logger.info(`User ${id} login time: ${new Date().toUTCString()}`);
 
 	return issueAccessToken({ id, email, firstName, lastName, role });
 }
