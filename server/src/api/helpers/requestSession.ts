@@ -10,6 +10,6 @@ export function setLoggedInUser(payload: Partial<IUser>) {
 	session.set(LOGGED_IN_USER, payload);
 }
 
-export function getLoggedInUser() {
+export function getLoggedInUser(): Partial<IUser> {
 	return session.get(LOGGED_IN_USER);
 }
