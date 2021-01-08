@@ -5,6 +5,7 @@ import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 import { IProduct } from '../types';
 import { User } from './user';
 import { Shop } from './shop';
+import { foreignKeyValidator } from '../helpers/foreignKeyValidator';
 
 const productSchema = new Schema(
 	{
@@ -14,7 +15,17 @@ const productSchema = new Schema(
 		owner: { type: Types.ObjectId, ref: User, required: true },
 		price: { type: Number, set: setPrice, required: true },
 		quantity: { type: Number, default: 0 },
-		shop: { type: Types.ObjectId, ref: Shop, required: true },
+		shop: {
+			type: Types.ObjectId,
+			ref: Shop,
+			validate: {
+				validator: function (v: any) {
+					return foreignKeyValidator(Shop, v);
+				},
+				message: 'the shop provided does not exist',
+			},
+			required: true,
+		},
 		size: { type: String, default: null },
 		sku: { type: String, required: true },
 		summary: { type: String },
