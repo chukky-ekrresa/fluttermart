@@ -12,10 +12,10 @@ export const NEW_SHOP = {
 
 export const UPDATE_SHOP = {
 	[Segments.BODY]: Joi.object().keys({
-		address: Joi.string().required(),
-		country: Joi.string().required(),
-		email: Joi.string().email().required(),
-		name: Joi.string().required(),
-		phoneNumber: Joi.string().required(),
+		address: Joi.string().optional(),
+		country: Joi.string().optional(),
+		email: Joi.string().email().optional(),
+		name: Joi.string().optional(),
+		phoneNumber: Joi.string().optional(),
 	}),
 };

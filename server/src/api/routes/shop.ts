@@ -17,7 +17,8 @@ router.post(
 router.put(
 	'/:shopId',
 	ensureUserIsAVendor,
-	celebrate(UPDATE_SHOP, { abortEarly: false, stripUnknown: true })
+	celebrate(UPDATE_SHOP, { abortEarly: false, stripUnknown: true }),
+	ShopCtrl.updateVendorShopHandler
 );
 
 router.get('/me', ensureUserIsAVendor, ShopCtrl.getVendorShopsHandler);

@@ -15,5 +15,5 @@ export async function getVendorShopsHandler(_req: Request, res: ApiResponse) {
 
 export async function updateVendorShopHandler(req: Request, res: ApiResponse) {
 	const shop = await ShopService.updateVendorShop(req.params.shopId, req.body);
-	res.status(200).json({ status: 200, message: 'Shops found!', data: shop });
+	res.status(200).json({ status: 200, message: 'Shop Updated!', data: shop });
 }
