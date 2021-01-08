@@ -41,10 +41,16 @@ export interface IOrder {
 }
 
 export interface IProduct {
-	description: string;
+	colour?: string;
+	discount: number;
 	name: string;
-	price: string;
-	shopId: string;
+	owner: string;
+	price: number;
+	quantity: number;
+	shop: IShop | string;
+	size?: string;
+	sku: string;
+	summary: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
