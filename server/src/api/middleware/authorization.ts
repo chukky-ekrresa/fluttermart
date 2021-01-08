@@ -6,7 +6,8 @@ import ENV_VARS from '../../config/env';
 import { getLoggedInUser, session, setLoggedInUser } from '../helpers/requestSession';
 import { IUser } from '../types';
 
-export const ensureUserIsAVendor = checkUserRole('vendor');
+export const ensureUserIsAVendor = [ensureUserIsAuthenticated, checkUserRole('vendor')];
+
 export function ensureUserIsAuthenticated(req: Request, _res: Response, next: NextFunction) {
 	const token = getAccessToken(req);
 
