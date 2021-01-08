@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* General styles */
+
+body {
+	background: #fbfbfb;
+	color: #000;
+	margin: 0;
+	font-family: 'Quicksand', sans-serif;
+	font-size: 1rem;
+	line-height: 1.6;
+	letter-spacing: 0.2px;
+}
+
+img {
+	object-fit: cover;
+}
