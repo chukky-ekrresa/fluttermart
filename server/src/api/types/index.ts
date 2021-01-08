@@ -5,24 +5,27 @@ export interface IUser {
 	emailVerified: boolean | number;
 	enabled: boolean;
 	firstName: string;
-	id: string;
-	lastLogin?: Date;
+	id?: string;
 	lastName: string;
-	otp: string | null;
+	otp?: string | null;
 	password: string;
 	phoneNumber: string;
 	phoneNumberVerified: boolean | number;
-	role: 'customer' | 'vendor' | 'dispatch';
+	role: Role;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
 
+type Role = 'customer' | 'vendor' | 'dispatch';
+
 export interface IShop {
 	address: string;
-	dispatchRider: string;
+	country: string;
+	dispatchRider: IUser | string;
 	enabled: string;
+	id: string;
 	name: string;
-	ownerId: string;
+	owner: IUser | string;
 	createdAt: Date;
 	updatedAt: Date;
 }

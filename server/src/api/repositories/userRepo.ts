@@ -10,13 +10,13 @@ export async function getUserByEmail(email: string) {
 	return await User.findOne({ email }).lean();
 }
 
-export async function saveUserOtp(id: string, otp: string) {
-	return await User.findOneAndUpdate({ _id: id }, { otp }, { new: true }).lean();
+export async function saveUserOtp(otp: string, userId: string) {
+	return await User.findOneAndUpdate({ _id: userId }, { otp }, { new: true }).lean();
 }
 
-export async function removeUserOtpAndEnableUser(id: string) {
+export async function removeUserOtpAndEnableUser(userId: string) {
 	return await User.findOneAndUpdate(
-		{ _id: id },
+		{ _id: userId },
 		{ otp: null, emailVerified: true, enabled: true }
 	).lean();
 }
