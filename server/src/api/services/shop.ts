@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import faker from 'faker';
-import { NotFound } from 'http-errors';
+import { NotFound, Forbidden } from 'http-errors';
 
 import { getLoggedInUser } from '../helpers/requestSession';
 import * as ShopRepo from '../repositories/shopRepo';
@@ -25,9 +25,14 @@ export async function getVendorShops() {
 
 export async function updateVendorShop(shopId: string, updatePayload: Partial<IShop>) {
 	const shop = await ShopRepo.updateShopOfAVendor(shopId, updatePayload);
+	const loggedInUser = getLoggedInUser();
 
 	if (!shop) {
 		throw new NotFound('Shop does not exist.');
+	}
+
+	if (loggedInUser.id !== shop.owner.toString()) {
+		throw new Forbidden('Shop cannot be updated by you');
 	}
 
 	return shop;
