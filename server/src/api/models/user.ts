@@ -1,4 +1,5 @@
 import { Document, model, Schema } from 'mongoose';
+import mongooseLeanId from 'mongoose-lean-id';
 
 import { IUser } from '../types';
 
@@ -25,5 +26,7 @@ const userSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+userSchema.plugin(mongooseLeanId);
 
 export const User = model<IUser & Document>('User', userSchema);

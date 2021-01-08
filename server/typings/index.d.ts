@@ -10,3 +10,5 @@ declare namespace NodeJS {
 		PORT: string;
 	}
 }
+
+declare module 'mongoose-lean-id';
