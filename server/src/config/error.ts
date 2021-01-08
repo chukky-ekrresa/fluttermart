@@ -6,6 +6,10 @@ export function ErrorHandler(err: HttpError, _req: Request, res: Response, _next
 	const status = 500;
 	const message = 'Internal Server Error';
 
+	if (err.name === 'CastError') {
+		err.message = 'Invalid ObjectId';
+	}
+
 	if (isCelebrateError(err)) {
 		const errorObj = buildValidationError(err);
 		err = { ...err, ...errorObj };
