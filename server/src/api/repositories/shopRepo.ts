@@ -1,5 +1,4 @@
 import { Shop } from '../models/shop';
-
 import { IShop } from '../types';
 
 export async function createShop(newShop: IShop) {

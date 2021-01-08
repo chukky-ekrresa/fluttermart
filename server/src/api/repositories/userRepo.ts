@@ -1,5 +1,4 @@
 import { User } from '../models/user';
-
 import { IUser } from '../types';
 
 export async function createUser(newUser: IUser) {
