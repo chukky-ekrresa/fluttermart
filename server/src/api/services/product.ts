@@ -3,11 +3,10 @@ import { getLoggedInUser } from '../helpers/requestSession';
 import { generateSKU } from '../helpers/sku';
 import { IProduct } from '../types';
 
-export async function createProduct(newProduct: IProduct, shopId: string) {
+export async function createProduct(newProduct: IProduct) {
 	const loggedInUser = getLoggedInUser();
 
 	newProduct.owner = loggedInUser.id!;
-	newProduct.shop = shopId;
 	newProduct.sku = generateSKU();
 
 	return await ProductRepo.insertProduct(newProduct);

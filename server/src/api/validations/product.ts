@@ -12,6 +12,7 @@ export const NEW_PRODUCT = {
 			.regex(/^\s*-?\d+(\.\d{2})?\s*$/)
 			.required(),
 		quantity: Joi.number().positive().min(0).required(),
+		shop: Joi.string().required(),
 		size: Joi.string().trim(),
 		summary: Joi.string().trim(),
 	}),

@@ -7,14 +7,14 @@ import { ensureUserIsAVendor } from '../middleware/authorization';
 
 const router = Router();
 
+router.get('/shop/:shopId', ProductCtrl.getProductsOfAShopHandler);
+
 router.post(
-	'/:shopId',
+	'/',
 	ensureUserIsAVendor,
 	celebrate(NEW_PRODUCT, { abortEarly: false, stripUnknown: true }),
 	ProductCtrl.createProductHandler
 );
-
-router.get('/:shopId', ProductCtrl.getProductsOfAShopHandler);
 
 router.get('/', ProductCtrl.getAllProductsHandler);
 
