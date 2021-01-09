@@ -1,5 +1,5 @@
 import request from '../../utils/request';
-import { setToken, setAuthLoading, setAuthError } from '../reducers/auth.reduser';
+import { setAuthLoading, setAuthError } from '../reducers/auth.reduser';
 
 export const login = (payload: any) => async (dispatch: any) => {
 	try {
