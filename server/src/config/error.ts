@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpError } from 'http-errors';
 import { isCelebrateError, CelebrateError } from 'celebrate';
+import { logger } from './logger';
 
 export function ErrorHandler(err: HttpError, _req: Request, res: Response, _next: NextFunction) {
 	const status = 500;
@@ -14,6 +15,8 @@ export function ErrorHandler(err: HttpError, _req: Request, res: Response, _next
 		const errorObj = buildValidationError(err);
 		err = { ...err, ...errorObj };
 	}
+
+	logger.error(err);
 
 	return res.status(err.status || status).send({
 		...(err?.errors ? { errors: err.errors } : {}),
