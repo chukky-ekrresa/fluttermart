@@ -2,7 +2,7 @@ const initialState = {
 	token: '',
 	loading: false,
 	error: null,
-	registerResp: null,
+	userID: '',
 	user: null,
 };
 
@@ -23,10 +23,10 @@ export default function authentication(state = initialState, action: any) {
 				...state,
 				error: action.payload,
 			};
-		case 'SET_REGISTER_RESPONSE':
+		case 'SET_USER_ID':
 			return {
 				...state,
-				registerResp: action.payload,
+				userID: action.payload,
 			};
 		case 'SET_USER_DATA':
 			return {
@@ -53,8 +53,8 @@ export const setAuthError = (payload: any) => ({
 	type: 'SET_AUTH_ERROR',
 	payload,
 });
-export const setRegisterResponse = (payload: any) => ({
-	type: 'SET_REGISTER_RESPONSE',
+export const setUserID = (payload: any) => ({
+	type: 'SET_USER_ID',
 	payload,
 });
 export const setUser = (payload: any) => ({
