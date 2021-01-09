@@ -1,4 +1,5 @@
 import { Document, model, Schema, Types } from 'mongoose';
+import mongooseLeanId from 'mongoose-lean-id';
 
 import { IShop } from '../types';
 import { User } from './user';
@@ -22,5 +23,7 @@ const shopSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+shopSchema.plugin(mongooseLeanId);
 
 export const Shop = model<IShop & Document>('Shop', shopSchema);

@@ -36,7 +36,15 @@ function parseJoiErrors(errors: CelebrateError) {
 	errors.details.forEach(segment => {
 		segment.details.forEach(errorDetail => {
 			const [key] = errorDetail.path;
-			errorMap[key] = errorDetail.message.replace(/"/g, '');
+
+			if (key === 'price') {
+				errorMap[key] = 'price must be a string containing a number with exactly two decimals';
+			} else if (key === 'discount') {
+				errorMap[key] =
+					'discount must be a string containing a number in the range of 0.00 to 0.99';
+			} else {
+				errorMap[key] = errorDetail.message.replace(/"/g, '');
+			}
 		});
 	});
 

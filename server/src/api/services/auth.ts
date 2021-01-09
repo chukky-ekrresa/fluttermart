@@ -65,7 +65,7 @@ export async function signUp(userPayload: IUser) {
 
 	const [otp, newUser] = await Promise.all([otpPromise, newUserPromise]);
 
-	const saveUserOtpPromise = UserRepo.saveUserOtp(newUser.id, otp);
+	const saveUserOtpPromise = UserRepo.saveUserOtp(otp, newUser.id);
 	const emailPromise = sendEmail({
 		html: `<h2>${otp}</h2>`,
 		to: newUser.email,
