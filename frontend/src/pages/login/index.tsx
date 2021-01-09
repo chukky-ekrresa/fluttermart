@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { BeatLoader } from 'react-spinners';
 
 import Input from '../../components/Input';
 import { AuthSection, FormBox } from '../../components/blocs';
@@ -8,6 +9,7 @@ import { AuthSection, FormBox } from '../../components/blocs';
 import { login } from '../../redux/actions/auth.action';
 
 const Login = ({ login }: any) => {
+	const { loading } = useSelector(({ authentication }: any) => authentication);
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
@@ -26,8 +28,6 @@ const Login = ({ login }: any) => {
 		e.preventDefault();
 
 		await login(values);
-
-		console.log(values);
 	};
 
 	return (
@@ -41,7 +41,7 @@ const Login = ({ login }: any) => {
 						name="email"
 						value={values.email}
 						onChange={handleChange}
-						type="text"
+						type="email"
 					/>
 					<Input
 						label="Password"
@@ -59,10 +59,13 @@ const Login = ({ login }: any) => {
 							cancel
 						</button>
 						<button
-							className="capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange"
+							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange ${
+								loading ? 'disabled' : ''
+							}`}
 							type="submit"
+							disabled={loading}
 						>
-							submit
+							{loading ? <BeatLoader size={5} color="#fff" /> : 'submit'}
 						</button>
 					</div>
 

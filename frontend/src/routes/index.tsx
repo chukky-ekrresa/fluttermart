@@ -6,6 +6,7 @@ import Loading from '../components/loading';
 const Home = lazy(() => import('../pages/home'));
 const Login = lazy(() => import('../pages/login'));
 const Register = lazy(() => import('../pages/register'));
+const VerifyEmail = lazy(() => import('../pages/verify-email'));
 
 const Routes = () => (
 	<Router>
@@ -19,6 +20,9 @@ const Routes = () => (
 				</Route>
 				<Route exact path="/register">
 					<Register />
+				</Route>
+				<Route exact path="/verify-email/:userID">
+					<VerifyEmail />
 				</Route>
 			</Switch>
 		</Suspense>

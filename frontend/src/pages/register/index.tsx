@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { connect, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { RadioInput as Radio } from '../../components/Input';
@@ -8,6 +9,9 @@ import Input, { RadioInput as Radio } from '../../components/Input';
 import { register } from '../../redux/actions/auth.action';
 
 const Register = ({ register }: any) => {
+	const { loading } = useSelector(({ authentication }: any) => authentication);
+	const history = useHistory();
+
 	const [values, setValues] = useState({
 		email: '',
 		firstName: '',
@@ -15,6 +19,10 @@ const Register = ({ register }: any) => {
 		password: '',
 		role: '',
 	});
+
+	const redirectToVerifyEmail = (userID: string) => {
+		history.push(`/verify-email/${userID}`);
+	};
 
 	const handleChange = ({ target }: any) => {
 		const { name, value, id } = target;
@@ -36,7 +44,7 @@ const Register = ({ register }: any) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		await register(values);
+		await register(values, redirectToVerifyEmail);
 		// console.log(values);
 	};
 
@@ -104,10 +112,13 @@ const Register = ({ register }: any) => {
 							cancel
 						</button>
 						<button
-							className="capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange font-bold"
+							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange ${
+								loading ? 'disabled' : ''
+							}`}
 							type="submit"
+							disabled={loading}
 						>
-							submit
+							{loading ? <BeatLoader size={5} color="#fff" /> : 'submit'}
 						</button>
 					</div>
 					<small>

@@ -1,9 +1,10 @@
+import { Redirect, useLocation } from 'react-router-dom';
+
 const Home = () => {
-	return (
-		<>
-			<p>Home</p>
-		</>
-	);
+	const location = useLocation();
+	const currentLocation = location.pathname === '/' ? '/login' : location.pathname;
+
+	return <Redirect to={{ pathname: currentLocation }} />;
 };
 
 export default Home;
