@@ -18,6 +18,8 @@ export async function verifyUserAccount(payload: IVerify) {
 
 	const { _id: id, email, firstName, lastName, role } = user;
 
+	await UserRepo.removeUserOtpAndEnableUser(id);
+
 	logger.info(`User ${id} login time: ${new Date().toUTCString()}`);
 
 	return issueAccessToken({ id, email, firstName, lastName, role });
