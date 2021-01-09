@@ -6,6 +6,9 @@ module.exports = {
 			14: '0.875rem',
 			24: '1.5rem',
 		},
+		maxWidth: {
+			400: '400px',
+		},
 
 		extend: {
 			fontFamily: {
@@ -15,6 +18,7 @@ module.exports = {
 				lightOrange: '#FFF0DE',
 				darkOrange: '#F9A109',
 				greyBorder: '#BDBDBD',
+				brownish: '#80485b',
 			},
 		},
 	},

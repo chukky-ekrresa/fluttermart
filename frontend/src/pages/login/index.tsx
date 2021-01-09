@@ -1,18 +1,11 @@
 import { useState } from 'react';
-import styled from 'styled-components';
-// import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Input from '../../components/Input';
+import { AuthSection, FormBox } from '../../components/blocs';
 
-import login from '../../redux/actions/login.action';
-
-const Box = styled.div.attrs({
-	className: 'bg-lightOrange w-full md:max-w-screen-sm mx-auto rounded-md border border-darkOrange',
-})`
-	box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.04);
-	margin-top: 6em;
-`;
+import { login } from '../../redux/actions/auth.action';
 
 const Login = ({ login }: any) => {
 	const [values, setValues] = useState({
@@ -38,13 +31,13 @@ const Login = ({ login }: any) => {
 	};
 
 	return (
-		<section className="w-11/12 container mx-auto my-0 min-h-screen">
-			<Box>
-				<p className="text-24 font-quicksand font-bold text-center">Login</p>
+		<AuthSection>
+			<FormBox>
+				<p className="text-24 font-quicksand font-bold text-center mb-4">Login</p>
 				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
 					<Input
 						label="Email"
-						placeholder="Enter you email"
+						placeholder="Input email"
 						name="email"
 						value={values.email}
 						onChange={handleChange}
@@ -52,7 +45,7 @@ const Login = ({ login }: any) => {
 					/>
 					<Input
 						label="Password"
-						placeholder="Enter you password"
+						placeholder="Input password"
 						value={values.password}
 						name="password"
 						onChange={handleChange}
@@ -72,9 +65,16 @@ const Login = ({ login }: any) => {
 							submit
 						</button>
 					</div>
+
+					<small>
+						Don't have an account?{' '}
+						<Link to="/register" className="capitalize underline">
+							register
+						</Link>
+					</small>
 				</form>
-			</Box>
-		</section>
+			</FormBox>
+		</AuthSection>
 	);
 };
 
