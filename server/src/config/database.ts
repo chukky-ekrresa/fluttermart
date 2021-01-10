@@ -25,8 +25,8 @@ export async function initialiseDatabase() {
 }
 
 export async function disconnectDB() {
-	mongoose.connection.db.dropDatabase();
-	mongoose.connection.close();
+	await mongoose.connection.db.dropDatabase();
+	await mongoose.connection.close();
 
 	logger.info('connection closed');
 }

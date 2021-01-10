@@ -9,7 +9,7 @@
 		"build:watch": "yarn build --watch",
 		"dev": "node-dev dist/index.js",
 		"start": "node dist/index.js",
-		"test": "ts-mocha -p tests/tsconfig.json tests/**/*.test.ts"
+		"test": "export NODE_ENV=test && ts-mocha -p tests/tsconfig.json tests/**/*.test.ts"
 	},
 	"engines": {
 		"node": "12.x"

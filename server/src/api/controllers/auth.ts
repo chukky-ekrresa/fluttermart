@@ -10,7 +10,7 @@ export async function signUpHandler(req: Request, res: ApiResponse) {
 
 export async function loginHandler(req: Request, res: ApiResponse) {
 	const token = await AuthService.login(req.body);
-	res.status(201).json({ status: 201, message: 'user logged in successfully!', data: token });
+	res.status(200).json({ status: 200, message: 'user logged in successfully!', data: token });
 }
 
 export async function verifyUserAccountHandler(req: Request, res: ApiResponse) {

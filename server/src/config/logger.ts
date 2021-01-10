@@ -9,4 +9,5 @@ export const logger = winston.createLogger({
 	),
 	level: 'debug',
 	exitOnError: false,
+	silent: process.env.NODE_ENV === 'test',
 });
