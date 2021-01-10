@@ -11,6 +11,13 @@ const productSchema = new Schema(
 	{
 		colour: { type: String, default: null },
 		discount: { type: Number, default: 0 },
+		image: new Schema(
+			{
+				url: { type: String },
+				publicId: { type: String },
+			},
+			{ timestamps: false }
+		),
 		name: { type: String, required: true },
 		owner: { type: Types.ObjectId, ref: User, required: true },
 		price: { type: Number, set: setPrice, required: true },

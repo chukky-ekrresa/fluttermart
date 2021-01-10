@@ -6,6 +6,11 @@ dotenv.config();
 
 const envVarsSchema = Joi.object({
 	ACCESS_TOKEN_SECRET: Joi.string().required(),
+	CLOUDINARY_URL: Joi.string().when('NODE_ENV', {
+		is: Joi.string().equal('production', 'development'),
+		then: Joi.required(),
+		otherwise: Joi.optional(),
+	}),
 	DATABASE_URL: Joi.string().required(),
 	MAIL_SENDER: Joi.string().when('NODE_ENV', {
 		is: Joi.string().equal('production', 'development'),

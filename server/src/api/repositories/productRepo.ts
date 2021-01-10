@@ -17,6 +17,10 @@ export async function getProductsOfAShop(shopId: string) {
 		.exec();
 }
 
+export async function checkIfShopProductExists(shopId: string, productName: string) {
+	return await Product.countDocuments({ name: productName, shop: shopId });
+}
+
 export async function insertProduct(product: IProduct) {
 	return await await Product.create(product);
 }

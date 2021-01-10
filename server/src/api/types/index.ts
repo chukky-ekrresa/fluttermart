@@ -43,6 +43,7 @@ export interface IOrder {
 export interface IProduct {
 	colour?: string;
 	discount: number;
+	image: { url: string; publicId: string };
 	name: string;
 	owner: string;
 	price: number;
@@ -64,3 +65,5 @@ export type ApiResponse = TypedResponse<{
 type TypedResponse<T> = Omit<Response, 'json' | 'status'> & {
 	json(data: T): TypedResponse<T>;
 } & { status(code: number): TypedResponse<T> };
+
+export type UploadParams = { image: Buffer; filename: string; shop: string };
