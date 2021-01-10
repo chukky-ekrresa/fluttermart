@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Loading from '../components/loading';
+import Dashboard from './Dashboard';
 
 const Home = lazy(() => import('../pages/home'));
 const Login = lazy(() => import('../pages/login'));
@@ -23,6 +24,10 @@ const Routes = () => (
 				</Route>
 				<Route exact path="/verify-email/:userID">
 					<VerifyEmail />
+				</Route>
+
+				<Route path="/dashboard">
+					<Dashboard />
 				</Route>
 			</Switch>
 		</Suspense>
