@@ -1,6 +1,7 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
 		ACCESS_TOKEN_SECRET: string;
+		CLOUDINARY_URL: string;
 		DATABASE_TEST_URL: string;
 		DATABASE_URL: string;
 		MAIL_SENDER: string;
@@ -12,3 +13,4 @@ declare namespace NodeJS {
 }
 
 declare module 'mongoose-lean-id';
+declare module 'streamifier';

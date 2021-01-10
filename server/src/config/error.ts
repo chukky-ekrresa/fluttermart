@@ -7,6 +7,8 @@ export function ErrorHandler(err: HttpError, _req: Request, res: Response, _next
 	const status = 500;
 	const message = 'Internal Server Error';
 
+	logger.error(err.message);
+
 	if (err.name === 'CastError') {
 		err.message = 'Invalid ObjectId';
 	}
@@ -15,8 +17,6 @@ export function ErrorHandler(err: HttpError, _req: Request, res: Response, _next
 		const errorObj = buildValidationError(err);
 		err = { ...err, ...errorObj };
 	}
-
-	logger.error(err);
 
 	return res.status(err.status || status).send({
 		...(err?.errors ? { errors: err.errors } : {}),

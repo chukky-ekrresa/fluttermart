@@ -4,7 +4,7 @@ import * as ProductService from '../services/product';
 import { ApiResponse } from '../types';
 
 export async function createProductHandler(req: Request, res: ApiResponse) {
-	const product = await ProductService.createProduct(req.body);
+	const product = await ProductService.createProduct(req.body, req.file);
 	res.status(201).json({ status: 201, message: 'Product created!', data: product });
 }
 
