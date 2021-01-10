@@ -4,7 +4,7 @@ import ENV_VARS from './env';
 import { logger } from './logger';
 
 export async function initialiseDatabase() {
-	const MONGODB_URL =
+	const MONGODB_URL: string =
 		ENV_VARS.NODE_ENV === 'test' ? ENV_VARS.DATABASE_TEST_URL : ENV_VARS.DATABASE_URL;
 
 	try {
@@ -25,8 +25,8 @@ export async function initialiseDatabase() {
 }
 
 export async function disconnectDB() {
-	await mongoose.connection.db.dropDatabase();
-	await mongoose.connection.close();
+	mongoose.connection.db.dropDatabase();
+	mongoose.connection.close();
 
 	logger.info('connection closed');
 }

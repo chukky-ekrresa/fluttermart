@@ -1,0 +1,10 @@
+{
+	"extends": "../tsconfig.json",
+	"references": [{ "name": "fluttermart", "path": ".." }],
+	"compilerOptions": {
+		"types": ["mocha", "chai"],
+		"typeRoots": ["../typings/**/*.d.ts"],
+		"rootDir": ".."
+	},
+	"include": ["."]
+}

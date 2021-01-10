@@ -1,9 +1,15 @@
+import supertest from 'supertest';
 import { expect } from 'chai';
 import 'mocha';
 
-describe('calculate', function () {
-	it('add', function () {
-		const result = 1 + 1;
-		expect(result).equal(2);
+import app from '../src/app';
+import { disconnectDB } from '../src/config/database';
+
+const request = supertest(app);
+
+describe('Express App', function () {
+	it('app should be defined', async function () {
+		expect(app).to.exist;
+		await disconnectDB();
 	});
 });
