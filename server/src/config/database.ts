@@ -4,7 +4,7 @@ import ENV_VARS from './env';
 import { logger } from './logger';
 
 export async function initialiseDatabase() {
-	const MONGODB_URL =
+	const MONGODB_URL: string =
 		ENV_VARS.NODE_ENV === 'test' ? ENV_VARS.DATABASE_TEST_URL : ENV_VARS.DATABASE_URL;
 
 	try {
