@@ -15,6 +15,7 @@
 		"node": "12.x"
 	},
 	"dependencies": {
+		"agenda": "^3.1.0",
 		"bcrypt": "^5.0.0",
 		"celebrate": "^13.0.4",
 		"cloudinary": "^1.23.0",
@@ -44,6 +45,7 @@
 		"@babel/core": "^7.12.10",
 		"@babel/preset-env": "^7.12.11",
 		"@babel/preset-typescript": "^7.12.7",
+		"@types/agenda": "^3.0.2",
 		"@types/bcrypt": "^3.0.0",
 		"@types/chai": "^4.2.14",
 		"@types/cls-hooked": "^4.3.1",

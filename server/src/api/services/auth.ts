@@ -6,7 +6,7 @@ import { IUser } from '../types';
 import { issueAccessToken } from '../helpers/token';
 import { generateOTP } from '../helpers/otp';
 import { logger } from '../../config/logger';
-import { sendEmail } from '../../config/email';
+import { agendaInstance } from '../../config/agenda';
 
 export async function verifyUserAccount(payload: IVerify) {
 	const { otp, userId } = payload;
@@ -60,21 +60,21 @@ export async function signUp(userPayload: IUser) {
 		throw new BadRequest(`user with email ${userEmail} exists`);
 	}
 
-	userPayload.password = await bcrypt.hash(password, 10);
-
-	const newUserPromise = UserRepo.createUser(userPayload);
+	const passwordPromise = bcrypt.hash(password, 10);
 	const otpPromise = generateOTP();
 
-	const [otp, newUser] = await Promise.all([otpPromise, newUserPromise]);
+	const [otp, hashedPassword] = await Promise.all([otpPromise, passwordPromise]);
 
-	const saveUserOtpPromise = UserRepo.saveUserOtp(otp, newUser.id);
-	const emailPromise = sendEmail({
-		html: `<h2>${otp}</h2>`,
+	userPayload.password = hashedPassword;
+	userPayload.otp = otp;
+
+	const newUser = await UserRepo.createUser(userPayload);
+
+	agendaInstance.now('send user verification email', {
+		html: `<h2>${newUser.otp}</h2>`,
 		to: newUser.email,
 		subject: 'Email Verification',
 	});
-
-	await Promise.all([saveUserOtpPromise, emailPromise]);
 
 	return newUser._id;
 }
