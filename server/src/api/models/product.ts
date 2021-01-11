@@ -7,11 +7,11 @@ import { User } from './user';
 import { Shop } from './shop';
 import { foreignKeyValidator } from '../helpers/foreignKeyValidator';
 
-const productSchema = new Schema(
+export const productSchema = new Schema(
 	{
-		category: { type: String, required: true },
+		category: { type: String, default: 'other' },
 		colour: { type: String, default: null },
-		discount: { type: Number, default: 0 },
+		discount: { type: Number, default: 0.0 },
 		image: new Schema(
 			{
 				url: { type: String },

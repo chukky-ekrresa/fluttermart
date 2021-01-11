@@ -6,15 +6,13 @@ export async function createShop(newShop: IShop) {
 }
 
 export async function getShopsOfAVendor(vendorId: string) {
-	return await Shop.find({ owner: vendorId }).lean({ virtuals: true });
+	return await Shop.find({ owner: vendorId }).lean();
 }
 
 export async function getShopById(shopId: string) {
-	return await Shop.findOne({ _id: shopId }).lean({ virtuals: true });
+	return await Shop.findOne({ _id: shopId }).lean();
 }
 
 export async function updateShopOfAVendor(shopId: string, updatePayload: Partial<IShop>) {
-	return await Shop.findOneAndUpdate({ _id: shopId }, { ...updatePayload }, { new: true }).lean({
-		virtuals: true,
-	});
+	return await Shop.findOneAndUpdate({ _id: shopId }, { ...updatePayload }, { new: true }).lean();
 }
