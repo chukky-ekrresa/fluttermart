@@ -32,15 +32,20 @@ export interface IShop {
 
 export interface IOrder {
 	address: string;
-	customerId: string;
+	country: string;
+	customer: IUser | string;
+	deliveryFee: number;
+	discount: number;
 	products: IProduct[];
-	shopId: string;
+	shop: IShop | string;
+	status: 'shipped' | 'delivered';
 	total: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface IProduct {
+	category: string;
 	colour?: string;
 	discount: number;
 	image: { url: string; publicId: string };

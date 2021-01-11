@@ -9,6 +9,7 @@ import { foreignKeyValidator } from '../helpers/foreignKeyValidator';
 
 const productSchema = new Schema(
 	{
+		category: { type: String, required: true },
 		colour: { type: String, default: null },
 		discount: { type: Number, default: 0 },
 		image: new Schema(
