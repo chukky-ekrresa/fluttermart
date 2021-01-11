@@ -7,7 +7,6 @@ import { issueAccessToken } from '../helpers/token';
 import { generateOTP } from '../helpers/otp';
 import { logger } from '../../config/logger';
 import { sendEmail } from '../../config/email';
-import ENV_VARS from '../../config/env';
 
 export async function verifyUserAccount(payload: IVerify) {
 	const { otp, userId } = payload;
@@ -77,7 +76,7 @@ export async function signUp(userPayload: IUser) {
 
 	await Promise.all([saveUserOtpPromise, emailPromise]);
 
-	return ENV_VARS.NODE_ENV === 'test' ? { otp, userId: newUser._id } : newUser._id;
+	return newUser._id;
 }
 
 interface ILogin {

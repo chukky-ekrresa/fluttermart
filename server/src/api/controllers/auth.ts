@@ -15,5 +15,5 @@ export async function loginHandler(req: Request, res: ApiResponse) {
 
 export async function verifyUserAccountHandler(req: Request, res: ApiResponse) {
 	const data = await AuthService.verifyUserAccount(req.body);
-	res.status(201).json({ status: 201, message: 'user account is confirmed!', data });
+	res.status(200).json({ status: 200, message: 'user account is confirmed!', data });
 }

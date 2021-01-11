@@ -9,6 +9,10 @@ export async function getUserByEmail(email: string) {
 	return await User.findOne({ email }).lean({ virtuals: true });
 }
 
+export async function getUserById(userId: string) {
+	return await User.findOne({ _id: userId }).lean({ virtuals: true });
+}
+
 export async function saveUserOtp(otp: string, userId: string) {
 	return await User.findOneAndUpdate({ _id: userId }, { otp }, { new: true }).lean({
 		virtuals: true,
