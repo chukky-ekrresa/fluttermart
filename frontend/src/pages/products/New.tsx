@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import { BeatLoader } from 'react-spinners';
+import styled from 'styled-components';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { TextArea } from '../../components/Input';
+
+import { useAppMutation } from '../../hooks/useAppQuery';
+import { fieldError } from '../../utils/error';
+
+const Box = styled(FormBox)`
+	max-width: 500px;
+`;
 
 const Product = () => {
 	const [loading] = useState(false);
 
 	const [values, setValues] = useState({
-		image: null,
+		image: '',
 		price: 0,
-		quantity: '',
+		quantity: 0,
 		shop: '',
 		size: '',
 		summary: '',
@@ -27,7 +35,7 @@ const Product = () => {
 			}));
 			return;
 		} else {
-			const [name, value] = target;
+			const { name, value } = target;
 
 			setValues(prevState => ({
 				...prevState,
@@ -36,17 +44,37 @@ const Product = () => {
 		}
 	};
 
+	const formData = new FormData();
+
+	const { mutate, data, error, isError } = useAppMutation({
+		url: 'products',
+		data: formData,
+	});
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
-		// const formData = new FormData();
+		formData.append('image', values.image);
+		formData.set('price', `${values.price}`);
+		formData.set('discount', `${values.discount}`);
+		formData.set('quantity', `${values.quantity}`);
+		formData.set('shop', values.shop);
+		formData.set('size', values.size);
+		formData.set('summary', values.summary);
+		formData.set('name', values.name);
+		formData.set('colour', values.colour);
+
+		console.log(formData);
+
+		await mutate();
 
 		console.log(values);
 	};
 
+	console.log(error?.response?.data?.errors, '*******');
+
 	return (
 		<AuthSection>
-			<FormBox>
+			<Box>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Add new product</p>
 				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
 					<Input
@@ -56,39 +84,54 @@ const Product = () => {
 						value={values.name}
 						onChange={handleChange}
 						type="text"
+						error={fieldError('name', error)}
 					/>
-					<Input
-						label="Price"
-						placeholder="Input price in USD"
-						name="price"
-						value={values.price}
-						onChange={handleChange}
-						type="number"
-					/>
-					<Input
-						label="Discount"
-						placeholder="Input discount in USD"
-						name="discount"
-						value={values.discount}
-						onChange={handleChange}
-						type="number"
-					/>
-					<Input
-						label="Quantity"
-						placeholder="Input quantity"
-						name="quantity"
-						value={values.quantity}
-						onChange={handleChange}
-						type="number"
-					/>
-					<Input
-						label="Size"
-						placeholder="Input size"
-						name="size"
-						value={values.size}
-						onChange={handleChange}
-						type="text"
-					/>
+
+					<div className="flex justify-between">
+						<Input
+							label="Price"
+							placeholder="Input price in USD"
+							name="price"
+							value={values.price}
+							onChange={handleChange}
+							type="number"
+							classStyle={{ flexBasis: '48%' }}
+							error={fieldError('price', error)}
+						/>
+						<Input
+							label="Discount"
+							placeholder="Input discount in USD"
+							name="discount"
+							value={values.discount}
+							onChange={handleChange}
+							type="number"
+							classStyle={{ flexBasis: '48%' }}
+							error={fieldError('discount', error)}
+						/>
+					</div>
+
+					<div className="flex justify-between">
+						<Input
+							label="Quantity"
+							placeholder="Input quantity"
+							name="quantity"
+							value={values.quantity}
+							onChange={handleChange}
+							type="number"
+							classStyle={{ flexBasis: '48%' }}
+							error={fieldError('quantity', error)}
+						/>
+						<Input
+							label="Size"
+							placeholder="Input size"
+							name="size"
+							value={values.size}
+							onChange={handleChange}
+							type="text"
+							classStyle={{ flexBasis: '48%' }}
+							error={fieldError('size', error)}
+						/>
+					</div>
 					<Input
 						label="Colour"
 						placeholder="Input colour"
@@ -96,14 +139,15 @@ const Product = () => {
 						value={values.colour}
 						onChange={handleChange}
 						type="text"
+						error={fieldError('colour', error)}
 					/>
 					<Input
 						label="Image"
 						placeholder="Input image"
 						name="image"
-						// value={values.image}
 						onChange={handleChange}
 						type="file"
+						error={fieldError('image', error)}
 					/>
 
 					<TextArea
@@ -112,6 +156,7 @@ const Product = () => {
 						value={values.summary}
 						name="summary"
 						onChange={handleChange}
+						error={fieldError('summary', error)}
 					/>
 
 					<div className="mb-4">
@@ -132,7 +177,7 @@ const Product = () => {
 						</button>
 					</div>
 				</form>
-			</FormBox>
+			</Box>
 		</AuthSection>
 	);
 };

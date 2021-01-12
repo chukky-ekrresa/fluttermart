@@ -11,12 +11,23 @@ type Props = {
 	value?: any;
 	name: string;
 	type: string;
+	classStyle?: any;
+	error?: string;
 	onChange: (e: any) => void;
 };
 
-const Input = ({ label, placeholder, value, name, onChange, type }: Props) => {
+const Input = ({
+	label,
+	placeholder,
+	value,
+	name,
+	onChange,
+	type,
+	classStyle = {},
+	error = '',
+}: Props) => {
 	return (
-		<div className="mb-4">
+		<div className="mb-4" style={classStyle}>
 			<label className="block text-14 mb-2" htmlFor={name}>
 				{label}
 			</label>
@@ -28,11 +39,12 @@ const Input = ({ label, placeholder, value, name, onChange, type }: Props) => {
 				name={name}
 				onChange={onChange}
 			/>
+			<small className="text-red-500">{error}</small>
 		</div>
 	);
 };
 
-export const Select = ({}: any) => {
+export const Select = () => {
 	return (
 		<div className="mb-4">
 			<label className="block text-14 mb-2" htmlFor="country">
@@ -44,7 +56,7 @@ export const Select = ({}: any) => {
 		</div>
 	);
 };
-export const TextArea = ({ label, placeholder, value, name, onChange }: any) => {
+export const TextArea = ({ label, placeholder, value, name, onChange, error = '' }: any) => {
 	return (
 		<div className="mb-4">
 			<label className="block text-14 mb-2" htmlFor={name}>
@@ -59,6 +71,7 @@ export const TextArea = ({ label, placeholder, value, name, onChange }: any) => 
 				name={name}
 				onChange={onChange}
 			></textarea>
+			<small className="text-red-500">{error}</small>
 		</div>
 	);
 };
