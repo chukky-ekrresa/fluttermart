@@ -26,6 +26,8 @@ export interface IShop {
 	id: string;
 	name: string;
 	owner: IUser | string;
+	transactionId: string;
+	transactionRef: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

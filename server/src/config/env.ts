@@ -12,6 +12,16 @@ const envVarsSchema = Joi.object({
 		otherwise: Joi.optional(),
 	}),
 	DATABASE_URL: Joi.string().required(),
+	FLW_PUBLIC_KEY: Joi.string().when('NODE_ENV', {
+		is: Joi.string().equal('production', 'development'),
+		then: Joi.required(),
+		otherwise: Joi.optional(),
+	}),
+	FLW_SECRET_KEY: Joi.string().when('NODE_ENV', {
+		is: Joi.string().equal('production', 'development'),
+		then: Joi.required(),
+		otherwise: Joi.optional(),
+	}),
 	MAIL_SENDER: Joi.string().when('NODE_ENV', {
 		is: Joi.string().equal('production', 'development'),
 		then: Joi.required(),

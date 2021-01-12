@@ -7,6 +7,8 @@ export const NEW_SHOP = {
 		email: Joi.string().trim().email().lowercase().required(),
 		name: Joi.string().trim().required(),
 		phoneNumber: Joi.string().trim().required(),
+		transactionId: Joi.number().required(),
+		transactionRef: Joi.number().required(),
 	}),
 };
 

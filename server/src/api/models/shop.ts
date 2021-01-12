@@ -20,6 +20,8 @@ const shopSchema = new Schema(
 		owner: { type: Types.ObjectId, required: true, ref: User },
 		phoneNumber: { type: String, default: null },
 		phoneNumberVerified: { type: Boolean, default: false },
+		transactionId: { type: String, required: true },
+		transactionRef: { type: String, required: true },
 	},
 	{ timestamps: true }
 );
