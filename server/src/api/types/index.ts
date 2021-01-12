@@ -22,10 +22,12 @@ export interface IShop {
 	address: string;
 	country: string;
 	dispatchRider: IUser | string;
-	enabled: string;
+	approved: boolean;
 	id: string;
 	name: string;
 	owner: IUser | string;
+	transactionId: string;
+	transactionRef: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

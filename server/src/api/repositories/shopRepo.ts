@@ -13,6 +13,10 @@ export async function getShopById(shopId: string) {
 	return await Shop.findOne({ _id: shopId }).lean();
 }
 
+export async function getShopByName(shopName: string) {
+	return await Shop.findOne({ name: shopName }).lean();
+}
+
 export async function updateShopOfAVendor(shopId: string, updatePayload: Partial<IShop>) {
 	return await Shop.findOneAndUpdate({ _id: shopId }, { ...updatePayload }, { new: true }).lean();
 }

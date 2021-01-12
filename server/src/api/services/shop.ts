@@ -1,18 +1,30 @@
 import bcrypt from 'bcrypt';
 import faker from 'faker';
-import { NotFound, Forbidden } from 'http-errors';
+import { NotFound, Forbidden, BadRequest } from 'http-errors';
+import Flutterwave from 'flutterwave-node-v3';
 
-import { getLoggedInUser } from '../helpers/requestSession';
 import * as ShopRepo from '../repositories/shopRepo';
 import { createUser } from '../repositories/userRepo';
+import ENV_VARS from '../../config/env';
+import { getLoggedInUser } from '../helpers/requestSession';
 import { IShop, IUser } from '../types';
+import { logger } from '../../config/logger';
 
 export async function createShop(payload: IShop) {
+	const shop = await ShopRepo.getShopByName(payload.name);
+
+	if (shop) {
+		throw new BadRequest(`Shop with name: ${payload.name} exists`);
+	}
+
+	await validateShopPayment(payload.transactionId, payload.transactionRef);
+
 	const loggedInUser = getLoggedInUser();
+	const dispatchRider = await generateDispatchRider();
 
 	payload.owner = loggedInUser.id!;
-	const dispatchRider = await generateDispatchRider();
 	payload.dispatchRider = dispatchRider._id;
+	payload.approved = true;
 
 	return await ShopRepo.createShop(payload);
 }
@@ -52,4 +64,24 @@ async function generateDispatchRider() {
 	};
 
 	return await createUser(dispatchRider);
+}
+
+async function validateShopPayment(transactionId: string, transactionRef: string) {
+	const { FLW_PUBLIC_KEY, FLW_SECRET_KEY } = ENV_VARS;
+	const flw = new Flutterwave(FLW_PUBLIC_KEY, FLW_SECRET_KEY);
+
+	const response = await flw.Transaction.verify({ id: transactionId, amount: '20' });
+
+	if (
+		response.status === 'success' &&
+		response.data.amount >= 20 &&
+		response.data.tx_ref === String(transactionRef) &&
+		response.data.currency === 'NGN'
+	) {
+		return;
+	}
+
+	logger.error(response.message);
+
+	throw new BadRequest('Shop payment was not successful');
 }
