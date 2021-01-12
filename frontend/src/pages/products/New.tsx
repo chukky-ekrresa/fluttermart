@@ -46,7 +46,7 @@ const Product = () => {
 
 	const formData = new FormData();
 
-	const { mutate, data, error, isError } = useAppMutation({
+	const { mutate, error } = useAppMutation({
 		url: 'products',
 		data: formData,
 	});
@@ -63,14 +63,8 @@ const Product = () => {
 		formData.set('name', values.name);
 		formData.set('colour', values.colour);
 
-		console.log(formData);
-
 		await mutate();
-
-		console.log(values);
 	};
-
-	console.log(error?.response?.data?.errors, '*******');
 
 	return (
 		<AuthSection>
