@@ -37,10 +37,12 @@ export interface IOrder {
 	country: string;
 	customer: IUser | string;
 	deliveryFee: number;
-	discount: number;
+	dispatchRider: IUser;
+	notes?: string;
+	orderCode: string;
+	paymentRef: string;
 	products: IProduct[];
-	shop: IShop | string;
-	status: 'shipped' | 'delivered';
+	status: 'unconfirmed' | 'shipped' | 'delivered';
 	total: string;
 	createdAt: Date;
 	updatedAt: Date;
