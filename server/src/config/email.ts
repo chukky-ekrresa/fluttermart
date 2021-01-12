@@ -35,7 +35,7 @@ export async function sendEmail(input: IEmailInput) {
 		});
 }
 
-interface IEmailInput {
+export interface IEmailInput {
 	from?: string; // Must be a valid email
 	to: string; // Must be an array of valid emails
 	subject: string;

@@ -22,30 +22,38 @@ export interface IShop {
 	address: string;
 	country: string;
 	dispatchRider: IUser | string;
-	enabled: string;
+	approved: boolean;
 	id: string;
 	name: string;
 	owner: IUser | string;
+	transactionId: string;
+	transactionRef: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface IOrder {
 	address: string;
-	customerId: string;
+	country: string;
+	customer: IUser | string;
+	deliveryFee: number;
+	dispatchRider: IUser;
+	notes?: string;
+	orderCode: string;
+	paymentRef: string;
 	products: IProduct[];
-	shopId: string;
+	status: 'unconfirmed' | 'shipped' | 'delivered';
 	total: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface IProduct {
+	category: string;
 	colour?: string;
 	discount: number;
 	image: { url: string; publicId: string };
 	name: string;
-	owner: string;
 	price: number;
 	quantity: number;
 	shop: IShop | string;

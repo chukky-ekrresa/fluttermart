@@ -1,4 +1,4 @@
-import { BadRequest } from 'http-errors';
+import { BadRequest, Forbidden } from 'http-errors';
 import { snakeCase } from 'lodash';
 
 import * as ProductRepo from '../repositories/productRepo';
@@ -28,6 +28,10 @@ export async function createProduct(newProduct: IProduct, productImage: any) {
 		throw new BadRequest('Product exists in the shop');
 	}
 
+	if (shop.owner !== loggedInUser.id) {
+		throw new Forbidden(`Unauthorized action`);
+	}
+
 	const imageBuffer = await processImage(productImage);
 	const uploadResponse = await uploadImage({
 		filename: snakeCase(newProduct.name),
@@ -35,7 +39,6 @@ export async function createProduct(newProduct: IProduct, productImage: any) {
 		shop: snakeCase(shop.name),
 	});
 
-	newProduct.owner = loggedInUser.id!;
 	newProduct.sku = generateSKU();
 	newProduct.image = { url: uploadResponse.secure_url, publicId: uploadResponse.public_id };
 

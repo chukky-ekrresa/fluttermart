@@ -11,7 +11,7 @@ const shopSchema = new Schema(
 		dispatchRider: { type: Types.ObjectId, ref: User, required: true },
 		email: { type: String, required: true, unique: true },
 		emailVerified: { type: Boolean, default: false },
-		enabled: { type: Boolean, default: false },
+		approved: { type: Boolean, default: false },
 		name: {
 			type: String,
 			required: true,
@@ -20,6 +20,8 @@ const shopSchema = new Schema(
 		owner: { type: Types.ObjectId, required: true, ref: User },
 		phoneNumber: { type: String, default: null },
 		phoneNumberVerified: { type: Boolean, default: false },
+		transactionId: { type: String, required: true },
+		transactionRef: { type: String, required: true },
 	},
 	{ timestamps: true }
 );

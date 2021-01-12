@@ -3,14 +3,14 @@ import mongooseLeanId from 'mongoose-lean-id';
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 import { IProduct } from '../types';
-import { User } from './user';
 import { Shop } from './shop';
 import { foreignKeyValidator } from '../helpers/foreignKeyValidator';
 
 const productSchema = new Schema(
 	{
+		category: { type: String, default: 'other' },
 		colour: { type: String, default: null },
-		discount: { type: Number, default: 0 },
+		discount: { type: Number, default: 0.0 },
 		image: new Schema(
 			{
 				url: { type: String },
@@ -19,7 +19,6 @@ const productSchema = new Schema(
 			{ timestamps: false }
 		),
 		name: { type: String, required: true },
-		owner: { type: Types.ObjectId, ref: User, required: true },
 		price: { type: Number, set: setPrice, required: true },
 		quantity: { type: Number, default: 0 },
 		shop: {
