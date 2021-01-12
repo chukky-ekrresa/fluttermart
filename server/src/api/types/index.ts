@@ -50,7 +50,6 @@ export interface IProduct {
 	discount: number;
 	image: { url: string; publicId: string };
 	name: string;
-	owner: string;
 	price: number;
 	quantity: number;
 	shop: IShop | string;
