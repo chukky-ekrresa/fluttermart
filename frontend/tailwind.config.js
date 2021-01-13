@@ -26,6 +26,7 @@ module.exports = {
 				darkOrange: '#F9A109',
 				greyBorder: '#BDBDBD',
 				brownish: '#80485b',
+				lightGrey: 'rgba(0, 0, 0, 0.04)',
 			},
 		},
 	},
