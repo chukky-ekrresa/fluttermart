@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import styled from 'styled-components';
 
@@ -13,13 +14,13 @@ const Box = styled(FormBox)`
 `;
 
 const Product = () => {
-	const [loading] = useState(false);
+	const { shopId } = useParams<any>();
 
 	const [values, setValues] = useState({
 		image: '',
 		price: 0,
 		quantity: 0,
-		shop: '',
+		shop: `${shopId ?? ''}`,
 		size: '',
 		summary: '',
 		name: '',
@@ -46,7 +47,7 @@ const Product = () => {
 
 	const formData = new FormData();
 
-	const { mutate, error } = useAppMutation({
+	const { mutate, error, isLoading: loading } = useAppMutation({
 		url: 'products',
 		data: formData,
 	});
@@ -62,6 +63,7 @@ const Product = () => {
 		formData.set('summary', values.summary);
 		formData.set('name', values.name);
 		formData.set('colour', values.colour);
+		formData.set('category', 'other');
 
 		await mutate();
 	};

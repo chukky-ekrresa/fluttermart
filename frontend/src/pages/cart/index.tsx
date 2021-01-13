@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Row = styled.div.attrs({})`
+const Row = styled.div`
 	.name {
 		flex: 3 3 50%;
 	}

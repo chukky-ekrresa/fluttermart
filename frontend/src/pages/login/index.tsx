@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 
@@ -9,6 +9,7 @@ import { AuthSection, FormBox } from '../../components/blocs';
 import { login } from '../../redux/actions/auth.action';
 
 const Login = ({ login }: any) => {
+	const history = useHistory();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
 	const [values, setValues] = useState({
 		email: '',
@@ -24,10 +25,14 @@ const Login = ({ login }: any) => {
 		}));
 	};
 
+	const navigateToProducts = () => {
+		history.push('/');
+	};
+
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		await login(values);
+		await login(values, navigateToProducts);
 	};
 
 	return (
