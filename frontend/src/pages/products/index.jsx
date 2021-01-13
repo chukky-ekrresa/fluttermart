@@ -23,44 +23,15 @@ const Image = styled.div.attrs({
 
 const Products = () => {
 	return (
-		<div className="w-11/12 mx-auto my-0">
-			<div className="border-b border-greyBorder mb-8 py-2">
-				<p>Home</p>
+		<Cards>
+			<p className="til"></p>
+			<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg">
+				<div className="flex-80 rounded-lg">
+					<Image url={phoneImg}></Image>
+				</div>
+				<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
 			</div>
-			<Cards>
-				<p className="til"></p>
-				<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col">
-					<div className="flex-80">
-						<Image url={phoneImg}></Image>
-					</div>
-					<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
-				</div>
-				<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col">
-					<div className="flex-80">
-						<Image url={phoneImg}></Image>
-					</div>
-					<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
-				</div>
-				<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col">
-					<div className="flex-80">
-						<Image url={phoneImg}></Image>
-					</div>
-					<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
-				</div>
-				<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col">
-					<div className="flex-80">
-						<Image url={phoneImg}></Image>
-					</div>
-					<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
-				</div>
-				<div className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col">
-					<div className="flex-80">
-						<Image url={phoneImg}></Image>
-					</div>
-					<p className="text-center py-1 flex-20 capitalize">Cubot Note 7, 5.5 Inches,4G LTE,2GB</p>
-				</div>
-			</Cards>
-		</div>
+		</Cards>
 	);
 };
 

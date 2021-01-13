@@ -1,10 +1,9 @@
-import { Redirect, useLocation } from 'react-router-dom';
+import { lazy } from 'react';
+
+const Products = lazy(() => import('../../pages/products/index'));
 
 const Home = () => {
-	const location = useLocation();
-	const currentLocation = location.pathname === '/' ? '/login' : location.pathname;
-
-	return <Redirect to={{ pathname: currentLocation }} />;
+	return <Products />;
 };
 
 export default Home;
