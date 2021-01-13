@@ -28,7 +28,7 @@ export async function createProduct(newProduct: IProduct, productImage: any) {
 		throw new BadRequest('Product exists in the shop');
 	}
 
-	if (shop.owner !== loggedInUser.id) {
+	if (shop.owner.toString() !== loggedInUser.id) {
 		throw new Forbidden(`Unauthorized action`);
 	}
 

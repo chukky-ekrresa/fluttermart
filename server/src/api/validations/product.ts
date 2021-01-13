@@ -4,7 +4,7 @@ import { joiValidateObjectId } from '../helpers/objectIdValidator';
 
 export const NEW_PRODUCT = {
 	[Segments.BODY]: Joi.object().keys({
-		category: Joi.string().trim().required(),
+		category: Joi.string().trim().default('other'),
 		colour: Joi.string().trim(),
 		discount: Joi.string()
 			.trim()
