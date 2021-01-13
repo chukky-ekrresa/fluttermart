@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Loading from '../components/loading';
 import Dashboard from './Dashboard';
 
-const Home = lazy(() => import('../pages/home'));
 const Login = lazy(() => import('../pages/login'));
 const Register = lazy(() => import('../pages/register'));
 const VerifyEmail = lazy(() => import('../pages/verify-email'));
@@ -13,9 +12,6 @@ const Routes = () => (
 	<Router>
 		<Suspense fallback={<Loading />}>
 			<Switch>
-				<Route exact path="/">
-					<Home />
-				</Route>
 				<Route exact path="/login">
 					<Login />
 				</Route>
@@ -26,7 +22,7 @@ const Routes = () => (
 					<VerifyEmail />
 				</Route>
 
-				<Route path="/dashboard">
+				<Route path="/">
 					<Dashboard />
 				</Route>
 			</Switch>
