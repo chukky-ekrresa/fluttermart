@@ -47,7 +47,7 @@ const Product = () => {
 
 	const formData = new FormData();
 
-	const { mutate, error, isLoading: loading, data } = useAppMutation({
+	const { mutate, error, isLoading: loading } = useAppMutation({
 		url: 'products',
 		data: formData,
 	});
