@@ -11,7 +11,8 @@ import { IShop, IUser } from '../types';
 import { logger } from '../../config/logger';
 
 export async function createShop(payload: IShop) {
-	const shop = await ShopRepo.getShopByName(payload.name);
+	const { email, name, phoneNumber } = payload;
+	const shop = await ShopRepo.checkIfShopExists(name, email, phoneNumber);
 
 	if (shop) {
 		throw new BadRequest(`Shop with name: ${payload.name} exists`);
@@ -52,7 +53,7 @@ export async function updateVendorShop(shopId: string, updatePayload: Partial<IS
 
 async function generateDispatchRider() {
 	const dispatchRider: IUser = {
-		email: faker.internet.email(),
+		email: faker.internet.email().toLowerCase(),
 		emailVerified: true,
 		enabled: true,
 		firstName: faker.name.firstName(),

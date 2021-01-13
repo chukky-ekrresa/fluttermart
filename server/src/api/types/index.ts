@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 export interface IUser {
 	email: string;
-	emailVerified: boolean | number;
+	emailVerified: boolean;
 	enabled: boolean;
 	firstName: string;
 	id?: string;
@@ -10,7 +10,7 @@ export interface IUser {
 	otp?: string | null;
 	password: string;
 	phoneNumber: string;
-	phoneNumberVerified: boolean | number;
+	phoneNumberVerified: boolean;
 	role: Role;
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -20,12 +20,16 @@ type Role = 'customer' | 'vendor' | 'dispatch';
 
 export interface IShop {
 	address: string;
+	approved: boolean;
 	country: string;
 	dispatchRider: IUser | string;
-	approved: boolean;
+	email: string;
+	emailVerified: boolean;
 	id: string;
 	name: string;
 	owner: IUser | string;
+	phoneNumber: string;
+	phoneNumberVerified: boolean;
 	transactionId: string;
 	transactionRef: string;
 	createdAt: Date;
@@ -44,6 +48,8 @@ export interface IOrder {
 	products: IProduct[];
 	status: 'unconfirmed' | 'shipped' | 'delivered';
 	total: string;
+	transactionId: string;
+	transactionRef: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

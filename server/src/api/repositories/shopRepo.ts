@@ -13,8 +13,10 @@ export async function getShopById(shopId: string) {
 	return await Shop.findOne({ _id: shopId }).lean();
 }
 
-export async function getShopByName(shopName: string) {
-	return await Shop.findOne({ name: shopName }).lean();
+export async function checkIfShopExists(shopName: string, shopEmail: string, shopPhone: string) {
+	return await Shop.exists({
+		$or: [{ email: shopEmail }, { name: shopName }, { phoneNumber: shopPhone }],
+	});
 }
 
 export async function updateShopOfAVendor(shopId: string, updatePayload: Partial<IShop>) {
