@@ -7,6 +7,8 @@ import Dashboard from './Dashboard';
 const Login = lazy(() => import('../pages/login'));
 const Register = lazy(() => import('../pages/register'));
 const VerifyEmail = lazy(() => import('../pages/verify-email'));
+const Logout = lazy(() => import('../pages/logout'));
+const NotFound = lazy(() => import('../pages/not-found'));
 
 const Routes = () => (
 	<Router>
@@ -21,9 +23,16 @@ const Routes = () => (
 				<Route exact path="/verify-email/:userID">
 					<VerifyEmail />
 				</Route>
+				<Route exact path="/logout">
+					<Logout />
+				</Route>
 
 				<Route path="/">
 					<Dashboard />
+				</Route>
+
+				<Route path="*">
+					<NotFound />
 				</Route>
 			</Switch>
 		</Suspense>

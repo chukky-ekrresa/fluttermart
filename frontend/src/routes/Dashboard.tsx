@@ -11,6 +11,7 @@ const NewProducts = lazy(() => import('../pages/products/New'));
 const Cart = lazy(() => import('../pages/cart'));
 const Checkout = lazy(() => import('../pages/checkout'));
 const Shops = lazy(() => import('../pages/shop/'));
+const NotFound = lazy(() => import('../pages/not-found'));
 
 const Dashboard = () => {
 	return (
@@ -20,16 +21,17 @@ const Dashboard = () => {
 					<Route exact path="/">
 						<Home />
 					</Route>
-					<Route exact path="/new-shop">
-						<NewShop />
-					</Route>
-					<Route exact path="/new-product/:shopId">
-						<NewProducts />
-					</Route>
+
 					<Route exact path="/cart">
 						<Cart />
 					</Route>
 					<PrivateRoutes>
+						<Route exact path="/new-shop">
+							<NewShop />
+						</Route>
+						<Route exact path="/new-product/:shopId">
+							<NewProducts />
+						</Route>
 						<Route exact path="/checkout">
 							<Checkout />
 						</Route>
@@ -37,6 +39,10 @@ const Dashboard = () => {
 							<Shops />
 						</Route>
 					</PrivateRoutes>
+
+					<Route path="*">
+						<NotFound />
+					</Route>
 				</Switch>
 			</Suspense>
 		</Layout>
