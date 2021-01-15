@@ -5,8 +5,8 @@
 	"author": "Ochuko Ekrresa",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc",
-		"build:watch": "yarn build --watch",
+		"build": "scripts/build.sh",
+		"build:watch": "tsc --watch",
 		"dev": "node-dev dist/index.js",
 		"migrate": "migrate-mongo",
 		"start": "node dist/index.js",
