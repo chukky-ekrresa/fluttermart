@@ -5,6 +5,17 @@ import { IUser } from '../types';
 
 const userSchema = new Schema(
 	{
+		account: new Schema(
+			{
+				account_bank: String,
+				account_id: Number,
+				account_number: String,
+				subaccount_id: String,
+				split_value: Number,
+				meta: {},
+			},
+			{ timestamps: true }
+		),
 		firstName: { type: String, required: true },
 		lastName: { type: String, required: true },
 		email: {

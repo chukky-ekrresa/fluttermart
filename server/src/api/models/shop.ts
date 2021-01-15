@@ -6,6 +6,17 @@ import { User } from './user';
 
 const shopSchema = new Schema(
 	{
+		account: new Schema(
+			{
+				account_bank: String,
+				account_id: Number,
+				account_number: String,
+				subaccount_id: String,
+				split_value: Number,
+				meta: {},
+			},
+			{ timestamps: true }
+		),
 		address: { type: String, required: true },
 		country: { type: String, required: true },
 		dispatchRider: { type: Types.ObjectId, ref: User, required: true },
