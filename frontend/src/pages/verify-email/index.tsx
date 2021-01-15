@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 
@@ -9,6 +9,7 @@ import Input from '../../components/Input';
 import { verifyEmail } from '../../redux/actions/auth.action';
 
 const VerifyEmail = ({ verifyEmail }: any) => {
+	const history = useHistory();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
 	const { userID } = useParams<any>();
 	const [values, setValues] = useState({
@@ -25,9 +26,13 @@ const VerifyEmail = ({ verifyEmail }: any) => {
 		}));
 	};
 
+	const navToHome = () => {
+		history.push('/');
+	};
+
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		await verifyEmail(values);
+		await verifyEmail(values, navToHome);
 	};
 
 	return (

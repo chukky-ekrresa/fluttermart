@@ -2,19 +2,18 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Loading from '../components/loading';
+import Dashboard from './Dashboard';
 
-const Home = lazy(() => import('../pages/home'));
 const Login = lazy(() => import('../pages/login'));
 const Register = lazy(() => import('../pages/register'));
 const VerifyEmail = lazy(() => import('../pages/verify-email'));
+const Logout = lazy(() => import('../pages/logout'));
+const NotFound = lazy(() => import('../pages/not-found'));
 
 const Routes = () => (
 	<Router>
 		<Suspense fallback={<Loading />}>
 			<Switch>
-				<Route exact path="/">
-					<Home />
-				</Route>
 				<Route exact path="/login">
 					<Login />
 				</Route>
@@ -23,6 +22,17 @@ const Routes = () => (
 				</Route>
 				<Route exact path="/verify-email/:userID">
 					<VerifyEmail />
+				</Route>
+				<Route exact path="/logout">
+					<Logout />
+				</Route>
+
+				<Route path="/">
+					<Dashboard />
+				</Route>
+
+				<Route path="*">
+					<NotFound />
 				</Route>
 			</Switch>
 		</Suspense>

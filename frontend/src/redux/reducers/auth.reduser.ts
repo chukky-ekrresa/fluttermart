@@ -34,7 +34,7 @@ export default function authentication(state = initialState, action: any) {
 				user: action.payload,
 			};
 		case 'LOG_OUT':
-			return initialState;
+			return null;
 
 		default:
 			return state;
