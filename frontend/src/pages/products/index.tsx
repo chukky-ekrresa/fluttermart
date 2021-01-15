@@ -32,7 +32,7 @@ const Products = () => {
 	const dropdownRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
 	const handleClick = (event: any) => {
-		if (dropdownRef.current.contains(event.target)) {
+		if (dropdownRef?.current?.contains(event.target)) {
 			return;
 		}
 		setShowDropdown(false);
