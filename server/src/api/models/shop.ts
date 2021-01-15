@@ -9,7 +9,7 @@ const shopSchema = new Schema(
 		address: { type: String, required: true },
 		country: { type: String, required: true },
 		dispatchRider: { type: Types.ObjectId, ref: User, required: true },
-		email: { type: String, required: true, unique: true },
+		email: { type: String, required: true },
 		emailVerified: { type: Boolean, default: false },
 		approved: { type: Boolean, default: false },
 		name: {

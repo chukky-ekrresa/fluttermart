@@ -2,7 +2,7 @@ import { Shop } from '../models/shop';
 import { IShop } from '../types';
 
 export async function createShop(newShop: IShop) {
-	return await Shop.create(newShop);
+	return await Shop.create(newShop).then(shop => shop.toObject());
 }
 
 export async function getShopsOfAVendor(vendorId: string) {
@@ -13,9 +13,10 @@ export async function getShopById(shopId: string) {
 	return await Shop.findOne({ _id: shopId }).lean();
 }
 
-export async function checkIfShopExists(shopName: string, shopEmail: string, shopPhone: string) {
+//
+export async function checkIfShopExists(shopName: string) {
 	return await Shop.exists({
-		$or: [{ email: shopEmail }, { name: shopName }, { phoneNumber: shopPhone }],
+		$or: [{ name: shopName }],
 	});
 }
 

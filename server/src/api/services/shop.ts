@@ -1,24 +1,24 @@
 import bcrypt from 'bcrypt';
 import faker from 'faker';
 import { NotFound, Forbidden, BadRequest } from 'http-errors';
-import Flutterwave from 'flutterwave-node-v3';
+import { addMinutes } from 'date-fns';
 
 import * as ShopRepo from '../repositories/shopRepo';
+import { agendaInstance } from '../../config/agenda';
 import { createUser } from '../repositories/userRepo';
-import ENV_VARS from '../../config/env';
+import flw from '../../config/flutterwave';
 import { getLoggedInUser } from '../helpers/requestSession';
 import { IShop, IUser } from '../types';
 import { logger } from '../../config/logger';
 
 export async function createShop(payload: IShop) {
-	const { email, name, phoneNumber } = payload;
-	const shop = await ShopRepo.checkIfShopExists(name, email, phoneNumber);
+	await validateShopPayment(payload.transactionId, payload.transactionRef);
+
+	const shop = await ShopRepo.checkIfShopExists(payload.name);
 
 	if (shop) {
 		throw new BadRequest(`Shop with name: ${payload.name} exists`);
 	}
-
-	await validateShopPayment(payload.transactionId, payload.transactionRef);
 
 	const loggedInUser = getLoggedInUser();
 	const dispatchRider = await generateDispatchRider();
@@ -27,7 +27,21 @@ export async function createShop(payload: IShop) {
 	payload.dispatchRider = dispatchRider._id;
 	payload.approved = true;
 
-	return await ShopRepo.createShop(payload);
+	const newShop = await ShopRepo.createShop(payload);
+	agendaInstance.now('create_subaccount_shop', {
+		...newShop,
+		firstName: loggedInUser.firstName,
+	});
+
+	// Schedule after 3 minutes so the account number to be used don't clash with the one used in creating a shop
+	agendaInstance.schedule(addMinutes(new Date(), 3), 'create_subaccount_dispatch', {
+		...dispatchRider,
+		country: newShop.country,
+		firstName: loggedInUser.firstName,
+		shopId: newShop._id,
+	});
+
+	return newShop;
 }
 
 export async function getVendorShops() {
@@ -68,17 +82,9 @@ async function generateDispatchRider() {
 }
 
 async function validateShopPayment(transactionId: string, transactionRef: string) {
-	const { FLW_PUBLIC_KEY, FLW_SECRET_KEY } = ENV_VARS;
-	const flw = new Flutterwave(FLW_PUBLIC_KEY, FLW_SECRET_KEY);
-
 	const response = await flw.Transaction.verify({ id: transactionId, amount: '20' });
 
-	if (
-		response.status === 'success' &&
-		response.data.amount >= 20 &&
-		response.data.tx_ref === String(transactionRef) &&
-		response.data.currency === 'NGN'
-	) {
+	if (response.status === 'success' && response.data.tx_ref === String(transactionRef)) {
 		return;
 	}
 

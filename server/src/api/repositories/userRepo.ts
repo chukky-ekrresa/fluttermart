@@ -2,7 +2,7 @@ import { User } from '../models/user';
 import { IUser } from '../types';
 
 export async function createUser(newUser: IUser) {
-	return await User.create(newUser);
+	return await User.create(newUser).then(user => user.toObject());
 }
 
 export async function getUserByEmail(email: string) {
