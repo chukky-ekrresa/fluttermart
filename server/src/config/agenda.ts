@@ -68,10 +68,9 @@ agendaInstance.define('create_subaccount_shop', { priority: 'highest' }, async j
 	};
 
 	try {
-		const response = await flw.Subaccount.create(payload);
-		console.log(response);
+		await flw.Subaccount.create(payload);
 	} catch (error) {
-		console.log(error);
+		logger.error(error.message);
 	}
 
 	await TestBankAccountRepo.incrementTestAccountNumber();
@@ -105,10 +104,9 @@ agendaInstance.define('create_subaccount_dispatch', { priority: 'high' }, async 
 	};
 
 	try {
-		const response = await flw.Subaccount.create(payload);
-		console.log(response);
+		await flw.Subaccount.create(payload);
 	} catch (error) {
-		console.log(error);
+		logger.error(error.message);
 	}
 
 	await TestBankAccountRepo.incrementTestAccountNumber();
