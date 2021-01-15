@@ -47,7 +47,7 @@ export interface IOrder {
 	paymentRef: string;
 	products: IProduct[];
 	status: 'unconfirmed' | 'shipped' | 'delivered';
-	total: string;
+	total: number;
 	transactionId: string;
 	transactionRef: string;
 	createdAt: Date;
