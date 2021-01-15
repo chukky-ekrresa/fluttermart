@@ -77,8 +77,8 @@ const Shop = () => {
 				callback: response => {
 					mutate({
 						...values,
-						transactionId: response?.tx_ref,
-						transactionRef: response?.transaction_id,
+						transactionId: response?.transaction_id,
+						transactionRef: response?.tx_ref,
 					});
 
 					closePaymentModal();
