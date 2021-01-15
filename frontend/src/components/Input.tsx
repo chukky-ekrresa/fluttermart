@@ -44,14 +44,24 @@ const Input = ({
 	);
 };
 
-export const Select = () => {
+export const Select = ({ options = [], label, handleChange, name, defaultValue }: any) => {
 	return (
 		<div className="mb-4">
-			<label className="block text-14 mb-2" htmlFor="country">
-				Country
-			</label>
-			<select className="border border-greyBorder outline-none focus:outline-none py-2.5 pl-4 rounded-md w-full">
-				<option>one</option>
+			<label className="block text-14 mb-2">{label}</label>
+			<select
+				onChange={handleChange}
+				name={name}
+				id={name}
+				defaultValue={defaultValue}
+				className="border border-greyBorder outline-none focus:outline-none py-2.5 pl-4 rounded-md w-full"
+			>
+				<option value="">Select Payment Currency</option>
+
+				{options.map(({ value, label }: any, index: number) => (
+					<option value={value} key={`${value}-${index}`}>
+						{label}
+					</option>
+				))}
 			</select>
 		</div>
 	);

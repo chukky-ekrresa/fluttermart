@@ -31,7 +31,7 @@ export const register = (payload: any, redirectToVerifyEmail: any) => async (dis
 	}
 };
 
-export const verifyEmail = (payload: any) => async (dispatch: any) => {
+export const verifyEmail = (payload: any, navToHome: any) => async (dispatch: any) => {
 	try {
 		dispatch(setAuthError(null));
 		dispatch(setAuthLoading(true));
@@ -40,6 +40,8 @@ export const verifyEmail = (payload: any) => async (dispatch: any) => {
 		dispatch(setToken(data?.data));
 
 		dispatch(setAuthLoading(false));
+
+		navToHome();
 	} catch (error) {
 		dispatch(setAuthLoading(false));
 		dispatch(setAuthError(error.response));
