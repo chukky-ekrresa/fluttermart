@@ -27,7 +27,7 @@ const Shops = () => {
 
 	return (
 		<div className="w-full max-w-900 mx-auto">
-			<h1 className="font-bold text-24">Shops</h1>
+			<h1 className="font-bold text-24 mb-4">Shops</h1>
 
 			<Row className="flex justify-between border-b border-greyBorder">
 				<p className="name capitalize">name</p>
@@ -37,7 +37,7 @@ const Shops = () => {
 
 			{isLoading ? (
 				<p className="text-center mt-4">Loading..</p>
-			) : !data?.data ? (
+			) : !data?.data?.length ? (
 				<p className="text-center mt-4">No Shop Yet.</p>
 			) : (
 				data?.data.map((shop: any) => {
