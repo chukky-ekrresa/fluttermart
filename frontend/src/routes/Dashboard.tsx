@@ -12,6 +12,7 @@ const Cart = lazy(() => import('../pages/cart'));
 const Checkout = lazy(() => import('../pages/checkout'));
 const Shops = lazy(() => import('../pages/shop/'));
 const NotFound = lazy(() => import('../pages/not-found'));
+const ShopProducts = lazy(() => import('../pages/products/singleShopProducts'));
 
 const Dashboard = () => {
 	return (
@@ -31,6 +32,9 @@ const Dashboard = () => {
 						</Route>
 						<Route exact path="/new-product/:shopId">
 							<NewProducts />
+						</Route>
+						<Route exact path="/shop/products/:shopId">
+							<ShopProducts />
 						</Route>
 						<Route exact path="/checkout">
 							<Checkout />
