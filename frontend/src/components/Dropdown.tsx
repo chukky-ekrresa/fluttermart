@@ -5,7 +5,6 @@ const Dropdown = ({ options, Icon, styleClass = '' }: any) => {
 	const dropdownRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
 	const handleClick = (event: any) => {
-		console.log('Hey! You clicked me!!!');
 		if (dropdownRef?.current?.contains(event.target)) {
 			return;
 		}

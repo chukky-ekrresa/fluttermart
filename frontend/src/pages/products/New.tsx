@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import styled from 'styled-components';
+import { useMutation } from 'react-query';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { TextArea } from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
-import { useAppMutation } from '../../hooks/useAppQuery';
+import request from '../../utils/request';
 import { fieldError } from '../../utils/error';
 
 const Box = styled(FormBox)`
@@ -15,8 +17,7 @@ const Box = styled(FormBox)`
 
 const Product = () => {
 	const { shopId } = useParams<any>();
-
-	const [values, setValues] = useState({
+	const initialState = {
 		image: '',
 		price: 0,
 		quantity: 0,
@@ -26,7 +27,9 @@ const Product = () => {
 		name: '',
 		colour: '',
 		discount: 0,
-	});
+	};
+
+	const [values, setValues] = useState(initialState);
 
 	const handleChange = ({ target }: any) => {
 		if (target.name === 'image') {
@@ -45,16 +48,30 @@ const Product = () => {
 		}
 	};
 
-	const formData = new FormData();
-
-	const { mutate, error, isLoading: loading } = useAppMutation({
-		url: 'products',
-		data: formData,
-	});
+	const { mutate, error, isLoading: loading } = useMutation(
+		(formData: any) => {
+			return request.post('products', formData);
+		},
+		{
+			onSuccess: () => {
+				Toast({
+					message: 'Product successfully created!',
+					type: 'success',
+				});
+				setValues(initialState);
+			},
+			onError: (error: any) => {
+				Toast({
+					message: error?.response?.data?.message,
+					type: 'error',
+				});
+			},
+		}
+	);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
-		console.log(values, 'EXHIBITING');
+		const formData = new FormData();
 
 		formData.append('image', values.image);
 		formData.set('price', `${values.price}`);
@@ -67,7 +84,7 @@ const Product = () => {
 		formData.set('colour', values.colour);
 		formData.set('category', 'other');
 
-		await mutate();
+		await mutate(formData);
 	};
 
 	return (

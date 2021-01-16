@@ -5,6 +5,7 @@ import { useMutation } from 'react-query';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { Select, TextArea } from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 import request from '../../utils/request';
@@ -29,10 +30,18 @@ const Shop = () => {
 			return request.post('shops', formData);
 		},
 		{
-			onSuccess: (data: any) => {
-				console.log(data);
-
+			onSuccess: () => {
+				Toast({
+					message: 'Shop successfully created!',
+					type: 'success',
+				});
 				setValues(initialState);
+			},
+			onError: (error: any) => {
+				Toast({
+					message: error?.response?.data?.message,
+					type: 'error',
+				});
 			},
 		}
 	);

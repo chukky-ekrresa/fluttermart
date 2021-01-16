@@ -22,7 +22,6 @@ export const login = (payload: any, navigateToProducts: any, Toast: any) => asyn
 			type: 'error',
 		});
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };
 export const register = (payload: any, redirectToVerifyEmail: any, Toast: any) => async (
@@ -49,7 +48,6 @@ export const register = (payload: any, redirectToVerifyEmail: any, Toast: any) =
 		});
 
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };
 
@@ -75,6 +73,5 @@ export const verifyEmail = (payload: any, navToHome: any, Toast: any) => async (
 			type: 'error',
 		});
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };

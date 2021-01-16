@@ -58,17 +58,12 @@ const Products = () => {
 				<p className="m-auto">No products yet</p>
 			) : (
 				products?.data.map((item: any) => {
-					console.log(item, '****');
-
 					return (
 						<div
 							key={item.id}
 							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
 							onClick={() => setShowDropdown(!showDropdown)}
 						>
-							{/* left: 64px;
-    top: 17px; */}
-
 							<div className="relative left-16 top-4" ref={optionRef}>
 								<ul
 									className={`absolute border border-darkOrange pb-4 px-2 w-44 bg-white rounded-md ${
