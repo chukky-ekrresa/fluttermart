@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Dropdown = ({ options, Icon }: any) => {
+const Dropdown = ({ options, Icon, styleClass = '' }: any) => {
 	const dropdownRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
 	const handleClick = (event: any) => {
-		if (dropdownRef.current.contains(event.target)) {
+		console.log('Hey! You clicked me!!!');
+		if (dropdownRef?.current?.contains(event.target)) {
 			return;
 		}
 		setShowDropdown(false);
@@ -20,7 +21,7 @@ const Dropdown = ({ options, Icon }: any) => {
 	}, []);
 
 	return (
-		<div className="relative " ref={dropdownRef}>
+		<div className="relative" ref={dropdownRef}>
 			<Icon
 				style={{ margin: 'auto', cursor: 'pointer' }}
 				onClick={() => setShowDropdown(!showDropdown)}
@@ -29,7 +30,10 @@ const Dropdown = ({ options, Icon }: any) => {
 			<ul
 				className={`absolute border border-darkOrange py-4 px-2 w-44 bg-white rounded-md ${
 					showDropdown ? '' : 'hidden'
-				}`}
+				}
+				
+				${styleClass ?? ''}
+				`}
 			>
 				{options.map((item: any, index: number) => (
 					<li

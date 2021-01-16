@@ -47,7 +47,6 @@ const Shops = () => {
 							<p className="add capitalize hidden sm:block">{shop.address}</p>
 							<div className="options">
 								<Dropdown
-									id={shop._id}
 									Icon={AiOutlineEllipsis}
 									options={[
 										{

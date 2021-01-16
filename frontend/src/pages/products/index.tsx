@@ -66,20 +66,23 @@ const Products = () => {
 							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
 							onClick={() => setShowDropdown(!showDropdown)}
 						>
-							<div className="relative" ref={optionRef}>
+							{/* left: 64px;
+    top: 17px; */}
+
+							<div className="relative left-16 top-4" ref={optionRef}>
 								<ul
-									className={`absolute border border-darkOrange py-4 px-2 w-44 bg-white rounded-md ${
+									className={`absolute border border-darkOrange pb-4 px-2 w-44 bg-white rounded-md ${
 										showDropdown ? '' : 'hidden'
 									}`}
 								>
-									<li className={`border-b border-lightOrange cursor-pointer`}>
-										<button className="block" onClick={handleAddToCart}>
-											Cart
+									<li className="border-b border-lightOrange cursor-pointer py-2">
+										<button className="block focus:outline-none" onClick={handleAddToCart}>
+											Add to Cart
 										</button>
 									</li>
-									<li className={`border-b border-lightOrange cursor-pointer`}>
-										<button className="block" onClick={handleCheckout}>
-											Checkout
+									<li className="border-b border-lightOrange cursor-pointer py-2">
+										<button className="block focus:outline-none" onClick={handleCheckout}>
+											Buy Item
 										</button>
 									</li>
 								</ul>
