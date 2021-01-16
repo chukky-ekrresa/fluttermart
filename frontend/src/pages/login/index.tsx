@@ -16,6 +16,11 @@ const passwordSchema = yup
 	.min(8, 'Password must be at least 8 characters')
 	.required('Password is required.');
 
+const formSchema: any = yup.object().shape({
+	email: emailSchema,
+	password: passwordSchema,
+});
+
 const Login = ({ login }: any) => {
 	const history = useHistory();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
@@ -50,6 +55,10 @@ const Login = ({ login }: any) => {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
+
+		if (!formSchema.isValid()) {
+			return;
+		}
 
 		await login(values, navigateToProducts, Toast);
 	};

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
+import * as yup from 'yup';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { TextArea } from '../../components/Input';
@@ -14,6 +15,20 @@ import { fieldError } from '../../utils/error';
 const Box = styled(FormBox)`
 	max-width: 500px;
 `;
+
+const priceSchema = yup.number().required('Price is required.');
+const quantitySchema = yup.number().required('Quantity is required.');
+const sizeSchema = yup.string().required('Size is required.');
+const nameSchema = yup.string().required('Name is required.');
+const imageSchema = yup.object().required('Image is required.');
+
+const formSchema: any = yup.object().shape({
+	price: priceSchema,
+	quantity: quantitySchema,
+	size: sizeSchema,
+	name: nameSchema,
+	image: imageSchema,
+});
 
 const Product = () => {
 	const { shopId } = useParams<any>();
@@ -30,6 +45,17 @@ const Product = () => {
 	};
 
 	const [values, setValues] = useState(initialState);
+
+	const handleBlur = (event: any, schema: any) => {
+		const { value } = event.target;
+
+		schema.validate(value).catch((error: any) => {
+			Toast({
+				message: error.message,
+				type: 'error',
+			});
+		});
+	};
 
 	const handleChange = ({ target }: any) => {
 		if (target.name === 'image') {
@@ -71,6 +97,10 @@ const Product = () => {
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
+		if (!formSchema.isValid()) {
+			return;
+		}
+
 		const formData = new FormData();
 
 		formData.append('image', values.image);
@@ -100,6 +130,8 @@ const Product = () => {
 						onChange={handleChange}
 						type="text"
 						error={fieldError('name', error)}
+						handleBlur={handleBlur}
+						schema={nameSchema}
 					/>
 
 					<div className="flex justify-between">
@@ -112,6 +144,8 @@ const Product = () => {
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('price', error)}
+							handleBlur={handleBlur}
+							schema={priceSchema}
 						/>
 						<Input
 							label="Discount"
@@ -135,6 +169,8 @@ const Product = () => {
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('quantity', error)}
+							handleBlur={handleBlur}
+							schema={quantitySchema}
 						/>
 						<Input
 							label="Size"
@@ -145,6 +181,8 @@ const Product = () => {
 							type="text"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('size', error)}
+							handleBlur={handleBlur}
+							schema={sizeSchema}
 						/>
 					</div>
 					<Input
@@ -163,6 +201,8 @@ const Product = () => {
 						onChange={handleChange}
 						type="file"
 						error={fieldError('image', error)}
+						handleBlur={handleBlur}
+						schema={imageSchema}
 					/>
 
 					<TextArea
