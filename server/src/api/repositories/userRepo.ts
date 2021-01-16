@@ -31,3 +31,7 @@ export async function removeUserOtpAndEnableUser(userId: string) {
 export async function verifyOtp(otp: string, userId: string) {
 	return await User.findOne({ _id: userId, otp }).select('-account').lean();
 }
+
+export async function updateUserAccount(userId: string, accountInfo: any) {
+	return await User.findOneAndUpdate({ _id: userId }, { ...accountInfo }).lean();
+}

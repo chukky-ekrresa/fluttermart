@@ -13,7 +13,6 @@ export async function getShopById(shopId: string) {
 	return await Shop.findOne({ _id: shopId }).lean();
 }
 
-//
 export async function checkIfShopExists(shopName: string) {
 	return await Shop.exists({
 		$or: [{ name: shopName }],
@@ -22,4 +21,8 @@ export async function checkIfShopExists(shopName: string) {
 
 export async function updateShopOfAVendor(shopId: string, updatePayload: Partial<IShop>) {
 	return await Shop.findOneAndUpdate({ _id: shopId }, { ...updatePayload }, { new: true }).lean();
+}
+
+export async function updateShopAccount(shopId: string, accountInfo: any) {
+	return await Shop.findOneAndUpdate({ _id: shopId }, { ...accountInfo }).lean();
 }

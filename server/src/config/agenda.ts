@@ -6,6 +6,8 @@ import flw from './flutterwave';
 import { logger } from './logger';
 import { sendEmail, IEmailInput } from './email';
 import * as TestBankAccountRepo from '../api/repositories/testBankAccountRepo';
+import { updateShopAccount } from '../api/repositories/shopRepo';
+import { updateUserAccount } from '../api/repositories/userRepo';
 
 export const agendaInstance = new Agenda({
 	db: {
@@ -68,7 +70,24 @@ agendaInstance.define('create_subaccount_shop', { priority: 'highest' }, async j
 	};
 
 	try {
-		await flw.Subaccount.create(payload);
+		const response = await flw.Subaccount.create(payload);
+		const {
+			id: account_id,
+			account_number,
+			account_bank,
+			subaccount_id,
+			split_value,
+			meta,
+		} = response.data;
+
+		await updateShopAccount(input._id, {
+			account_id,
+			account_number,
+			account_bank,
+			subaccount_id,
+			split_value,
+			meta,
+		});
 	} catch (error) {
 		logger.error(error.message);
 	}
@@ -104,7 +123,24 @@ agendaInstance.define('create_subaccount_dispatch', { priority: 'high' }, async 
 	};
 
 	try {
-		await flw.Subaccount.create(payload);
+		const response = await flw.Subaccount.create(payload);
+		const {
+			id: account_id,
+			account_number,
+			account_bank,
+			subaccount_id,
+			split_value,
+			meta,
+		} = response.data;
+
+		await updateUserAccount(input._id, {
+			account_id,
+			account_number,
+			account_bank,
+			subaccount_id,
+			split_value,
+			meta,
+		});
 	} catch (error) {
 		logger.error(error.message);
 	}
