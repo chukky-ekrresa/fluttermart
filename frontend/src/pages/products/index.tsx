@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import phoneImg from '../../assets/1.jpg';
 import { useAppQuery } from '../../hooks/useAppQuery';
 
 const Cards = styled.div.attrs({
@@ -27,12 +26,10 @@ const Products = () => {
 	const { data: products, isLoading } = useAppQuery('products', {
 		url: 'products',
 	});
-
-	console.log(products);
-	const dropdownRef = useRef<any>();
+	const optionRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
 	const handleClick = (event: any) => {
-		if (dropdownRef?.current?.contains(event.target)) {
+		if (optionRef?.current?.contains(event.target)) {
 			return;
 		}
 		setShowDropdown(false);
@@ -60,37 +57,40 @@ const Products = () => {
 			) : !products?.data?.length ? (
 				<p className="m-auto">No products yet</p>
 			) : (
-				products?.data.map((item: any, index: number) => (
-					<div
-						className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
-						onClick={() => setShowDropdown(!showDropdown)}
-					>
-						<div className="relative" ref={dropdownRef}>
-							<ul
-								className={`absolute border border-darkOrange py-4 px-2 w-44 bg-white rounded-md ${
-									showDropdown ? '' : 'hidden'
-								}`}
-							>
-								<li className={`border-b border-lightOrange cursor-pointer`}>
-									<button className="block" onClick={handleAddToCart}>
-										Cart
-									</button>
-								</li>
-								<li className={`border-b border-lightOrange cursor-pointer`}>
-									<button className="block" onClick={handleCheckout}>
-										Checkout
-									</button>
-								</li>
-							</ul>
+				products?.data.map((item: any) => {
+					console.log(item, '****');
+
+					return (
+						<div
+							key={item.id}
+							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
+							onClick={() => setShowDropdown(!showDropdown)}
+						>
+							<div className="relative" ref={optionRef}>
+								<ul
+									className={`absolute border border-darkOrange py-4 px-2 w-44 bg-white rounded-md ${
+										showDropdown ? '' : 'hidden'
+									}`}
+								>
+									<li className={`border-b border-lightOrange cursor-pointer`}>
+										<button className="block" onClick={handleAddToCart}>
+											Cart
+										</button>
+									</li>
+									<li className={`border-b border-lightOrange cursor-pointer`}>
+										<button className="block" onClick={handleCheckout}>
+											Checkout
+										</button>
+									</li>
+								</ul>
+							</div>
+							<div className="flex-80 rounded-lg">
+								<Image url={item.image.url}></Image>
+							</div>
+							<p className="text-center py-1 flex-20 capitalize">{item.name}</p>
 						</div>
-						<div className="flex-80 rounded-lg">
-							<Image url={phoneImg}></Image>
-						</div>
-						<p className="text-center py-1 flex-20 capitalize">
-							Cubot Note 7, 5.5 Inches,4G LTE,2GB
-						</p>
-					</div>
-				))
+					);
+				})
 			)}
 		</Cards>
 	);

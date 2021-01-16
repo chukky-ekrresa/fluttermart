@@ -54,6 +54,8 @@ const Product = () => {
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
+		console.log(values, 'EXHIBITING');
+
 		formData.append('image', values.image);
 		formData.set('price', `${values.price}`);
 		formData.set('discount', `${values.discount}`);

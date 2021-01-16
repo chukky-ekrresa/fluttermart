@@ -9,29 +9,39 @@ import Input, { Select, TextArea } from '../../components/Input';
 import { useAppQuery } from '../../hooks/useAppQuery';
 import request from '../../utils/request';
 
-const Shop = () => {
-	const { mutate, isLoading: loading } = useMutation((formData: any) => {
-		return request.post('shops', formData);
-	});
+const initialState = {
+	address: '',
+	country: '',
+	email: '',
+	name: '',
+	phoneNumber: '',
+	transactionId: '',
+	transactionRef: '',
+};
 
+const Shop = () => {
 	const [toCurrency, setToCurrency] = useState('');
 
-	const [values, setValues] = useState({
-		address: '',
-		country: '',
-		email: '',
-		name: '',
-		phoneNumber: '',
-		transactionId: '',
-		transactionRef: '',
-	});
+	const [values, setValues] = useState(initialState);
+
+	const { mutate, isLoading: loading } = useMutation(
+		(formData: any) => {
+			return request.post('shops', formData);
+		},
+		{
+			onSuccess: (data: any) => {
+				console.log(data);
+
+				setValues(initialState);
+			},
+		}
+	);
 
 	const { data: currencyData } = useAppQuery('currency', {
 		url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${
 			toCurrency ?? ''
 		}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
 	});
-	console.log({ toCurrency, currencyData });
 
 	const config: any = {
 		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
