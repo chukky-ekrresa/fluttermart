@@ -2,11 +2,24 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
+import * as yup from 'yup';
 
 import Input from '../../components/Input';
 import { AuthSection, FormBox } from '../../components/blocs';
+import { Toast } from '../../utils/toats-utils';
 
 import { login } from '../../redux/actions/auth.action';
+
+const emailSchema = yup.string().email().required('Valid email is required.');
+const passwordSchema = yup
+	.string()
+	.min(8, 'Password must be at least 8 characters')
+	.required('Password is required.');
+
+const formSchema: any = yup.object().shape({
+	email: emailSchema,
+	password: passwordSchema,
+});
 
 const Login = ({ login }: any) => {
 	const history = useHistory();
@@ -15,6 +28,17 @@ const Login = ({ login }: any) => {
 		email: '',
 		password: '',
 	});
+
+	const handleBlur = (event: any, schema: any) => {
+		const { value } = event.target;
+
+		schema.validate(value).catch((error: any) => {
+			Toast({
+				message: error.message,
+				type: 'error',
+			});
+		});
+	};
 
 	const handleChange = (e: any) => {
 		const { value, name } = e.target;
@@ -32,7 +56,11 @@ const Login = ({ login }: any) => {
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		await login(values, navigateToProducts);
+		if (!formSchema.isValid()) {
+			return;
+		}
+
+		await login(values, navigateToProducts, Toast);
 	};
 
 	return (
@@ -47,6 +75,8 @@ const Login = ({ login }: any) => {
 						value={values.email}
 						onChange={handleChange}
 						type="email"
+						handleBlur={handleBlur}
+						schema={emailSchema}
 					/>
 					<Input
 						label="Password"
@@ -55,6 +85,8 @@ const Login = ({ login }: any) => {
 						name="password"
 						onChange={handleChange}
 						type="password"
+						handleBlur={handleBlur}
+						schema={passwordSchema}
 					/>
 					<div className="mb-4">
 						<button

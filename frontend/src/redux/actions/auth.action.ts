@@ -1,7 +1,9 @@
 import request from '../../utils/request';
 import { setAuthLoading, setAuthError, setUserID, setToken } from '../reducers/auth.reduser';
 
-export const login = (payload: any, navigateToProducts: any) => async (dispatch: any) => {
+export const login = (payload: any, navigateToProducts: any, Toast: any) => async (
+	dispatch: any
+) => {
 	try {
 		dispatch(setAuthError(null));
 		dispatch(setAuthLoading(true));
@@ -9,13 +11,22 @@ export const login = (payload: any, navigateToProducts: any) => async (dispatch:
 		dispatch(setToken(data?.data));
 		dispatch(setAuthLoading(false));
 		navigateToProducts();
+		Toast({
+			message: 'Logged In!',
+			type: 'success',
+		});
 	} catch (error) {
 		dispatch(setAuthLoading(false));
+		Toast({
+			message: error?.response?.data?.message,
+			type: 'error',
+		});
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };
-export const register = (payload: any, redirectToVerifyEmail: any) => async (dispatch: any) => {
+export const register = (payload: any, redirectToVerifyEmail: any, Toast: any) => async (
+	dispatch: any
+) => {
 	try {
 		dispatch(setAuthError(null));
 		dispatch(setAuthLoading(true));
@@ -24,14 +35,23 @@ export const register = (payload: any, redirectToVerifyEmail: any) => async (dis
 		dispatch(setAuthLoading(false));
 
 		redirectToVerifyEmail(data?.data);
+		Toast({
+			message: 'Success! Now verify Account.',
+			type: 'success',
+		});
 	} catch (error) {
 		dispatch(setAuthLoading(false));
+
+		Toast({
+			message: error?.response?.data?.message,
+			type: 'error',
+		});
+
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };
 
-export const verifyEmail = (payload: any, navToHome: any) => async (dispatch: any) => {
+export const verifyEmail = (payload: any, navToHome: any, Toast: any) => async (dispatch: any) => {
 	try {
 		dispatch(setAuthError(null));
 		dispatch(setAuthLoading(true));
@@ -42,9 +62,16 @@ export const verifyEmail = (payload: any, navToHome: any) => async (dispatch: an
 		dispatch(setAuthLoading(false));
 
 		navToHome();
+		Toast({
+			message: 'Success! Account Verified.',
+			type: 'success',
+		});
 	} catch (error) {
 		dispatch(setAuthLoading(false));
+		Toast({
+			message: error?.response?.data?.message,
+			type: 'error',
+		});
 		dispatch(setAuthError(error.response));
-		console.log(error.response);
 	}
 };

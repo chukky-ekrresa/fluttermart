@@ -13,6 +13,8 @@ type Props = {
 	type: string;
 	classStyle?: any;
 	error?: string;
+	handleBlur?: any;
+	schema?: any;
 	onChange: (e: any) => void;
 };
 
@@ -25,6 +27,8 @@ const Input = ({
 	type,
 	classStyle = {},
 	error = '',
+	handleBlur,
+	schema,
 }: Props) => {
 	return (
 		<div className="mb-4" style={classStyle}>
@@ -38,6 +42,7 @@ const Input = ({
 				value={value}
 				name={name}
 				onChange={onChange}
+				onBlur={event => handleBlur(event, schema)}
 			/>
 			<small className="text-red-500">{error}</small>
 		</div>

@@ -1,4 +1,4 @@
-const Hamburger = () => {
+const Hamburger = ({ onClick }: any) => {
 	return (
 		<svg
 			width="29"
@@ -7,6 +7,7 @@ const Hamburger = () => {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className="cursor-pointer"
+			onClick={onClick}
 		>
 			<path d="M1 1H17" stroke="#283445" strokeWidth="2" strokeLinecap="round" />
 			<path d="M1 8H28" stroke="#283445" strokeWidth="2" strokeLinecap="round" />

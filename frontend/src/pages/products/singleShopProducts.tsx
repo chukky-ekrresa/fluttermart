@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 
@@ -22,9 +23,10 @@ const Image = styled.div.attrs({
 	background-size: cover;
 `;
 
-const Products = () => {
+const SingleShopProducts = () => {
+	const { shopId } = useParams<any>();
 	const { data: products, isLoading } = useAppQuery('products', {
-		url: 'products',
+		url: `products/shop/${shopId}`,
 	});
 	const optionRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
@@ -100,4 +102,4 @@ const Products = () => {
 	);
 };
 
-export default Products;
+export default SingleShopProducts;

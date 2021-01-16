@@ -2,21 +2,37 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import styled from 'styled-components';
+import { useMutation } from 'react-query';
+import * as yup from 'yup';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { TextArea } from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
-import { useAppMutation } from '../../hooks/useAppQuery';
+import request from '../../utils/request';
 import { fieldError } from '../../utils/error';
 
 const Box = styled(FormBox)`
 	max-width: 500px;
 `;
 
+const priceSchema = yup.number().required('Price is required.');
+const quantitySchema = yup.number().required('Quantity is required.');
+const sizeSchema = yup.string().required('Size is required.');
+const nameSchema = yup.string().required('Name is required.');
+const imageSchema = yup.object().required('Image is required.');
+
+const formSchema: any = yup.object().shape({
+	price: priceSchema,
+	quantity: quantitySchema,
+	size: sizeSchema,
+	name: nameSchema,
+	image: imageSchema,
+});
+
 const Product = () => {
 	const { shopId } = useParams<any>();
-
-	const [values, setValues] = useState({
+	const initialState = {
 		image: '',
 		price: 0,
 		quantity: 0,
@@ -26,7 +42,20 @@ const Product = () => {
 		name: '',
 		colour: '',
 		discount: 0,
-	});
+	};
+
+	const [values, setValues] = useState(initialState);
+
+	const handleBlur = (event: any, schema: any) => {
+		const { value } = event.target;
+
+		schema.validate(value).catch((error: any) => {
+			Toast({
+				message: error.message,
+				type: 'error',
+			});
+		});
+	};
 
 	const handleChange = ({ target }: any) => {
 		if (target.name === 'image') {
@@ -45,14 +74,34 @@ const Product = () => {
 		}
 	};
 
-	const formData = new FormData();
-
-	const { mutate, error, isLoading: loading } = useAppMutation({
-		url: 'products',
-		data: formData,
-	});
+	const { mutate, error, isLoading: loading } = useMutation(
+		(formData: any) => {
+			return request.post('products', formData);
+		},
+		{
+			onSuccess: () => {
+				Toast({
+					message: 'Product successfully created!',
+					type: 'success',
+				});
+				setValues(initialState);
+			},
+			onError: (error: any) => {
+				Toast({
+					message: error?.response?.data?.message,
+					type: 'error',
+				});
+			},
+		}
+	);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+
+		if (!formSchema.isValid()) {
+			return;
+		}
+
+		const formData = new FormData();
 
 		formData.append('image', values.image);
 		formData.set('price', `${values.price}`);
@@ -65,7 +114,7 @@ const Product = () => {
 		formData.set('colour', values.colour);
 		formData.set('category', 'other');
 
-		await mutate();
+		await mutate(formData);
 	};
 
 	return (
@@ -81,6 +130,8 @@ const Product = () => {
 						onChange={handleChange}
 						type="text"
 						error={fieldError('name', error)}
+						handleBlur={handleBlur}
+						schema={nameSchema}
 					/>
 
 					<div className="flex justify-between">
@@ -93,6 +144,8 @@ const Product = () => {
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('price', error)}
+							handleBlur={handleBlur}
+							schema={priceSchema}
 						/>
 						<Input
 							label="Discount"
@@ -116,6 +169,8 @@ const Product = () => {
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('quantity', error)}
+							handleBlur={handleBlur}
+							schema={quantitySchema}
 						/>
 						<Input
 							label="Size"
@@ -126,6 +181,8 @@ const Product = () => {
 							type="text"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('size', error)}
+							handleBlur={handleBlur}
+							schema={sizeSchema}
 						/>
 					</div>
 					<Input
@@ -144,6 +201,8 @@ const Product = () => {
 						onChange={handleChange}
 						type="file"
 						error={fieldError('image', error)}
+						handleBlur={handleBlur}
+						schema={imageSchema}
 					/>
 
 					<TextArea

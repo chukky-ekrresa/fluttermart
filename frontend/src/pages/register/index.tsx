@@ -2,11 +2,28 @@ import { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
+import * as yup from 'yup';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { RadioInput as Radio } from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
 import { register } from '../../redux/actions/auth.action';
+
+const emailSchema = yup.string().email().required('Valid email is required.');
+const firstNameSchema = yup.string().required('First Name is required!');
+const lastNameSchema = yup.string().required('Last Name is required!');
+const passwordSchema = yup
+	.string()
+	.min(8, 'Password must be at least 8 characters')
+	.required('Password is required.');
+
+const formSchema: any = yup.object().shape({
+	email: emailSchema,
+	firstName: firstNameSchema,
+	lastName: lastNameSchema,
+	password: passwordSchema,
+});
 
 const Register = ({ register }: any) => {
 	const { loading } = useSelector(({ authentication }: any) => authentication);
@@ -22,6 +39,17 @@ const Register = ({ register }: any) => {
 
 	const redirectToVerifyEmail = (userID: string) => {
 		history.push(`/verify-email/${userID}`);
+	};
+
+	const handleBlur = (event: any, schema: any) => {
+		const { value } = event.target;
+
+		schema.validate(value).catch((error: any) => {
+			Toast({
+				message: error.message,
+				type: 'error',
+			});
+		});
 	};
 
 	const handleChange = ({ target }: any) => {
@@ -44,8 +72,12 @@ const Register = ({ register }: any) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		await register(values, redirectToVerifyEmail);
-		// console.log(values);
+
+		if (!formSchema.isValid()) {
+			return;
+		}
+
+		await register(values, redirectToVerifyEmail, Toast);
 	};
 
 	return (
@@ -60,6 +92,8 @@ const Register = ({ register }: any) => {
 						value={values.firstName}
 						onChange={handleChange}
 						type="text"
+						handleBlur={handleBlur}
+						schema={firstNameSchema}
 					/>
 					<Input
 						label="Last Name"
@@ -68,6 +102,8 @@ const Register = ({ register }: any) => {
 						value={values.lastName}
 						onChange={handleChange}
 						type="text"
+						handleBlur={handleBlur}
+						schema={lastNameSchema}
 					/>
 					<Input
 						label="Email"
@@ -76,6 +112,8 @@ const Register = ({ register }: any) => {
 						value={values.email}
 						onChange={handleChange}
 						type="email"
+						handleBlur={handleBlur}
+						schema={emailSchema}
 					/>
 					<Input
 						label="Password"
@@ -84,6 +122,8 @@ const Register = ({ register }: any) => {
 						name="password"
 						onChange={handleChange}
 						type="password"
+						handleBlur={handleBlur}
+						schema={passwordSchema}
 					/>
 
 					<div className="mb-4">

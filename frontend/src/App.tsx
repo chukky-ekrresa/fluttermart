@@ -1,6 +1,8 @@
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+import CustomToast from './components/Toast';
+
 import './styles/app.css';
 
 import Routes from './routes';
@@ -20,6 +22,7 @@ function App() {
 	return (
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
+				<CustomToast />
 				<Routes />
 			</QueryClientProvider>
 		</Provider>

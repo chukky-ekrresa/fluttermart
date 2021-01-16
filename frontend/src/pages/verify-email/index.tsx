@@ -5,6 +5,7 @@ import { BeatLoader } from 'react-spinners';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
 import { verifyEmail } from '../../redux/actions/auth.action';
 
@@ -32,7 +33,7 @@ const VerifyEmail = ({ verifyEmail }: any) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		await verifyEmail(values, navToHome);
+		await verifyEmail(values, navToHome, Toast);
 	};
 
 	return (
