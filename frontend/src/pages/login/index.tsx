@@ -5,6 +5,7 @@ import { BeatLoader } from 'react-spinners';
 
 import Input from '../../components/Input';
 import { AuthSection, FormBox } from '../../components/blocs';
+import { Toast } from '../../utils/toats-utils';
 
 import { login } from '../../redux/actions/auth.action';
 
@@ -32,7 +33,7 @@ const Login = ({ login }: any) => {
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		await login(values, navigateToProducts);
+		await login(values, navigateToProducts, Toast);
 	};
 
 	return (

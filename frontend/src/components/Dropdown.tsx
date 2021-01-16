@@ -42,7 +42,9 @@ const Dropdown = ({ options, Icon, styleClass = '' }: any) => {
 						} cursor-pointer`}
 						key={`${Object.values(item)[0]}`}
 					>
-						<Link to={`${Object.values(item)[0]}`}>{Object.keys(item)[0]}</Link>
+						<Link className="block" to={`${Object.values(item)[0]}`}>
+							{Object.keys(item)[0]}
+						</Link>
 					</li>
 				))}
 			</ul>

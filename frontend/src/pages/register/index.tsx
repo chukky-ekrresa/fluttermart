@@ -5,6 +5,7 @@ import { BeatLoader } from 'react-spinners';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { RadioInput as Radio } from '../../components/Input';
+import { Toast } from '../../utils/toats-utils';
 
 import { register } from '../../redux/actions/auth.action';
 
@@ -44,8 +45,7 @@ const Register = ({ register }: any) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		await register(values, redirectToVerifyEmail);
-		// console.log(values);
+		await register(values, redirectToVerifyEmail, Toast);
 	};
 
 	return (

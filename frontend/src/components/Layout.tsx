@@ -9,7 +9,13 @@ const Layout = ({ children }: any) => {
 				<Link to="/">Home</Link>
 				<div>
 					<Dropdown
-						options={[{ Shops: '/shops' }, { Cart: '/cart' }]}
+						options={[
+							{ Shops: '/shops' },
+							{ Cart: '/cart' },
+							{
+								Logout: '/logout',
+							},
+						]}
 						Icon={Hamburger}
 						styleClass="right-2 top-7"
 					/>
