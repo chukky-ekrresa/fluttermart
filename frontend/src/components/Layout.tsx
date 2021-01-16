@@ -10,7 +10,8 @@ const Layout = ({ children }: any) => {
 				<div>
 					<Dropdown
 						options={[
-							{ Shops: '/shops' },
+							{ 'My Shops': '/shops' },
+							{ 'Create Shop': '/new-shop' },
 							{ Cart: '/cart' },
 							{
 								Logout: '/logout',
