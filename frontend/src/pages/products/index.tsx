@@ -28,6 +28,7 @@ const Products = () => {
 	});
 	const optionRef = useRef<any>();
 	const [showDropdown, setShowDropdown] = useState(false);
+	const [currId, setCurrId] = useState('');
 	const handleClick = (event: any) => {
 		if (optionRef?.current?.contains(event.target)) {
 			return;
@@ -41,6 +42,11 @@ const Products = () => {
 			document.removeEventListener('mousedown', handleClick);
 		};
 	}, []);
+
+	const handleDropdown = (id: string) => {
+		setCurrId(id);
+		setShowDropdown(!showDropdown);
+	};
 
 	const handleAddToCart = () => {
 		console.log('Adding to cart');
@@ -62,12 +68,12 @@ const Products = () => {
 						<div
 							key={item.id}
 							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
-							onClick={() => setShowDropdown(!showDropdown)}
+							onClick={() => handleDropdown(item.id)}
 						>
 							<div className="relative left-16 top-4" ref={optionRef}>
 								<ul
 									className={`absolute border border-darkOrange pb-4 px-2 w-44 bg-white rounded-md ${
-										showDropdown ? '' : 'hidden'
+										showDropdown && item.id === currId ? '' : 'hidden'
 									}`}
 								>
 									<li className="border-b border-lightOrange cursor-pointer py-2">
