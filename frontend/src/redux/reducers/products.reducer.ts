@@ -1,5 +1,6 @@
 const initialState = {
 	cart: [],
+	currProductData: null,
 };
 
 export default function products(state = initialState, action: any) {
@@ -9,6 +10,11 @@ export default function products(state = initialState, action: any) {
 				...state,
 				cart: [...state.cart, action.payload],
 			};
+		case 'SET_CURRENT_PRODUCT':
+			return {
+				...state,
+				currProductData: action.payload,
+			};
 
 		default:
 			return state;
@@ -17,5 +23,9 @@ export default function products(state = initialState, action: any) {
 
 export const setCartItem = (payload: any) => ({
 	type: 'SET_CART_ITEM',
+	payload,
+});
+export const setCurrentProduct = (payload: any) => ({
+	type: 'SET_CURRENT_PRODUCT',
 	payload,
 });

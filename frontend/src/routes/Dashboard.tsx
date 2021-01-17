@@ -13,6 +13,7 @@ const Checkout = lazy(() => import('../pages/checkout'));
 const Shops = lazy(() => import('../pages/shop/'));
 const NotFound = lazy(() => import('../pages/not-found'));
 const ShopProducts = lazy(() => import('../pages/products/singleShopProducts'));
+const Product = lazy(() => import('../pages/products/singleProduct'));
 
 const Dashboard = () => {
 	return (
@@ -25,6 +26,9 @@ const Dashboard = () => {
 
 					<Route exact path="/cart">
 						<Cart />
+					</Route>
+					<Route exact path="/product/:productId">
+						<Product />
 					</Route>
 					<PrivateRoutes>
 						<Route exact path="/new-shop">

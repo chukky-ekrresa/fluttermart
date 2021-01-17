@@ -10,6 +10,8 @@ import { Toast } from '../../utils/toats-utils';
 
 import { register } from '../../redux/actions/auth.action';
 
+import logo from '../../assets/logo.svg';
+
 const emailSchema = yup.string().email().required('Valid email is required.');
 const firstNameSchema = yup.string().required('First Name is required!');
 const lastNameSchema = yup.string().required('Last Name is required!');
@@ -82,6 +84,7 @@ const Register = ({ register }: any) => {
 
 	return (
 		<AuthSection>
+			<img src={logo} alt="logo" className="block w-24 mx-auto mb-16" />
 			<FormBox>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Sign up here!</p>
 				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
