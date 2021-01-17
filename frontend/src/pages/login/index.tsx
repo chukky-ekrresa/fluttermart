@@ -35,7 +35,7 @@ const Login = ({ login }: any) => {
 
 	useEffect(() => {
 		dispatch(setAuthLoading(false));
-	});
+	}, [dispatch]);
 
 	const handleBlur = (event: any, schema: any) => {
 		const { value } = event.target;
