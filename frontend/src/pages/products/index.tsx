@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { DotLoader } from 'react-spinners';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 import { setCurrentProduct } from '../../redux/reducers/products.reducer';
@@ -62,7 +63,9 @@ const Products = () => {
 		<Cards>
 			<p className="til"></p>
 			{isLoading ? (
-				<p className="m-auto">Loading...</p>
+				<p className="m-auto">
+					<DotLoader color="#F9A109" />
+				</p>
 			) : !products?.data?.length ? (
 				<p className="m-auto">No products yet</p>
 			) : (
