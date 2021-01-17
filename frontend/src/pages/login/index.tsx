@@ -57,8 +57,14 @@ const Login = ({ login }: any) => {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
+		const isValid = await formSchema.isValid();
 
-		if (!formSchema.isValid()) {
+		if (!isValid) {
+			Toast({
+				message: 'Enter Valid Input!',
+				type: 'error',
+			});
+
 			return;
 		}
 
