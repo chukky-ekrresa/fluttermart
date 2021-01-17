@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 import * as yup from 'yup';
 
@@ -9,6 +9,7 @@ import { AuthSection, FormBox } from '../../components/blocs';
 import { Toast } from '../../utils/toats-utils';
 
 import { login } from '../../redux/actions/auth.action';
+import { setAuthLoading } from '../../redux/reducers/auth.reduser';
 
 import logo from '../../assets/logo.svg';
 
@@ -25,10 +26,15 @@ const formSchema: any = yup.object().shape({
 
 const Login = ({ login }: any) => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
+	});
+
+	useEffect(() => {
+		dispatch(setAuthLoading(false));
 	});
 
 	const handleBlur = (event: any, schema: any) => {
