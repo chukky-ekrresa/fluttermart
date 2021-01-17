@@ -97,7 +97,14 @@ const Product = () => {
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
-		if (!formSchema.isValid()) {
+		const isValid = await formSchema.isValid();
+
+		if (!isValid) {
+			Toast({
+				message: 'Enter Valid Input!',
+				type: 'error',
+			});
+
 			return;
 		}
 

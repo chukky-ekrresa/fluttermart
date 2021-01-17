@@ -74,8 +74,14 @@ const Register = ({ register }: any) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		const isValid = await formSchema.isValid();
 
-		if (!formSchema.isValid()) {
+		if (!isValid) {
+			Toast({
+				message: 'Enter Valid Input!',
+				type: 'error',
+			});
+
 			return;
 		}
 
