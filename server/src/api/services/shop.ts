@@ -50,7 +50,7 @@ export async function getVendorShops() {
 	return await ShopRepo.getShopsOfAVendor(loggedInUser.id!);
 }
 
-export async function updateVendorShop(shopId: string, updatePayload: Partial<IShop>) {
+export async function updateVendorShop(shopId: string, updatePayload: any) {
 	const shop = await ShopRepo.updateShopOfAVendor(shopId, updatePayload);
 	const loggedInUser = getLoggedInUser();
 

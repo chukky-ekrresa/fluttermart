@@ -1,5 +1,5 @@
 import { User } from '../models/user';
-import { IUser } from '../types';
+import { IAccount, IUser } from '../types';
 
 export async function createUser(newUser: IUser) {
 	return await User.create(newUser).then(user => user.toObject());
@@ -32,6 +32,6 @@ export async function verifyOtp(otp: string, userId: string) {
 	return await User.findOne({ _id: userId, otp }).select('-account').lean();
 }
 
-export async function updateUserAccount(userId: string, accountInfo: any) {
-	return await User.findOneAndUpdate({ _id: userId }, { ...accountInfo }).lean();
+export async function updateUserAccount(userId: string, accountInfo: IAccount) {
+	return await User.findOneAndUpdate({ _id: userId }, { account: { ...accountInfo } }).lean();
 }

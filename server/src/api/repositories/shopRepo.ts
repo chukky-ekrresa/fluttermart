@@ -1,8 +1,15 @@
 import { Shop } from '../models/shop';
-import { IShop } from '../types';
+import { IAccount, IShop } from '../types';
 
 export async function createShop(newShop: IShop) {
 	return await Shop.create(newShop).then(shop => shop.toObject());
+}
+
+export async function fetchAccountInfo(shopId: string) {
+	return await Shop.findOne({ _id: shopId })
+		.select('account, dispatchRider')
+		.populate({ path: 'dispatchRider', select: 'account' })
+		.lean();
 }
 
 export async function getShopsOfAVendor(vendorId: string) {
@@ -23,6 +30,6 @@ export async function updateShopOfAVendor(shopId: string, updatePayload: Partial
 	return await Shop.findOneAndUpdate({ _id: shopId }, { ...updatePayload }, { new: true }).lean();
 }
 
-export async function updateShopAccount(shopId: string, accountInfo: any) {
-	return await Shop.findOneAndUpdate({ _id: shopId }, { ...accountInfo }).lean();
+export async function updateShopAccount(shopId: string, accountInfo: IAccount) {
+	return await Shop.findOneAndUpdate({ _id: shopId }, { account: { ...accountInfo } }).lean();
 }
