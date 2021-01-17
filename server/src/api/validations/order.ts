@@ -12,7 +12,6 @@ export const NEW_ORDER = {
 			.items(
 				Joi.object().keys({
 					category: Joi.string().default('other'),
-					colour: Joi.string(),
 					image: Joi.object()
 						.keys({
 							url: Joi.string().required(),
@@ -34,7 +33,6 @@ export const NEW_ORDER = {
 						.custom(joiValidateObjectId)
 						.message('value does not match the pattern of an objectId')
 						.required(),
-					size: Joi.string(),
 				})
 			)
 			.required(),
