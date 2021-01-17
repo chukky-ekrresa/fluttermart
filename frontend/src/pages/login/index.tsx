@@ -16,13 +16,13 @@ import logo from '../../assets/logo.svg';
 const emailSchema = yup.string().email().required('Valid email is required.');
 const passwordSchema = yup
 	.string()
-	.min(8, 'Password must be at least 8 characters')
+	.min(7, 'Password must be at least 7 characters')
 	.required('Password is required.');
 
-const formSchema: any = yup.object().shape({
-	email: emailSchema,
-	password: passwordSchema,
-});
+// const formSchema: any = yup.object().shape({
+// 	email: emailSchema,
+// 	password: passwordSchema,
+// });
 
 const Login = ({ login }: any) => {
 	const history = useHistory();
@@ -63,16 +63,6 @@ const Login = ({ login }: any) => {
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
-		const isValid = await formSchema.isValid();
-
-		if (!isValid) {
-			Toast({
-				message: 'Enter Valid Input!',
-				type: 'error',
-			});
-
-			return;
-		}
 
 		await login(values, navigateToProducts, Toast);
 	};
@@ -104,15 +94,9 @@ const Login = ({ login }: any) => {
 						handleBlur={handleBlur}
 						schema={passwordSchema}
 					/>
-					<div className="mb-4">
+					<div className="mb-4 ">
 						<button
-							className="capitalize p-2.5 rounded-md text-darkOrange border border-darkOrange mr-4"
-							type="reset"
-						>
-							cancel
-						</button>
-						<button
-							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange ${
+							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange block w-full mx-auto ${
 								loading ? 'disabled' : ''
 							}`}
 							type="submit"
