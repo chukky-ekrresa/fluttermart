@@ -9,6 +9,8 @@ import { Toast } from '../../utils/toats-utils';
 
 import { verifyEmail } from '../../redux/actions/auth.action';
 
+import logo from '../../assets/logo.svg';
+
 const VerifyEmail = ({ verifyEmail }: any) => {
 	const history = useHistory();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
@@ -38,6 +40,7 @@ const VerifyEmail = ({ verifyEmail }: any) => {
 
 	return (
 		<AuthSection>
+			<img src={logo} alt="logo" className="block w-24 mx-auto mb-16" />
 			<FormBox>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Input OTP</p>
 				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>

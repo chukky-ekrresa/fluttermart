@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const AuthSection = styled.div.attrs({
-	className: 'w-11/12 container mx-auto my-0 min-h-screen flex justify-center align-center',
+	className:
+		'w-11/12 container mx-auto my-0 min-h-screen flex justify-center align-center flex-col',
 })``;
 
 export const FormBox = styled.div.attrs({
