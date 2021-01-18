@@ -8,6 +8,11 @@ export async function createShopHandler(req: Request, res: ApiResponse) {
 	res.status(201).json({ status: 201, message: 'Shop created!', data: newShop });
 }
 
+export async function getAllShopsHandler(_req: Request, res: ApiResponse) {
+	const shops = await ShopService.getAllShops();
+	res.status(200).json({ status: 200, message: 'Shops found!', data: shops });
+}
+
 export async function getVendorShopsHandler(_req: Request, res: ApiResponse) {
 	const vendorShops = await ShopService.getVendorShops();
 	res.status(200).json({ status: 200, message: 'Shops found!', data: vendorShops });

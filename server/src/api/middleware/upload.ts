@@ -6,7 +6,7 @@ export const imageMiddleware = [
 	uploadMiddleware,
 	function (req: Request, _res: Response, next: NextFunction) {
 		if (!req.file) {
-			throw new BadRequest('A product image is required');
+			throw new BadRequest('An image is required');
 		}
 
 		next();

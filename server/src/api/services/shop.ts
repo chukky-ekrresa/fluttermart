@@ -44,6 +44,10 @@ export async function createShop(payload: IShop) {
 	return newShop;
 }
 
+export async function getAllShops() {
+	return await ShopRepo.getAllShops();
+}
+
 export async function getVendorShops() {
 	const loggedInUser = getLoggedInUser();
 
