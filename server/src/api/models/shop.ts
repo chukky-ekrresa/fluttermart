@@ -6,6 +6,7 @@ import { User } from './user';
 
 const shopSchema = new Schema(
 	{
+		approved: { type: Boolean, default: false },
 		account: new Schema(
 			{
 				account_bank: String,
@@ -22,7 +23,13 @@ const shopSchema = new Schema(
 		dispatchRider: { type: Types.ObjectId, ref: User, required: true },
 		email: { type: String, required: true },
 		emailVerified: { type: Boolean, default: false },
-		approved: { type: Boolean, default: false },
+		image: new Schema(
+			{
+				url: { type: String },
+				publicId: { type: String },
+			},
+			{ timestamps: false }
+		),
 		name: {
 			type: String,
 			required: true,

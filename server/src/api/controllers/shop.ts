@@ -4,7 +4,7 @@ import * as ShopService from '../services/shop';
 import { ApiResponse } from '../types';
 
 export async function createShopHandler(req: Request, res: ApiResponse) {
-	const newShop = await ShopService.createShop(req.body);
+	const newShop = await ShopService.createShop(req.body, req.file);
 	res.status(201).json({ status: 201, message: 'Shop created!', data: newShop });
 }
 
