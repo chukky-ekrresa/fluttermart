@@ -1,9 +1,11 @@
 import Agenda from 'agenda';
 
 import ENV_VARS from './env';
-import { sendEmailJob } from '../api/jobs/sendVerificationEmail';
+import { sendEmailJob } from '../api/jobs/sendEmail';
 import { createShopSubaccountJob } from '../api/jobs/createShopSubaccount';
 import { createDispatchSubaccountJob } from '../api/jobs/createDispatchSubaccount';
+import { changeOrderStatusDelivered } from '../api/jobs/changeOrderStatusDelivered';
+import { changeOrderStatusShipped } from '../api/jobs/changeOrderStatusShipped';
 import { logger } from './logger';
 
 export const agendaInstance = new Agenda({
@@ -24,6 +26,8 @@ agendaInstance.on('error', () => logger.debug('something is wrong with Agenda'))
 sendEmailJob(agendaInstance);
 createShopSubaccountJob(agendaInstance);
 createDispatchSubaccountJob(agendaInstance);
+changeOrderStatusDelivered(agendaInstance);
+changeOrderStatusShipped(agendaInstance);
 
 export async function gracefulShutdown() {
 	await agendaInstance.stop();

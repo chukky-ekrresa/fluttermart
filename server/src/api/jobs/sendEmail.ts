@@ -3,7 +3,7 @@ import { addMinutes } from 'date-fns';
 import { IEmailInput, sendEmail } from '../../config/email';
 
 export function sendEmailJob(agenda: any) {
-	agenda.define('send user verification email', { priority: 'highest' }, async (job: Job) => {
+	agenda.define('send email', { priority: 'highest' }, async (job: Job) => {
 		const emailInput = job.attrs.data as IEmailInput;
 
 		try {
