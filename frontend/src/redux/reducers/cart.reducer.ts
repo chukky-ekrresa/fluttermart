@@ -1,5 +1,6 @@
 const initialState = {
 	data: [],
+	shop: null,
 };
 
 export default function cart(state = initialState, action: any) {
@@ -7,12 +8,27 @@ export default function cart(state = initialState, action: any) {
 		case 'SET_CART_ITEM':
 			return {
 				...state,
-				data: [...state.data, action.payload],
+				data: [...state.data, action.payload.data],
+				shop: action.payload.shop,
 			};
+
+		case 'CHANGE_CART_ITEM_QUANTITY':
+			return {
+				...state,
+				data: state.data.map((product: any) => {
+					if (product.id === action.payload.productId) {
+						product.quantity = action.payload.quantity;
+					}
+
+					return product;
+				}),
+			};
+
 		case 'SET_EMPTY_CART':
 			return {
 				...state,
 				data: [],
+				shop: null,
 			};
 
 		default:
@@ -24,6 +40,12 @@ export const setCartItem = (payload: any) => ({
 	type: 'SET_CART_ITEM',
 	payload,
 });
+
 export const setEmptyCart = () => ({
 	type: 'SET_EMPTY_CART',
+});
+
+export const changeCartItemQuantity = (payload: any) => ({
+	type: 'CHANGE_CART_ITEM_QUANTITY',
+	payload,
 });
