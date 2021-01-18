@@ -1,13 +1,10 @@
 import Agenda from 'agenda';
-import { addMinutes } from 'date-fns';
 
 import ENV_VARS from './env';
-import flw from './flutterwave';
+import { sendEmailJob } from '../api/jobs/sendVerificationEmail';
+import { createShopSubaccountJob } from '../api/jobs/createShopSubaccount';
+import { createDispatchSubaccountJob } from '../api/jobs/createDispatchSubaccount';
 import { logger } from './logger';
-import { sendEmail, IEmailInput } from './email';
-import * as TestBankAccountRepo from '../api/repositories/testBankAccountRepo';
-import { updateShopAccount } from '../api/repositories/shopRepo';
-import { updateUserAccount } from '../api/repositories/userRepo';
 
 export const agendaInstance = new Agenda({
 	db: {
@@ -24,129 +21,9 @@ export const agendaInstance = new Agenda({
 agendaInstance.on('ready', () => logger.info('Agenda is ready to process jobs'));
 agendaInstance.on('error', () => logger.debug('something is wrong with Agenda'));
 
-agendaInstance.define('send user verification email', { priority: 'highest' }, async job => {
-	const emailInput = job.attrs.data as IEmailInput;
-
-	try {
-		return await sendEmail(emailInput);
-	} catch (error) {
-		if (!job.attrs.failCount) {
-			job.attrs.failCount = 1;
-		} else {
-			job.attrs.failCount++;
-		}
-
-		if (job.attrs.failCount < 5) {
-			job.attrs.nextRunAt = addMinutes(new Date(), 5);
-		} else {
-			job.attrs.failedAt = new Date();
-		}
-
-		return await job.save();
-	}
-});
-
-agendaInstance.define('create_subaccount_shop', { priority: 'highest' }, async job => {
-	const input = job.attrs.data;
-	const testBankAccount = await TestBankAccountRepo.getDefaultTestAccountNumber();
-
-	const payload = {
-		account_bank: '044',
-		account_number: testBankAccount!.accNumber,
-		business_name: input.name,
-		business_email: input.email,
-		business_contact: input.email,
-		business_mobile: input.phoneNumber,
-		business_contact_mobile: input.phoneNumber,
-		country: input.country,
-		meta: [
-			{
-				meta_name: 'shopId',
-				meta_value: input._id,
-			},
-		],
-		split_type: 'percentage',
-		split_value: 0.025,
-	};
-
-	try {
-		const response = await flw.Subaccount.create(payload);
-		const {
-			id: account_id,
-			account_number,
-			account_bank,
-			subaccount_id,
-			split_value,
-			meta,
-		} = response.data;
-
-		await updateShopAccount(input._id, {
-			account_id,
-			account_number,
-			account_bank,
-			subaccount_id,
-			split_value,
-			meta,
-		});
-	} catch (error) {
-		logger.error(error.message);
-	}
-
-	await TestBankAccountRepo.incrementTestAccountNumber();
-});
-
-agendaInstance.define('create_subaccount_dispatch', { priority: 'high' }, async job => {
-	const input = job.attrs.data;
-	const testBankAccount = await TestBankAccountRepo.getDefaultTestAccountNumber();
-
-	const payload = {
-		account_bank: '044',
-		account_number: testBankAccount!.accNumber,
-		business_name: input.firstName + ' ' + input.lastName,
-		business_email: input.email,
-		business_contact: input.firstName,
-		business_mobile: input.phoneNumber,
-		business_contact_mobile: input.phoneNumber,
-		country: input.country,
-		meta: [
-			{
-				meta_name: 'driverId',
-				meta_value: input._id,
-			},
-			{
-				meta_name: 'shopId',
-				meta_value: input.shopId,
-			},
-		],
-		split_type: 'percentage',
-		split_value: 0.2,
-	};
-
-	try {
-		const response = await flw.Subaccount.create(payload);
-		const {
-			id: account_id,
-			account_number,
-			account_bank,
-			subaccount_id,
-			split_value,
-			meta,
-		} = response.data;
-
-		await updateUserAccount(input._id, {
-			account_id,
-			account_number,
-			account_bank,
-			subaccount_id,
-			split_value,
-			meta,
-		});
-	} catch (error) {
-		logger.error(error.message);
-	}
-
-	await TestBankAccountRepo.incrementTestAccountNumber();
-});
+sendEmailJob(agendaInstance);
+createShopSubaccountJob(agendaInstance);
+createDispatchSubaccountJob(agendaInstance);
 
 export async function gracefulShutdown() {
 	await agendaInstance.stop();
