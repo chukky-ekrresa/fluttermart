@@ -20,6 +20,10 @@ module.exports = {
 		},
 
 		extend: {
+			width: {
+				50: '50px',
+			},
+
 			fontFamily: {
 				quicksand: ['Quicksand', 'sans-serif'],
 			},
