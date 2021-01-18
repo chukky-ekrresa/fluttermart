@@ -40,9 +40,7 @@ const Dashboard = () => {
 				</Layout>
 			</Route>
 
-			{/* <Route path="*">
-				<NotFound />
-			</Route> */}
+			{/* <Route component={NotFound} /> */}
 		</PrivateRoutes>
 	);
 };
