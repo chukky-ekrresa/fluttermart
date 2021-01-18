@@ -55,12 +55,12 @@ const VerifyEmail = ({ verifyEmail }: any) => {
 
 					<div className="mb-4">
 						<button
-							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange ${
+							className={`capitalize bg-darkOrange p-2.5 rounded-md text-white border-darkOrange block w-full mx-auto ${
 								loading ? 'disabled' : ''
 							}`}
 							type="submit"
 						>
-							{loading ? <BeatLoader size={5} color="#fff" /> : 'submit'}
+							{loading ? <BeatLoader size={5} color="#fff" /> : 'verify'}
 						</button>
 					</div>
 				</form>

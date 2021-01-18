@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 
-const Products = lazy(() => import('../../pages/products/index'));
+const AllShops = lazy(() => import('../../pages/shop/allShops'));
 
 const Home = () => {
-	return <Products />;
+	return <AllShops />;
 };
 
 export default Home;

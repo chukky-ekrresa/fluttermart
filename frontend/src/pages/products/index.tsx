@@ -6,8 +6,9 @@ import { DotLoader } from 'react-spinners';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 import { setCurrentProduct } from '../../redux/reducers/products.reducer';
+import { setCartItem } from '../../redux/reducers/cart.reducer';
 
-const Cards = styled.div.attrs({
+export const Cards = styled.div.attrs({
 	className: 'grid',
 })`
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -19,7 +20,7 @@ const Cards = styled.div.attrs({
 	}
 `;
 
-const Image = styled.div.attrs({
+export const Image = styled.div.attrs({
 	className: 'h-full',
 })`
 	background-image: url(${(props: { url?: string }) => props.url});
@@ -43,8 +44,9 @@ const Products = () => {
 		setShowDropdown(!showDropdown);
 	};
 
-	const handleAddToCart = () => {
+	const handleAddToCart = (item: any) => {
 		console.log('Adding to cart');
+		dispatch(setCartItem(item));
 	};
 	const handleCheckout = () => {
 		console.log('Checking out');
@@ -91,7 +93,10 @@ const Products = () => {
 										</button>
 									</li>
 									<li className="border-b border-lightOrange cursor-pointer py-2">
-										<button className="block focus:outline-none" onClick={handleAddToCart}>
+										<button
+											className="block focus:outline-none"
+											onClick={() => handleAddToCart(item)}
+										>
 											Add to Cart
 										</button>
 									</li>
