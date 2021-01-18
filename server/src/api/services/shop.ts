@@ -10,8 +10,11 @@ import flw from '../../config/flutterwave';
 import { getLoggedInUser } from '../helpers/requestSession';
 import { IShop, IUser } from '../types';
 import { logger } from '../../config/logger';
+import { processImage } from '../helpers/processImage';
+import { uploadImage } from '../helpers/uploadImage';
+import { snakeCase } from 'lodash';
 
-export async function createShop(payload: IShop) {
+export async function createShop(payload: IShop, shopImage: any) {
 	await validateShopPayment(payload.transactionId, payload.transactionRef);
 
 	const shop = await ShopRepo.checkIfShopExists(payload.name);
@@ -20,12 +23,21 @@ export async function createShop(payload: IShop) {
 		throw new BadRequest(`Shop with name: ${payload.name} exists`);
 	}
 
+	const dispatchRiderPromise = generateDispatchRider();
+	const imageBuffer = await processImage(shopImage);
+	const uploadResponse = await uploadImage({
+		filename: snakeCase(payload.name),
+		image: imageBuffer,
+		shop: snakeCase(payload.name),
+	});
+
 	const loggedInUser = getLoggedInUser();
-	const dispatchRider = await generateDispatchRider();
+	const dispatchRider = await dispatchRiderPromise;
 
 	payload.owner = loggedInUser.id!;
 	payload.dispatchRider = dispatchRider._id;
 	payload.approved = true;
+	payload.image = { publicId: uploadResponse.public_id, url: uploadResponse.secure_url };
 
 	const newShop = await ShopRepo.createShop(payload);
 	agendaInstance.now('create_subaccount_shop', {
@@ -44,13 +56,17 @@ export async function createShop(payload: IShop) {
 	return newShop;
 }
 
+export async function getAllShops() {
+	return await ShopRepo.getAllShops();
+}
+
 export async function getVendorShops() {
 	const loggedInUser = getLoggedInUser();
 
 	return await ShopRepo.getShopsOfAVendor(loggedInUser.id!);
 }
 
-export async function updateVendorShop(shopId: string, updatePayload: Partial<IShop>) {
+export async function updateVendorShop(shopId: string, updatePayload: any) {
 	const shop = await ShopRepo.updateShopOfAVendor(shopId, updatePayload);
 	const loggedInUser = getLoggedInUser();
 

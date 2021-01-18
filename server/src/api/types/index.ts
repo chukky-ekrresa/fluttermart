@@ -1,6 +1,16 @@
 import { Response } from 'express';
 
+export interface IAccount {
+	account_bank: string;
+	account_id: number;
+	account_number: string;
+	subaccount_id: string;
+	split_value: number;
+	meta: any;
+}
+
 export interface IUser {
+	account?: IAccount;
 	email: string;
 	emailVerified: boolean;
 	enabled: boolean;
@@ -19,6 +29,7 @@ export interface IUser {
 type Role = 'customer' | 'vendor' | 'dispatch';
 
 export interface IShop {
+	account?: IAccount;
 	address: string;
 	approved: boolean;
 	country: string;
@@ -26,6 +37,7 @@ export interface IShop {
 	email: string;
 	emailVerified: boolean;
 	id: string;
+	image: { url: string; publicId: string };
 	name: string;
 	owner: IUser | string;
 	phoneNumber: string;
@@ -44,9 +56,9 @@ export interface IOrder {
 	dispatchRider: IUser;
 	notes?: string;
 	orderCode: string;
-	paymentRef: string;
 	products: IProduct[];
-	status: 'unconfirmed' | 'shipped' | 'delivered';
+	shop: IShop | string;
+	status: 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
 	total: number;
 	transactionId: string;
 	transactionRef: string;
