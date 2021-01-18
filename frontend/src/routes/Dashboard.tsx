@@ -8,7 +8,7 @@ const NewShop = lazy(() => import('../pages/shop/New'));
 const NewProducts = lazy(() => import('../pages/products/New'));
 const Checkout = lazy(() => import('../pages/checkout'));
 const Shops = lazy(() => import('../pages/shop/'));
-const NotFound = lazy(() => import('../pages/not-found'));
+// const NotFound = lazy(() => import('../pages/not-found'));
 const ShopProducts = lazy(() => import('../pages/products/singleShopProducts'));
 
 const Dashboard = () => {
@@ -40,9 +40,9 @@ const Dashboard = () => {
 				</Layout>
 			</Route>
 
-			<Route path="*">
+			{/* <Route path="*">
 				<NotFound />
-			</Route>
+			</Route> */}
 		</PrivateRoutes>
 	);
 };
