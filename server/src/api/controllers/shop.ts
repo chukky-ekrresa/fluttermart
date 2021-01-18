@@ -13,6 +13,11 @@ export async function getAllShopsHandler(_req: Request, res: ApiResponse) {
 	res.status(200).json({ status: 200, message: 'Shops found!', data: shops });
 }
 
+export async function getShopAccountHandler(req: Request, res: ApiResponse) {
+	const shop = (await ShopService.getShopAccountInfo(req.params.shopId)) as any;
+	res.status(200).json({ status: 200, message: 'Shop found!', data: shop });
+}
+
 export async function getVendorShopsHandler(_req: Request, res: ApiResponse) {
 	const vendorShops = await ShopService.getVendorShops();
 	res.status(200).json({ status: 200, message: 'Shops found!', data: vendorShops });
