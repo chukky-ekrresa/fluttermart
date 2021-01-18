@@ -6,7 +6,6 @@ import flw from '../../config/flutterwave';
 import { generateOrderCode } from '../helpers/orderCode';
 import { getLoggedInUser } from '../helpers/requestSession';
 import { IOrder } from '../types';
-import { logger } from '../../config/logger';
 import { agendaInstance } from '../../config/agenda';
 
 export async function cancelOrder(orderId: string) {
@@ -98,7 +97,6 @@ export async function shipOrder(orderId: string) {
 
 async function validateOrderPayment(transactionId: string, transactionRef: string, total: number) {
 	const response = await flw.Transaction.verify({ id: transactionId });
-	console.log(response);
 
 	if (
 		response.status === 'success' &&
@@ -107,8 +105,6 @@ async function validateOrderPayment(transactionId: string, transactionRef: strin
 	) {
 		return;
 	}
-
-	logger.error(response.message);
 
 	throw new BadRequest('Shop payment was not successful');
 }
