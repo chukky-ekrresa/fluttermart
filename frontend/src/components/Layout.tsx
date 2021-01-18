@@ -16,6 +16,7 @@ const Layout = ({ children }: any) => {
 						options={[
 							{ 'My Shops': '/shops' },
 							{ 'Create Shop': '/new-shop' },
+							{ 'View Shops': '/' },
 							{ Cart: '/cart' },
 							{
 								Logout: '/logout',
