@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useAppQuery } from '../../hooks/useAppQuery';
 
 import { setCurrentProduct } from '../../redux/reducers/products.reducer';
-import { setCartItem } from '../../redux/reducers/cart.reducer';
+import { setCartItem, setEmptyCart } from '../../redux/reducers/cart.reducer';
 
 const Cards = styled.div.attrs({
 	className: 'grid',
@@ -31,6 +31,7 @@ const Image = styled.div.attrs({
 const SingleShopProducts = () => {
 	const { shopId } = useParams<any>();
 	const dispatch = useDispatch();
+	const cart = useSelector((state: any) => state.cart);
 	const history = useHistory();
 	const { data: products, isLoading } = useAppQuery('products', {
 		url: `products/shop/${shopId}`,
@@ -39,6 +40,12 @@ const SingleShopProducts = () => {
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [currId, setCurrId] = useState<any>(null);
 
+	useEffect(() => {
+		if (cart.shop !== shopId) {
+			setEmptyCart();
+		}
+	}, [cart.shop, shopId]);
+
 	const handleDropdown = (id: string) => {
 		setCurrId(id);
 		setShowDropdown(!showDropdown);
@@ -46,7 +53,7 @@ const SingleShopProducts = () => {
 
 	const handleAddToCart = (item: any) => {
 		console.log('Adding to cart');
-		dispatch(setCartItem(item));
+		dispatch(setCartItem({ data: { ...item, quantity: 1 }, shop: shopId }));
 	};
 
 	const handleProduct = (item: any) => {

@@ -66,6 +66,10 @@ export async function getVendorShops() {
 	return await ShopRepo.getShopsOfAVendor(loggedInUser.id!);
 }
 
+export async function getShopAccountInfo(shopId: string) {
+	return await ShopRepo.fetchAccountInfo(shopId);
+}
+
 export async function updateVendorShop(shopId: string, updatePayload: any) {
 	const shop = await ShopRepo.updateShopOfAVendor(shopId, updatePayload);
 	const loggedInUser = getLoggedInUser();

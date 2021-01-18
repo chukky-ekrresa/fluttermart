@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import * as ShopCtrl from '../controllers/shop';
 import { NEW_SHOP, UPDATE_SHOP } from '../validations/shop';
-import { ensureUserIsAVendor } from '../middleware/authorization';
+import { ensureUserIsAuthenticated, ensureUserIsAVendor } from '../middleware/authorization';
 import { imageMiddleware } from '../middleware/upload';
 
 const router = Router();
@@ -23,6 +23,7 @@ router.put(
 	ShopCtrl.updateVendorShopHandler
 );
 
+router.get('/:shopId/account_info', ensureUserIsAuthenticated, ShopCtrl.getShopAccountHandler);
 router.get('/me', ensureUserIsAVendor, ShopCtrl.getVendorShopsHandler);
 router.get('/', ShopCtrl.getAllShopsHandler);
 

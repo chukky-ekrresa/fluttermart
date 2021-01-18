@@ -27,7 +27,7 @@ const Input = ({
 	type,
 	classStyle = {},
 	error = '',
-	handleBlur,
+	handleBlur = () => {},
 	schema,
 }: Props) => {
 	return (
