@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
+
+import { setCurrentProduct } from '../../redux/reducers/products.reducer';
+import { setCartItem } from '../../redux/reducers/cart.reducer';
 
 const Cards = styled.div.attrs({
 	className: 'grid',
@@ -25,36 +30,31 @@ const Image = styled.div.attrs({
 
 const SingleShopProducts = () => {
 	const { shopId } = useParams<any>();
+	const dispatch = useDispatch();
+	const history = useHistory();
 	const { data: products, isLoading } = useAppQuery('products', {
 		url: `products/shop/${shopId}`,
 	});
-	const optionRef = useRef<any>();
-	const [showDropdown, setShowDropdown] = useState(false);
-	const [currId, setCurrId] = useState('');
-	const handleClick = (event: any) => {
-		if (optionRef?.current?.contains(event.target)) {
-			return;
-		}
-		setShowDropdown(false);
-	};
-	useEffect(() => {
-		document.addEventListener('mousedown', handleClick);
 
-		return () => {
-			document.removeEventListener('mousedown', handleClick);
-		};
-	}, []);
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [currId, setCurrId] = useState<any>(null);
 
 	const handleDropdown = (id: string) => {
 		setCurrId(id);
 		setShowDropdown(!showDropdown);
 	};
 
-	const handleAddToCart = () => {
+	const handleAddToCart = (item: any) => {
 		console.log('Adding to cart');
+		dispatch(setCartItem(item));
 	};
-	const handleCheckout = () => {
-		console.log('Checking out');
+
+	const handleProduct = (item: any) => {
+		dispatch(setCurrentProduct(item));
+		history.push(`/product/${item.id}`);
+	};
+	const handleCheckout = (item: any) => {
+		console.log('Checking out', item);
 	};
 
 	return (
@@ -72,19 +72,33 @@ const SingleShopProducts = () => {
 							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
 							onClick={() => handleDropdown(item.id)}
 						>
-							<div className="relative left-16 top-4" ref={optionRef}>
+							<div className="relative left-16 top-4">
 								<ul
 									className={`absolute border border-darkOrange pb-4 px-2 w-44 bg-white rounded-md ${
 										showDropdown && item.id === currId ? '' : 'hidden'
 									}`}
 								>
 									<li className="border-b border-lightOrange cursor-pointer py-2">
-										<button className="block focus:outline-none" onClick={handleAddToCart}>
+										<button
+											className="block focus:outline-none"
+											onClick={() => handleProduct(item)}
+										>
+											View Product
+										</button>
+									</li>
+									<li className="border-b border-lightOrange cursor-pointer py-2">
+										<button
+											className="block focus:outline-none"
+											onClick={() => handleAddToCart(item)}
+										>
 											Add to Cart
 										</button>
 									</li>
 									<li className="border-b border-lightOrange cursor-pointer py-2">
-										<button className="block focus:outline-none" onClick={handleCheckout}>
+										<button
+											className="block focus:outline-none"
+											onClick={() => handleCheckout(item)}
+										>
 											Buy Item
 										</button>
 									</li>
