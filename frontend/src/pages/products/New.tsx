@@ -20,15 +20,17 @@ const priceSchema = yup.number().required('Price is required.');
 const quantitySchema = yup.number().required('Quantity is required.');
 const sizeSchema = yup.string().required('Size is required.');
 const nameSchema = yup.string().required('Name is required.');
-const imageSchema = yup.object().required('Image is required.');
+const imageSchema = yup.mixed();
+const discountSchema = yup.number();
+const colorSchema = yup.string();
 
-const formSchema: any = yup.object().shape({
-	price: priceSchema,
-	quantity: quantitySchema,
-	size: sizeSchema,
-	name: nameSchema,
-	image: imageSchema,
-});
+// const formSchema: any = yup.object().shape({
+// 	price: priceSchema,
+// 	quantity: quantitySchema,
+// 	size: sizeSchema,
+// 	name: nameSchema,
+// 	image: imageSchema,
+// });
 
 const Product = () => {
 	const { shopId } = useParams<any>();
@@ -97,16 +99,16 @@ const Product = () => {
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
-		const isValid = await formSchema.isValid();
+		// const isValid = await formSchema.isValid();
 
-		if (!isValid) {
-			Toast({
-				message: 'Enter Valid Input!',
-				type: 'error',
-			});
+		// if (!isValid) {
+		// 	Toast({
+		// 		message: 'Enter Valid Input!',
+		// 		type: 'error',
+		// 	});
 
-			return;
-		}
+		// 	return;
+		// }
 
 		const formData = new FormData();
 
@@ -163,6 +165,8 @@ const Product = () => {
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('discount', error)}
+							handleBlur={handleBlur}
+							schema={discountSchema}
 						/>
 					</div>
 
@@ -200,6 +204,8 @@ const Product = () => {
 						onChange={handleChange}
 						type="text"
 						error={fieldError('colour', error)}
+						handleBlur={handleBlur}
+						schema={colorSchema}
 					/>
 					<Input
 						label="Image"
