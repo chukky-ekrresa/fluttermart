@@ -18,6 +18,7 @@ const Layout = ({ children }: any) => {
 							{ 'Create Shop': '/new-shop' },
 							{ 'View Shops': '/' },
 							{ Cart: '/cart' },
+							{ Checkout: '/checkout' },
 							{
 								Logout: '/logout',
 							},
