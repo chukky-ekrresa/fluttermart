@@ -27,17 +27,27 @@ export const NEW_ORDER = {
 						.message('value does not match the pattern of an objectId')
 						.required(),
 					quantity: Joi.number().required(),
-					shop: Joi.string()
-						.trim()
-						//@ts-expect-error
-						.custom(joiValidateObjectId)
-						.message('value does not match the pattern of an objectId')
-						.required(),
 				})
 			)
+			.required(),
+		shop: Joi.string()
+			.trim()
+			//@ts-expect-error
+			.custom(joiValidateObjectId)
 			.required(),
 		total: Joi.number().required(),
 		transactionId: Joi.number().required(),
 		transactionRef: Joi.number().required(),
+	}),
+};
+
+export const ORDER_PARAMS = {
+	[Segments.PARAMS]: Joi.object().keys({
+		orderId: Joi.string()
+			.trim()
+			//@ts-expect-error
+			.custom(joiValidateObjectId)
+			.message('value does not match the pattern of an objectId')
+			.required(),
 	}),
 };

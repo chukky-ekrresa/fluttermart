@@ -70,7 +70,7 @@ export async function signUp(userPayload: IUser) {
 
 	const newUser = await UserRepo.createUser(userPayload);
 
-	agendaInstance.now('send user verification email', {
+	agendaInstance.now('send email', {
 		html: `<h2>${newUser.otp}</h2>`,
 		to: newUser.email,
 		subject: 'Email Verification',
