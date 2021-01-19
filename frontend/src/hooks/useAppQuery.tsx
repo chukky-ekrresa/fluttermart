@@ -29,16 +29,21 @@ const appMutate = async (axiosOptions = {}) => {
 };
 
 export const useAppQuery = (queryKeyPrefix = '', axiosOptions: any, queryOptions = {}) => {
-	const { data, error, isLoading } = useQuery([`${queryKeyPrefix}`], () => fetch(axiosOptions), {
-		onError: (error: any) => {
-			if (error.response) {
-				if (error.response.status === 401) {
-					// TODO: Call logout action here.
+	const { url } = axiosOptions;
+	const { data, error, isLoading } = useQuery(
+		[`${queryKeyPrefix}-${url}`],
+		() => fetch(axiosOptions),
+		{
+			onError: (error: any) => {
+				if (error.response) {
+					if (error.response.status === 401) {
+						// TODO: Call logout action here.
+					}
 				}
-			}
-		},
-		...queryOptions,
-	});
+			},
+			...queryOptions,
+		}
+	);
 
 	return { data, error, isLoading };
 };
