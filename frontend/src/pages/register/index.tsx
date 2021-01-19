@@ -99,14 +99,18 @@ const Register = ({ register }: any) => {
 							id="customer"
 							label="customer"
 							value={formik.values.role}
-							onChange={formik.handleChange}
+							onChange={val => {
+								formik.setFieldValue('role', val.target.id);
+							}}
 						/>
 						<Radio
 							name="role"
 							id="vendor"
 							label="vendor"
 							value={formik.values.role}
-							onChange={formik.handleChange}
+							onChange={val => {
+								formik.setFieldValue('role', val.target.id);
+							}}
 						/>
 						{formik.touched.role && formik.errors.role ? (
 							<small className="text-red-500">{formik.errors.role}</small>
