@@ -44,12 +44,12 @@ const Shops = () => {
 								onClick={() => handleClick(item.id)}
 							>
 								<div className="flex-80 rounded-lg">
-									<Image url={item.image.url}></Image>
+									<Image url={item?.image?.url}></Image>
 								</div>
 								<p className="text-center py-1 text-20 text-gray-700 font-semibold capitalize">
-									{item.name}
+									{item?.name}
 								</p>
-								<p className="text-center py-1 text-14 capitalize">{item.country}</p>
+								<p className="text-center py-1 text-14 capitalize">{item?.country}</p>
 							</div>
 						);
 					})}
