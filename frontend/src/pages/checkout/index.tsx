@@ -55,7 +55,7 @@ const Checkout = () => {
 				dispatch(setEmptyCart());
 
 				setTimeout(() => {
-					history.push('/orders');
+					history.push('/order-history');
 				}, 1500);
 			},
 			onError: (error: any) => {
@@ -243,7 +243,7 @@ const formSchema: any = yup.object().shape({
 	country: yup.string().required('Country is required'),
 });
 
-const ModalContainer = styled.span`
+export const ModalContainer = styled.span`
 	position: absolute;
 	z-index: 1000;
 
