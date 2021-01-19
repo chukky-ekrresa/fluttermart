@@ -45,11 +45,7 @@ const Products = () => {
 	};
 
 	const handleAddToCart = (item: any) => {
-		console.log('Adding to cart');
-		dispatch(setCartItem(item));
-	};
-	const handleCheckout = () => {
-		console.log('Checking out');
+		dispatch(setCartItem({ data: { ...item, quantity: 1 }, shop: item?.shop?.id }));
 	};
 
 	useEffect(() => {
@@ -98,11 +94,6 @@ const Products = () => {
 											onClick={() => handleAddToCart(item)}
 										>
 											Add to Cart
-										</button>
-									</li>
-									<li className="border-b border-lightOrange cursor-pointer py-2">
-										<button className="block focus:outline-none" onClick={handleCheckout}>
-											Buy Item
 										</button>
 									</li>
 								</ul>

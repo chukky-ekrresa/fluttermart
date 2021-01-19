@@ -52,16 +52,12 @@ const SingleShopProducts = () => {
 	};
 
 	const handleAddToCart = (item: any) => {
-		console.log('Adding to cart');
 		dispatch(setCartItem({ data: { ...item, quantity: 1 }, shop: shopId }));
 	};
 
 	const handleProduct = (item: any) => {
 		dispatch(setCurrentProduct(item));
 		history.push(`/product/${item.id}`);
-	};
-	const handleCheckout = (item: any) => {
-		console.log('Checking out', item);
 	};
 
 	return (
@@ -104,14 +100,6 @@ const SingleShopProducts = () => {
 											onClick={() => handleAddToCart(item)}
 										>
 											Add to Cart
-										</button>
-									</li>
-									<li className="border-b border-lightOrange cursor-pointer py-2">
-										<button
-											className="block focus:outline-none"
-											onClick={() => handleCheckout(item)}
-										>
-											Buy Item
 										</button>
 									</li>
 								</ul>

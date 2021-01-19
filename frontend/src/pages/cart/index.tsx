@@ -10,7 +10,7 @@ import {
 } from '../../redux/reducers/cart.reducer';
 import { calculateCartQty } from '../../utils/cartUtils';
 
-const Row = styled.div`
+export const Row = styled.div`
 	.name {
 		flex: 3 3 50%;
 	}
