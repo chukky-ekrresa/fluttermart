@@ -65,9 +65,7 @@ const Shop = () => {
 	);
 
 	const { data: currencyData } = useAppQuery('currency', {
-		url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${
-			toCurrency ?? ''
-		}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
+		url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${toCurrency}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
 	});
 
 	const handleCurrency = ({ target }: any) => {
