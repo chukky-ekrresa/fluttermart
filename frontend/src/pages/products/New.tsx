@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { TextArea } from '../../components/Input';
@@ -24,13 +24,15 @@ const imageSchema = yup.mixed();
 const discountSchema = yup.number();
 const colorSchema = yup.string();
 
-// const formSchema: any = yup.object().shape({
-// 	price: priceSchema,
-// 	quantity: quantitySchema,
-// 	size: sizeSchema,
-// 	name: nameSchema,
-// 	image: imageSchema,
-// });
+const formSchema: any = yup.object().shape({
+	price: priceSchema,
+	quantity: quantitySchema,
+	size: sizeSchema,
+	name: nameSchema,
+	image: imageSchema,
+	discout: discountSchema,
+	color: colorSchema,
+});
 
 const Product = () => {
 	const { shopId } = useParams<any>();
@@ -46,36 +48,6 @@ const Product = () => {
 		discount: 0,
 	};
 
-	const [values, setValues] = useState(initialState);
-
-	const handleBlur = (event: any, schema: any) => {
-		const { value } = event.target;
-
-		schema.validate(value).catch((error: any) => {
-			Toast({
-				message: error.message,
-				type: 'error',
-			});
-		});
-	};
-
-	const handleChange = ({ target }: any) => {
-		if (target.name === 'image') {
-			setValues(prevState => ({
-				...prevState,
-				image: target.files[0],
-			}));
-			return;
-		} else {
-			const { name, value } = target;
-
-			setValues(prevState => ({
-				...prevState,
-				[name]: value,
-			}));
-		}
-	};
-
 	const { mutate, error, isLoading: loading } = useMutation(
 		(formData: any) => {
 			return request.post('products', formData);
@@ -86,7 +58,6 @@ const Product = () => {
 					message: 'Product successfully created!',
 					type: 'success',
 				});
-				setValues(initialState);
 			},
 			onError: (error: any) => {
 				Toast({
@@ -96,51 +67,42 @@ const Product = () => {
 			},
 		}
 	);
-	const handleSubmit = async (event: any) => {
-		event.preventDefault();
 
-		// const isValid = await formSchema.isValid();
+	const formik = useFormik({
+		initialValues: initialState,
+		validationSchema: formSchema,
+		onSubmit: async values => {
+			const formData = new FormData();
 
-		// if (!isValid) {
-		// 	Toast({
-		// 		message: 'Enter Valid Input!',
-		// 		type: 'error',
-		// 	});
+			formData.append('image', values.image);
+			formData.set('price', `${values.price}`);
+			formData.set('discount', `${values.discount}`);
+			formData.set('quantity', `${values.quantity}`);
+			formData.set('shop', values.shop);
+			formData.set('size', values.size);
+			formData.set('summary', values.summary);
+			formData.set('name', values.name);
+			formData.set('colour', values.colour);
+			formData.set('category', 'other');
 
-		// 	return;
-		// }
-
-		const formData = new FormData();
-
-		formData.append('image', values.image);
-		formData.set('price', `${values.price}`);
-		formData.set('discount', `${values.discount}`);
-		formData.set('quantity', `${values.quantity}`);
-		formData.set('shop', values.shop);
-		formData.set('size', values.size);
-		formData.set('summary', values.summary);
-		formData.set('name', values.name);
-		formData.set('colour', values.colour);
-		formData.set('category', 'other');
-
-		await mutate(formData);
-	};
+			await mutate(formData);
+		},
+	});
 
 	return (
 		<AuthSection>
 			<Box>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Add new product</p>
-				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
+				<form className="w-11/12 mx-auto" onSubmit={formik.handleSubmit}>
 					<Input
 						label="Name"
 						placeholder="Input Product Name"
 						name="name"
-						value={values.name}
-						onChange={handleChange}
+						value={formik.values.name}
+						onChange={formik.handleChange}
 						type="text"
 						error={fieldError('name', error)}
-						handleBlur={handleBlur}
-						schema={nameSchema}
+						formik={formik}
 					/>
 
 					<div className="flex justify-between">
@@ -148,25 +110,23 @@ const Product = () => {
 							label="Price"
 							placeholder="Input price in USD"
 							name="price"
-							value={values.price}
-							onChange={handleChange}
+							value={formik.values.price}
+							onChange={formik.handleChange}
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('price', error)}
-							handleBlur={handleBlur}
-							schema={priceSchema}
+							formik={formik}
 						/>
 						<Input
 							label="Discount"
 							placeholder="Input discount in USD"
 							name="discount"
-							value={values.discount}
-							onChange={handleChange}
+							value={formik.values.discount}
+							onChange={formik.handleChange}
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('discount', error)}
-							handleBlur={handleBlur}
-							schema={discountSchema}
+							formik={formik}
 						/>
 					</div>
 
@@ -175,56 +135,53 @@ const Product = () => {
 							label="Quantity"
 							placeholder="Input quantity"
 							name="quantity"
-							value={values.quantity}
-							onChange={handleChange}
+							value={formik.values.quantity}
+							onChange={formik.handleChange}
 							type="number"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('quantity', error)}
-							handleBlur={handleBlur}
-							schema={quantitySchema}
+							formik={formik}
 						/>
 						<Input
 							label="Size"
 							placeholder="Input size"
 							name="size"
-							value={values.size}
-							onChange={handleChange}
+							value={formik.values.size}
+							onChange={formik.handleChange}
 							type="text"
 							classStyle={{ flexBasis: '48%' }}
 							error={fieldError('size', error)}
-							handleBlur={handleBlur}
-							schema={sizeSchema}
+							formik={formik}
 						/>
 					</div>
 					<Input
 						label="Colour"
 						placeholder="Input colour"
 						name="colour"
-						value={values.colour}
-						onChange={handleChange}
+						value={formik.values.colour}
+						onChange={formik.handleChange}
 						type="text"
 						error={fieldError('colour', error)}
-						handleBlur={handleBlur}
-						schema={colorSchema}
+						formik={formik}
 					/>
 					<Input
 						label="Image"
 						placeholder="Input image"
 						name="image"
-						onChange={handleChange}
+						onChange={formik.handleChange}
 						type="file"
 						error={fieldError('image', error)}
-						handleBlur={handleBlur}
-						schema={imageSchema}
+						formik={formik}
 					/>
 
 					<TextArea
 						label="Summary"
 						placeholder="Input summary"
-						value={values.summary}
+						value={formik.values.summary}
 						name="summary"
-						onChange={handleChange}
+						onChange={formik.handleChange}
 						error={fieldError('summary', error)}
+						formik={formik}
 					/>
 
 					<div className="mb-4">
