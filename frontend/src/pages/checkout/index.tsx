@@ -44,7 +44,7 @@ const Checkout = () => {
 		{
 			onSuccess: () => {
 				Toast({
-					message: 'Shop successfully created!',
+					message: 'Order was placed successfully!',
 					type: 'success',
 				});
 
