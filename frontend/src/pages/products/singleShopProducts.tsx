@@ -81,7 +81,7 @@ const SingleShopProducts = () => {
 					return (
 						<div
 							key={item.id}
-							className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
+							className="border border-greyBorder overflow-hidden rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
 							onClick={() => handleDropdown(item.id)}
 						>
 							<div className="relative left-16 top-4">
@@ -119,7 +119,8 @@ const SingleShopProducts = () => {
 							<div className="flex-80 rounded-lg">
 								<Image url={item.image.url}></Image>
 							</div>
-							<p className="text-center py-1 flex-20 capitalize">{item.name}</p>
+							<p className="text-center py-1 capitalize">{item.name}</p>
+							<p className="text-center font-semibold py-1 capitalize">${item.normalized_price}</p>
 						</div>
 					);
 				})
