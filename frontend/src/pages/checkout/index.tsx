@@ -28,14 +28,6 @@ const Checkout = () => {
 	const { authentication, cart } = useSelector((state: any) => state);
 	const userDetails = jwt.decode(authentication.token) as Record<string, any>;
 
-	const { data: currencyData } = useAppQuery(
-		'currency',
-		{
-			url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${currency}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
-		},
-		{ enabled: !!cart.shop }
-	);
-
 	const { data: shopAccountData } = useAppQuery('shop-accountInfo', {
 		url: `/shops/${cart.shop}/account_info`,
 	});
@@ -68,11 +60,7 @@ const Checkout = () => {
 
 	const config = {
 		public_key: 'FLWPUBK_TEST-704b2bf8ba3f3fdb3de8cd95da40f344-X',
-		amount: Math.round(
-			(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
-				? currencyData?.[`USD_${currency}`]
-				: EXCHANGE_RATES[currency]
-		),
+		amount: Math.round((calculateCartTotal(cart.data) + DELIVERY_FEE) * EXCHANGE_RATES[currency]),
 		tx_ref: userDetails.id + '-' + Date.now(),
 		currency: currency,
 		payment_options: 'card,mobilemoney,ussd',
@@ -85,11 +73,7 @@ const Checkout = () => {
 			{
 				id: shopAccountData?.data?.dispatchRider?.account?.subaccount_id,
 				transaction_charge_type: 'flat_subaccount',
-				transaction_split_ratio: Math.round(
-					0.8 * DELIVERY_FEE * currencyData
-						? currencyData?.[`USD_${currency}`]
-						: EXCHANGE_RATES[currency]
-				),
+				transaction_split_ratio: Math.round(0.8 * DELIVERY_FEE * EXCHANGE_RATES[currency]),
 			},
 			{
 				id: shopAccountData?.data?.account?.subaccount_id,
@@ -115,15 +99,9 @@ const Checkout = () => {
 			shop: cart.shop,
 		},
 		onSubmit: async (values: FormikValues) => {
-			values.deliveryFee = Math.round(
-				0.8 * DELIVERY_FEE * currencyData
-					? currencyData?.[`USD_${currency}`]
-					: EXCHANGE_RATES[currency]
-			);
+			values.deliveryFee = Math.round(0.8 * DELIVERY_FEE * EXCHANGE_RATES[currency]);
 			values.total = Math.round(
-				(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
-					? currencyData?.[`USD_${currency}`]
-					: EXCHANGE_RATES[currency]
+				(calculateCartTotal(cart.data) + DELIVERY_FEE) * EXCHANGE_RATES[currency]
 			);
 
 			handleFlutterPayment({
@@ -194,9 +172,7 @@ const Checkout = () => {
 						<p className="mb-2">
 							Amount:{' '}
 							{Math.round(
-								(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
-									? currencyData?.[`USD_${currency}`]
-									: EXCHANGE_RATES[currency]
+								(calculateCartTotal(cart.data) + DELIVERY_FEE) * EXCHANGE_RATES[currency]
 							)}
 						</p>
 						<button

@@ -10,8 +10,6 @@ import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { Select, TextArea } from '../../components/Input';
 import { Toast } from '../../utils/toats-utils';
 import { EXCHANGE_RATES } from '../../utils/currencyConversion';
-
-import { useAppQuery } from '../../hooks/useAppQuery';
 import request from '../../utils/request';
 
 const initialState = {
@@ -65,10 +63,6 @@ const Shop = () => {
 		}
 	);
 
-	const { data: currencyData } = useAppQuery('currency', {
-		url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${toCurrency}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
-	});
-
 	const handleCurrency = ({ target }: any) => {
 		const { value } = target;
 
@@ -79,34 +73,32 @@ const Shop = () => {
 		initialValues: initialState,
 		validationSchema: formSchema,
 		onSubmit: async values => {
-			if (currencyData) {
-				const formData = new FormData();
+			const formData = new FormData();
 
-				formData.set('image', values.image);
-				formData.set('name', values.name);
-				formData.set('email', values.email);
-				formData.set('phoneNumber', values.phoneNumber);
-				formData.set('address', values.address);
-				formData.set('country', values.country);
+			formData.set('image', values.image);
+			formData.set('name', values.name);
+			formData.set('email', values.email);
+			formData.set('phoneNumber', values.phoneNumber);
+			formData.set('address', values.address);
+			formData.set('country', values.country);
 
-				handleFlutterPayment({
-					callback: response => {
-						formData.set('transactionId', (response?.transaction_id as unknown) as string);
-						formData.set('transactionRef', response?.tx_ref);
-						mutate(formData);
+			handleFlutterPayment({
+				callback: response => {
+					formData.set('transactionId', (response?.transaction_id as unknown) as string);
+					formData.set('transactionRef', response?.tx_ref);
+					mutate(formData);
 
-						closePaymentModal();
-					},
-					onClose: () => {},
-				});
-			}
+					closePaymentModal();
+				},
+				onClose: () => {},
+			});
 		},
 	});
 
 	const config: any = {
 		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
 		tx_ref: Date.now(),
-		amount: 20 * currencyData ? currencyData?.[`USD_${toCurrency}`] : EXCHANGE_RATES[toCurrency],
+		amount: 20 * EXCHANGE_RATES[toCurrency],
 		currency: toCurrency,
 		payment_options: 'card,mobilemoney,ussd',
 		customer: {
