@@ -100,7 +100,7 @@ async function validateOrderPayment(transactionId: string, transactionRef: strin
 
 	if (
 		response.status === 'success' &&
-		response.data.tx_ref === String(transactionRef) &&
+		response.data.tx_ref === transactionRef &&
 		response.data.amount === total
 	) {
 		return;
