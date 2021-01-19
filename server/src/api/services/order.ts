@@ -98,11 +98,7 @@ export async function shipOrder(orderId: string) {
 async function validateOrderPayment(transactionId: string, transactionRef: string) {
 	const response = await flw.Transaction.verify({ id: transactionId });
 
-	if (
-		response.status === 'success' &&
-		response.data.tx_ref === transactionRef
-		// response.data.amount === total
-	) {
+	if (response.status === 'success' && response.data.tx_ref === transactionRef) {
 		return;
 	}
 
