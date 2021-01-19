@@ -79,27 +79,25 @@ const Shop = () => {
 		initialValues: initialState,
 		validationSchema: formSchema,
 		onSubmit: async values => {
-			if (currencyData) {
-				const formData = new FormData();
+			const formData = new FormData();
 
-				formData.set('image', values.image);
-				formData.set('name', values.name);
-				formData.set('email', values.email);
-				formData.set('phoneNumber', values.phoneNumber);
-				formData.set('address', values.address);
-				formData.set('country', values.country);
+			formData.set('image', values.image);
+			formData.set('name', values.name);
+			formData.set('email', values.email);
+			formData.set('phoneNumber', values.phoneNumber);
+			formData.set('address', values.address);
+			formData.set('country', values.country);
 
-				handleFlutterPayment({
-					callback: response => {
-						formData.set('transactionId', (response?.transaction_id as unknown) as string);
-						formData.set('transactionRef', response?.tx_ref);
-						mutate(formData);
+			handleFlutterPayment({
+				callback: response => {
+					formData.set('transactionId', (response?.transaction_id as unknown) as string);
+					formData.set('transactionRef', response?.tx_ref);
+					mutate(formData);
 
-						closePaymentModal();
-					},
-					onClose: () => {},
-				});
-			}
+					closePaymentModal();
+				},
+				onClose: () => {},
+			});
 		},
 	});
 
