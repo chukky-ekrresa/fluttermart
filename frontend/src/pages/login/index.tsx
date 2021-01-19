@@ -41,13 +41,10 @@ const Login = ({ login }: any) => {
 			password: '',
 		},
 		validationSchema: formSchema,
-		// validateOnBlur: true,
 		onSubmit: async values => {
 			await login(values, navigateToProducts, Toast);
 		},
 	});
-
-	console.log(formik.errors);
 
 	return (
 		<AuthSection>
