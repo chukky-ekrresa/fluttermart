@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -70,7 +70,12 @@ const SingleShopProducts = () => {
 			{isLoading ? (
 				<p className="m-auto">Loading...</p>
 			) : !products?.data?.length ? (
-				<p className="m-auto">No products yet</p>
+				<div>
+					<p className="m-auto">No products yet</p>
+					<button className="p-2.5 rounded-md text-darkOrange border border-darkOrange my-4 font-bold">
+						<Link to={`/new-product/${shopId}`}>Add Product</Link>
+					</button>
+				</div>
 			) : (
 				products?.data.map((item: any) => {
 					return (

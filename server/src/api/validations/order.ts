@@ -7,7 +7,7 @@ export const NEW_ORDER = {
 		address: Joi.string().trim().required(),
 		country: Joi.string().trim().required(),
 		deliveryFee: Joi.number().required(),
-		notes: Joi.string(),
+		notes: Joi.string().allow(''),
 		products: Joi.array()
 			.items(
 				Joi.object().keys({

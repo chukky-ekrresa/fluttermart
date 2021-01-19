@@ -18,7 +18,7 @@ const Box = styled(FormBox)`
 
 const priceSchema = yup.number().required('Price is required.');
 const quantitySchema = yup.number().required('Quantity is required.');
-const sizeSchema = yup.string().required('Size is required.');
+const sizeSchema = yup.string();
 const nameSchema = yup.string().required('Name is required.');
 const imageSchema = yup.mixed();
 const discountSchema = yup.number();
@@ -30,7 +30,7 @@ const formSchema: any = yup.object().shape({
 	size: sizeSchema,
 	name: nameSchema,
 	image: imageSchema,
-	discout: discountSchema,
+	discount: discountSchema,
 	color: colorSchema,
 });
 
@@ -168,7 +168,9 @@ const Product = () => {
 						label="Image"
 						placeholder="Input image"
 						name="image"
-						onChange={formik.handleChange}
+						onChange={evt => {
+							formik.setFieldValue('image', evt.target.files[0]);
+						}}
 						type="file"
 						error={fieldError('image', error)}
 						formik={formik}

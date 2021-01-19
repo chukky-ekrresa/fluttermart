@@ -11,6 +11,7 @@ module.exports = {
 
 		fontSize: {
 			14: '0.875rem',
+			20: '1.125rem',
 			24: '1.5rem',
 		},
 		maxWidth: {

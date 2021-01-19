@@ -9,6 +9,8 @@ import Routes from './routes';
 
 import store from './store';
 
+import './rodal.css';
+
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {

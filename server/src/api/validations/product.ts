@@ -5,7 +5,7 @@ import { joiValidateObjectId } from '../helpers/objectIdValidator';
 export const NEW_PRODUCT = {
 	[Segments.BODY]: Joi.object().keys({
 		category: Joi.string().trim().default('other'),
-		colour: Joi.string().trim(),
+		colour: Joi.string().trim().allow(''),
 		discount: Joi.string()
 			.trim()
 			.regex(/^\s*-?0{1}(\.\d{2})?\s*$/),
@@ -20,7 +20,7 @@ export const NEW_PRODUCT = {
 			.custom(joiValidateObjectId)
 			.message('value does not match the pattern of an objectId')
 			.required(),
-		size: Joi.string().trim(),
-		summary: Joi.string().trim(),
+		size: Joi.string().trim().allow(''),
+		summary: Joi.string().trim().allow(''),
 	}),
 };
