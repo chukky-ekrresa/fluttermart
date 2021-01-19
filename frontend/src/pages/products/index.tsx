@@ -45,7 +45,7 @@ const Products = () => {
 	};
 
 	const handleAddToCart = (item: any) => {
-		dispatch(setCartItem(item));
+		dispatch(setCartItem({ data: { ...item, quantity: 1 }, shop: item?.shop?.id }));
 	};
 
 	useEffect(() => {

@@ -19,7 +19,7 @@ const Layout = ({ children }: any) => {
 				<div>
 					<Dropdown
 						options={[
-							...(userDetails.role === 'vendor'
+							...(userDetails?.role === 'vendor'
 								? [{ 'My Shops': '/shops' }, { 'Create Shop': '/new-shop' }]
 								: []),
 							{ 'View Shops': '/' },

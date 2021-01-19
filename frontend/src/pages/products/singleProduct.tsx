@@ -7,7 +7,7 @@ const SingleProduct = () => {
 	const { currProductData } = useSelector(({ products }: any) => products);
 
 	const handleAddToCart = (item: any) => {
-		dispatch(setCartItem(item));
+		dispatch(setCartItem({ data: { ...item, quantity: 1 }, shop: item?.shop?.id }));
 	};
 
 	return (
