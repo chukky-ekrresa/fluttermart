@@ -8,6 +8,7 @@ import {
 	changeCartItemQuantity,
 	removeCartItem,
 } from '../../redux/reducers/cart.reducer';
+import { calculateCartQty } from '../../utils/cartUtils';
 
 const Row = styled.div`
 	.name {
@@ -44,11 +45,10 @@ const Cart = () => {
 
 	return (
 		<>
-			<div className="w-full max-w-900 my-0 mx-auto border-b border-greyBorder">
+			<div className="w-full max-w-900 mx-auto border-b border-greyBorder">
 				<div className="flex justify-between">
-					<h1 className="font-bold capitalize text-24 mb-4">{`cart (${data.length} item${
-						data.length > 1 ? 's' : ''
-					})`}</h1>
+					<h1 className="font-bold capitalize text-24 mb-4">{`cart (${calculateCartQty(data)} item
+						${calculateCartQty(data) > 1 ? 's' : ''})`}</h1>
 					<button
 						className="hidden sm:block capitalize underline text-darkOrange hover:font-extrabold"
 						onClick={handleClearCart}
@@ -56,7 +56,7 @@ const Cart = () => {
 						Clear Cart
 					</button>
 				</div>
-				<Row className="flex border-b border-greyBorder pb-2 mb-2">
+				<Row className="flex border-b border-greyBorder pb-2 mb-2 mt-4">
 					<p className="capitalize name font-bold">product name</p>
 					<p className="capitalize qty font-bold hidden sm:block">quantity</p>
 					<p className="capitalize discount font-bold hidden sm:block">price</p>
