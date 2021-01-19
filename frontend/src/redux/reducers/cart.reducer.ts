@@ -24,6 +24,12 @@ export default function cart(state = initialState, action: any) {
 				}),
 			};
 
+		case 'REMOVE_CART_ITEM':
+			return {
+				...state,
+				data: state.data.filter((product: any) => product.id !== action.payload.productId),
+			};
+
 		case 'SET_EMPTY_CART':
 			return {
 				...state,
@@ -43,6 +49,11 @@ export const setCartItem = (payload: any) => ({
 
 export const setEmptyCart = () => ({
 	type: 'SET_EMPTY_CART',
+});
+
+export const removeCartItem = (payload: any) => ({
+	type: 'REMOVE_CART_ITEM',
+	payload,
 });
 
 export const changeCartItemQuantity = (payload: any) => ({
