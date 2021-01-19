@@ -16,6 +16,7 @@ import { calculateCartQty, calculateCartTotal } from '../../utils/cartUtils';
 import { useAppQuery } from '../../hooks/useAppQuery';
 import { Toast } from '../../utils/toats-utils';
 import request from '../../utils/request';
+import { EXCHANGE_RATES } from '../../utils/currencyConversion';
 
 const DELIVERY_FEE = 10;
 
@@ -68,7 +69,9 @@ const Checkout = () => {
 	const config = {
 		public_key: 'FLWPUBK_TEST-704b2bf8ba3f3fdb3de8cd95da40f344-X',
 		amount: Math.round(
-			(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData?.[`USD_${currency}`]
+			(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
+				? currencyData?.[`USD_${currency}`]
+				: EXCHANGE_RATES[currency]
 		),
 		tx_ref: userDetails.id + '-' + Date.now(),
 		currency: currency,
@@ -82,7 +85,11 @@ const Checkout = () => {
 			{
 				id: shopAccountData?.data?.dispatchRider?.account?.subaccount_id,
 				transaction_charge_type: 'flat_subaccount',
-				transaction_split_ratio: Math.round(0.8 * DELIVERY_FEE * currencyData?.[`USD_${currency}`]),
+				transaction_split_ratio: Math.round(
+					0.8 * DELIVERY_FEE * currencyData
+						? currencyData?.[`USD_${currency}`]
+						: EXCHANGE_RATES[currency]
+				),
 			},
 			{
 				id: shopAccountData?.data?.account?.subaccount_id,
@@ -108,9 +115,15 @@ const Checkout = () => {
 			shop: cart.shop,
 		},
 		onSubmit: async (values: FormikValues) => {
-			values.deliveryFee = Math.round(0.8 * DELIVERY_FEE * currencyData?.[`USD_${currency}`]);
+			values.deliveryFee = Math.round(
+				0.8 * DELIVERY_FEE * currencyData
+					? currencyData?.[`USD_${currency}`]
+					: EXCHANGE_RATES[currency]
+			);
 			values.total = Math.round(
-				(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData?.[`USD_${currency}`]
+				(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
+					? currencyData?.[`USD_${currency}`]
+					: EXCHANGE_RATES[currency]
 			);
 
 			handleFlutterPayment({
@@ -181,7 +194,9 @@ const Checkout = () => {
 						<p className="mb-2">
 							Amount:{' '}
 							{Math.round(
-								(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData?.[`USD_${currency}`]
+								(calculateCartTotal(cart.data) + DELIVERY_FEE) * currencyData
+									? currencyData?.[`USD_${currency}`]
+									: EXCHANGE_RATES[currency]
 							)}
 						</p>
 						<button

@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { Select, TextArea } from '../../components/Input';
 import { Toast } from '../../utils/toats-utils';
+import { EXCHANGE_RATES } from '../../utils/currencyConversion';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 import request from '../../utils/request';
@@ -105,7 +106,7 @@ const Shop = () => {
 	const config: any = {
 		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
 		tx_ref: Date.now(),
-		amount: 20 * currencyData?.[`USD_${toCurrency}`],
+		amount: 20 * currencyData ? currencyData?.[`USD_${toCurrency}`] : EXCHANGE_RATES[toCurrency],
 		currency: toCurrency,
 		payment_options: 'card,mobilemoney,ussd',
 		customer: {
