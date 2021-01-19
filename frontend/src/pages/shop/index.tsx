@@ -22,7 +22,7 @@ const Row = styled.div`
 
 const Shops = () => {
 	const { data, isLoading } = useAppQuery('vendor-shops', {
-		url: 'shops/me',
+		url: 'shops',
 	});
 
 	return (

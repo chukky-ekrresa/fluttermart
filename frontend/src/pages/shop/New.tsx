@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useMutation } from 'react-query';
@@ -17,6 +18,7 @@ const initialState = {
 	country: '',
 	email: '',
 	name: '',
+	image: '',
 	phoneNumber: '',
 	transactionId: '',
 	transactionRef: '',
@@ -27,15 +29,13 @@ const formSchema: any = yup.object().shape({
 	country: yup.string().required('Country is required'),
 	email: yup.string().email().required('Valid email is required.'),
 	name: yup.string().required('Name is required'),
+	image: yup.mixed().required(),
 	phoneNumber: yup.string().required('Phone Number is required'),
-	transactionId: yup.string(),
-	transactionRef: yup.string(),
 });
 
 const Shop = () => {
 	const [toCurrency, setToCurrency] = useState('');
-
-	const [values, setValues] = useState(initialState);
+	const history = useHistory();
 
 	const { mutate, isLoading: loading } = useMutation(
 		(formData: any) => {
@@ -47,6 +47,7 @@ const Shop = () => {
 					message: 'Shop successfully created!',
 					type: 'success',
 				});
+				history.push('/');
 			},
 			onError: (error: any) => {
 				Toast({
@@ -63,27 +64,6 @@ const Shop = () => {
 		}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
 	});
 
-	const config: any = {
-		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
-		tx_ref: Date.now(),
-		amount: 20 * currencyData?.[`USD_${toCurrency}`],
-		currency: `${toCurrency ?? ''}`,
-		payment_options: 'card,mobilemoney,ussd',
-		customer: {
-			email: values.email,
-			phonenumber: values.email,
-			name: values.name,
-		},
-		customizations: {
-			title: 'New Shop on Jumga',
-			description: 'Payment for creating new shop on Jumga',
-			logo:
-				'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
-		},
-	};
-
-	const handleFlutterPayment = useFlutterwave(config);
-
 	const handleCurrency = ({ target }: any) => {
 		const { value } = target;
 
@@ -94,15 +74,21 @@ const Shop = () => {
 		initialValues: initialState,
 		validationSchema: formSchema,
 		onSubmit: async values => {
-			setValues(values);
 			if (currencyData) {
+				const formData = new FormData();
+
+				formData.set('image', values.image);
+				formData.set('name', values.name);
+				formData.set('email', values.email);
+				formData.set('phoneNumber', values.phoneNumber);
+				formData.set('address', values.address);
+				formData.set('country', values.country);
+
 				handleFlutterPayment({
 					callback: response => {
-						mutate({
-							...values,
-							transactionId: response?.transaction_id,
-							transactionRef: response?.tx_ref,
-						});
+						formData.set('transactionId', (response?.transaction_id as unknown) as string);
+						formData.set('transactionRef', response?.tx_ref);
+						mutate(formData);
 
 						closePaymentModal();
 					},
@@ -111,6 +97,27 @@ const Shop = () => {
 			}
 		},
 	});
+
+	const config: any = {
+		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
+		tx_ref: Date.now(),
+		amount: 20 * currencyData?.[`USD_${toCurrency}`],
+		currency: `${toCurrency ?? ''}`,
+		payment_options: 'card,mobilemoney,ussd',
+		customer: {
+			email: formik.values.email,
+			phonenumber: formik.values.email,
+			name: formik.values.name,
+		},
+		customizations: {
+			title: 'New Shop on Jumga',
+			description: 'Payment for creating new shop on Jumga',
+			logo:
+				'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
+		},
+	};
+
+	const handleFlutterPayment = useFlutterwave(config);
 
 	return (
 		<AuthSection>
@@ -165,6 +172,18 @@ const Shop = () => {
 						name="country"
 						onChange={formik.handleChange}
 						type="text"
+						formik={formik}
+					/>
+
+					<Input
+						label="Image"
+						placeholder="Input image"
+						name="image"
+						onChange={evt => {
+							formik.setFieldValue('image', evt.target.files[0]);
+						}}
+						type="file"
+						error={formik.errors.image}
 						formik={formik}
 					/>
 

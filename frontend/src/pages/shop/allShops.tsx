@@ -1,10 +1,9 @@
 import { DotLoader } from 'react-spinners';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { useAppQuery } from '../../hooks/useAppQuery';
 
 import { Cards, Image } from '../products/index';
-import image from '../../assets/1.jpg';
 
 const Shops = () => {
 	const history = useHistory();
@@ -25,7 +24,14 @@ const Shops = () => {
 					<DotLoader color="#F9A109" />
 				</p>
 			) : !shops?.data?.length ? (
-				<p className="m-auto text-center">No shops yet</p>
+				<>
+					<p className="text-center mt-4">No Shops Yet.</p>
+					<div className="text-center">
+						<button className="p-2.5 rounded-md text-darkOrange border border-darkOrange my-4 font-bold">
+							<Link to="/new-shop">Create Shop</Link>
+						</button>
+					</div>
+				</>
 			) : (
 				<Cards>
 					<p className="til"></p>
@@ -34,13 +40,16 @@ const Shops = () => {
 						return (
 							<div
 								key={item.id}
-								className="border border-greyBorder rounded-lg h-80 max-h-80 flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
+								className="border border-greyBorder rounded-lg h-80 max-h-80 overflow-hidden flex flex-col cursor-pointer focus:shadow-lg hover:shadow-lg"
 								onClick={() => handleClick(item.id)}
 							>
 								<div className="flex-80 rounded-lg">
-									<Image url={image}></Image>
+									<Image url={item.image.url}></Image>
 								</div>
-								<p className="text-center py-1 flex-20 capitalize">{item.name}</p>
+								<p className="text-center py-1 text-20 text-gray-700 font-semibold capitalize">
+									{item.name}
+								</p>
+								<p className="text-center py-1 text-14 capitalize">{item.country}</p>
 							</div>
 						);
 					})}
