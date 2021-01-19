@@ -27,11 +27,15 @@ const Checkout = () => {
 	const { authentication, cart } = useSelector((state: any) => state);
 	const userDetails = jwt.decode(authentication.token) as Record<string, any>;
 
-	const { data: currencyData } = useAppQuery('currency', {
-		url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${
-			currency ?? ''
-		}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
-	});
+	const { data: currencyData } = useAppQuery(
+		'currency',
+		{
+			url: `${process.env.REACT_APP_PROXY_URL}https://free.currconv.com/api/v7/convert?q=USD_${
+				currency ?? ''
+			}&compact=ultra&apiKey=${process.env.REACT_APP_EXCHANGE_RATE_KEY}`,
+		},
+		{ enabled: !!cart.shop }
+	);
 
 	const { data: shopAccountData } = useAppQuery('shop-accountInfo', {
 		url: `/shops/${cart.shop}/account_info`,
