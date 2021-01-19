@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 import Input from '../../components/Input';
 import { AuthSection, FormBox } from '../../components/blocs';
@@ -13,59 +14,37 @@ import { setAuthLoading } from '../../redux/reducers/auth.reduser';
 
 import logo from '../../assets/logo.svg';
 
-const emailSchema = yup.string().email().required('Valid email is required.');
-const passwordSchema = yup
-	.string()
-	.min(7, 'Password must be at least 7 characters')
-	.required('Password is required.');
-
-// const formSchema: any = yup.object().shape({
-// 	email: emailSchema,
-// 	password: passwordSchema,
-// });
+const formSchema = yup.object().shape({
+	email: yup.string().email().required('Valid email is required.'),
+	password: yup
+		.string()
+		.min(7, 'Password must be at least 7 characters')
+		.required('Password is required.'),
+});
 
 const Login = ({ login }: any) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const { loading } = useSelector(({ authentication }: any) => authentication);
-	const [values, setValues] = useState({
-		email: '',
-		password: '',
-	});
 
 	useEffect(() => {
 		dispatch(setAuthLoading(false));
 	}, [dispatch]);
 
-	const handleBlur = (event: any, schema: any) => {
-		const { value } = event.target;
-
-		schema.validate(value).catch((error: any) => {
-			Toast({
-				message: error.message,
-				type: 'error',
-			});
-		});
-	};
-
-	const handleChange = (e: any) => {
-		const { value, name } = e.target;
-
-		setValues(prevState => ({
-			...prevState,
-			[name]: value,
-		}));
-	};
-
 	const navigateToProducts = () => {
 		history.push('/');
 	};
 
-	const handleSubmit = async (e: any) => {
-		e.preventDefault();
-
-		await login(values, navigateToProducts, Toast);
-	};
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		validationSchema: formSchema,
+		onSubmit: async values => {
+			await login(values, navigateToProducts, Toast);
+		},
+	});
 
 	return (
 		<AuthSection>
@@ -73,26 +52,24 @@ const Login = ({ login }: any) => {
 
 			<FormBox>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Login</p>
-				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
+				<form className="w-11/12 mx-auto" onSubmit={formik.handleSubmit}>
 					<Input
 						label="Email"
 						placeholder="Input email"
 						name="email"
-						value={values.email}
-						onChange={handleChange}
+						value={formik.values.email}
+						onChange={formik.handleChange}
 						type="email"
-						handleBlur={handleBlur}
-						schema={emailSchema}
+						formik={formik}
 					/>
 					<Input
 						label="Password"
 						placeholder="Input password"
-						value={values.password}
+						value={formik.values.password}
 						name="password"
-						onChange={handleChange}
+						onChange={formik.handleChange}
 						type="password"
-						handleBlur={handleBlur}
-						schema={passwordSchema}
+						formik={formik}
 					/>
 					<div className="mb-4 ">
 						<button

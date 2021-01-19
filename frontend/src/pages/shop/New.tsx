@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useMutation } from 'react-query';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { Select, TextArea } from '../../components/Input';
@@ -20,6 +22,16 @@ const initialState = {
 	transactionRef: '',
 };
 
+const formSchema: any = yup.object().shape({
+	address: yup.string().required('Address is required'),
+	country: yup.string().required('Country is required'),
+	email: yup.string().email().required('Valid email is required.'),
+	name: yup.string().required('Name is required'),
+	phoneNumber: yup.string().required('Phone Number is required'),
+	transactionId: yup.string(),
+	transactionRef: yup.string(),
+});
+
 const Shop = () => {
 	const [toCurrency, setToCurrency] = useState('');
 
@@ -35,7 +47,6 @@ const Shop = () => {
 					message: 'Shop successfully created!',
 					type: 'success',
 				});
-				setValues(initialState);
 			},
 			onError: (error: any) => {
 				Toast({
@@ -73,68 +84,65 @@ const Shop = () => {
 
 	const handleFlutterPayment = useFlutterwave(config);
 
-	const handleChange = ({ target }: any) => {
-		const { name, value } = target;
-
-		setValues(prevState => ({
-			...prevState,
-			[name]: value,
-		}));
-	};
-
 	const handleCurrency = ({ target }: any) => {
 		const { value } = target;
 
 		setToCurrency(value);
 	};
 
-	const handleSubmit = async (event: any) => {
-		event.preventDefault();
+	const formik = useFormik({
+		initialValues: initialState,
+		validationSchema: formSchema,
+		onSubmit: async values => {
+			setValues(values);
+			if (currencyData) {
+				handleFlutterPayment({
+					callback: response => {
+						mutate({
+							...values,
+							transactionId: response?.transaction_id,
+							transactionRef: response?.tx_ref,
+						});
 
-		if (currencyData) {
-			handleFlutterPayment({
-				callback: response => {
-					mutate({
-						...values,
-						transactionId: response?.transaction_id,
-						transactionRef: response?.tx_ref,
-					});
-
-					closePaymentModal();
-				},
-				onClose: () => {},
-			});
-		}
-	};
+						closePaymentModal();
+					},
+					onClose: () => {},
+				});
+			}
+		},
+	});
 
 	return (
 		<AuthSection>
 			<FormBox>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Add new shop</p>
-				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
+				<form className="w-11/12 mx-auto" onSubmit={formik.handleSubmit}>
 					<Input
 						label="Name"
 						placeholder="Input name"
 						name="name"
-						value={values.name}
-						onChange={handleChange}
+						value={formik.values.name}
+						onChange={formik.handleChange}
 						type="text"
+						formik={formik}
 					/>
 					<Input
 						label="Phone Number"
 						placeholder="Input phone number"
 						name="phoneNumber"
-						value={values.phoneNumber}
-						onChange={handleChange}
+						value={formik.values.phoneNumber}
+						onChange={formik.handleChange}
 						type="text"
+						formik={formik}
 					/>
 					<Input
 						label="Email"
 						placeholder="Input email"
 						name="email"
-						value={values.email}
-						onChange={handleChange}
+						value={formik.values.email}
+						onChange={formik.handleChange}
 						type="email"
+						formik={formik}
 					/>
 
 					<Select
@@ -153,18 +161,20 @@ const Shop = () => {
 					<Input
 						label="Country"
 						placeholder="Input country"
-						value={values.country}
+						value={formik.values.country}
 						name="country"
-						onChange={handleChange}
+						onChange={formik.handleChange}
 						type="text"
+						formik={formik}
 					/>
 
 					<TextArea
 						label="Address"
 						placeholder="Input address"
-						value={values.address}
+						value={formik.values.address}
 						name="address"
-						onChange={handleChange}
+						onChange={formik.handleChange}
+						formik={formik}
 					/>
 
 					<div className="mb-4">
