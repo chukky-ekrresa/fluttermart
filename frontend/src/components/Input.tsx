@@ -13,8 +13,7 @@ type Props = {
 	type: string;
 	classStyle?: any;
 	error?: string;
-	handleBlur?: any;
-	schema?: any;
+	formik?: any;
 	onChange: (e: any) => void;
 };
 
@@ -27,8 +26,7 @@ const Input = ({
 	type,
 	classStyle = {},
 	error = '',
-	handleBlur = () => {},
-	schema,
+	formik,
 }: Props) => {
 	return (
 		<div className="mb-4" style={classStyle}>
@@ -42,8 +40,10 @@ const Input = ({
 				value={value}
 				name={name}
 				onChange={onChange}
-				onBlur={event => handleBlur(event, schema)}
 			/>
+			{formik.touched[`${name}`] && formik.errors[`${name}`] ? (
+				<small className="text-red-500">{formik.errors[`${name}`]}</small>
+			) : null}
 			<small className="text-red-500">{error}</small>
 		</div>
 	);
@@ -71,7 +71,15 @@ export const Select = ({ options = [], label, handleChange, name, defaultValue }
 		</div>
 	);
 };
-export const TextArea = ({ label, placeholder, value, name, onChange, error = '' }: any) => {
+export const TextArea = ({
+	label,
+	placeholder,
+	value,
+	name,
+	onChange,
+	error = '',
+	formik,
+}: any) => {
 	return (
 		<div className="mb-4">
 			<label className="block text-14 mb-2" htmlFor={name}>
@@ -86,6 +94,9 @@ export const TextArea = ({ label, placeholder, value, name, onChange, error = ''
 				name={name}
 				onChange={onChange}
 			></textarea>
+			{formik.touched[`${name}`] && formik.errors[`${name}`] ? (
+				<small className="text-red-500">{formik.errors[`${name}`]}</small>
+			) : null}
 			<small className="text-red-500">{error}</small>
 		</div>
 	);

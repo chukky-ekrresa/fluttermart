@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 import { AuthSection, FormBox } from '../../components/blocs';
 import Input, { RadioInput as Radio } from '../../components/Input';
@@ -31,108 +31,65 @@ const Register = ({ register }: any) => {
 	const { loading } = useSelector(({ authentication }: any) => authentication);
 	const history = useHistory();
 
-	const [values, setValues] = useState({
-		email: '',
-		firstName: '',
-		lastName: '',
-		password: '',
-		role: '',
-	});
-
 	const redirectToVerifyEmail = (userID: string) => {
 		history.push(`/verify-email/${userID}`);
 	};
 
-	const handleBlur = (event: any, schema: any) => {
-		const { value } = event.target;
-
-		schema.validate(value).catch((error: any) => {
-			Toast({
-				message: error.message,
-				type: 'error',
-			});
-		});
-	};
-
-	const handleChange = ({ target }: any) => {
-		const { name, value, id } = target;
-
-		setValues(prevState => {
-			if (name === 'role') {
-				return {
-					...prevState,
-					[name]: id,
-				};
-			} else {
-				return {
-					...prevState,
-					[name]: value,
-				};
-			}
-		});
-	};
-
-	const handleSubmit = async (event: any) => {
-		event.preventDefault();
-		const isValid = await formSchema.isValid();
-
-		if (!isValid) {
-			Toast({
-				message: 'Enter Valid Input!',
-				type: 'error',
-			});
-
-			return;
-		}
-
-		await register(values, redirectToVerifyEmail, Toast);
-	};
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			firstName: '',
+			lastName: '',
+			password: '',
+			role: '',
+		},
+		validationSchema: formSchema,
+		onSubmit: async values => {
+			await register(values, redirectToVerifyEmail, Toast);
+		},
+	});
 
 	return (
 		<AuthSection>
 			<img src={logo} alt="logo" className="block w-24 mx-auto mb-16" />
 			<FormBox>
 				<p className="text-24 font-quicksand font-bold text-center mb-4">Sign up here!</p>
-				<form className="w-11/12 mx-auto" onSubmit={handleSubmit}>
+				<form className="w-11/12 mx-auto" onSubmit={formik.handleSubmit}>
 					<Input
 						label="First Name"
 						placeholder="Input first name"
 						name="firstName"
-						value={values.firstName}
-						onChange={handleChange}
+						value={formik.values.firstName}
+						onChange={formik.handleChange}
 						type="text"
-						handleBlur={handleBlur}
-						schema={firstNameSchema}
+						formik={formik}
 					/>
 					<Input
 						label="Last Name"
 						placeholder="Input last name"
 						name="lastName"
-						value={values.lastName}
-						onChange={handleChange}
+						value={formik.values.lastName}
+						onChange={formik.handleChange}
 						type="text"
-						handleBlur={handleBlur}
-						schema={lastNameSchema}
+						formik={formik}
 					/>
 					<Input
 						label="Email"
 						placeholder="Input email"
 						name="email"
-						value={values.email}
-						onChange={handleChange}
+						value={formik.values.email}
+						onChange={formik.handleChange}
 						type="email"
-						handleBlur={handleBlur}
-						schema={emailSchema}
+						formik={formik}
 					/>
 					<Input
 						label="Password"
 						placeholder="Input password"
-						value={values.password}
+						value={formik.values.password}
 						name="password"
-						onChange={handleChange}
+						onChange={formik.handleChange}
 						type="password"
-						handleBlur={handleBlur}
-						schema={passwordSchema}
+						formik={formik}
 					/>
 
 					<div className="mb-4">
@@ -141,16 +98,19 @@ const Register = ({ register }: any) => {
 							name="role"
 							id="customer"
 							label="customer"
-							value={values.role}
-							onChange={handleChange}
+							value={formik.values.role}
+							onChange={formik.handleChange}
 						/>
 						<Radio
 							name="role"
 							id="vendor"
 							label="vendor"
-							value={values.role}
-							onChange={handleChange}
+							value={formik.values.role}
+							onChange={formik.handleChange}
 						/>
+						{formik.touched.role && formik.errors.role ? (
+							<small className="text-red-500">{formik.errors.role}</small>
+						) : null}
 					</div>
 
 					<div className="mb-4">
