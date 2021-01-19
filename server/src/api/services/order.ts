@@ -34,7 +34,7 @@ export async function cancelOrder(orderId: string) {
 }
 
 export async function createOrder(newOrder: IOrder) {
-	await validateOrderPayment(newOrder.transactionId, newOrder.transactionRef, newOrder.total);
+	await validateOrderPayment(newOrder.transactionId, newOrder.transactionRef);
 	const loggedInUser = getLoggedInUser();
 
 	newOrder.orderCode = generateOrderCode();
@@ -95,13 +95,13 @@ export async function shipOrder(orderId: string) {
 	return await OrderRepo.shipOrder(orderId);
 }
 
-async function validateOrderPayment(transactionId: string, transactionRef: string, total: number) {
+async function validateOrderPayment(transactionId: string, transactionRef: string) {
 	const response = await flw.Transaction.verify({ id: transactionId });
 
 	if (
 		response.status === 'success' &&
-		response.data.tx_ref === transactionRef &&
-		response.data.amount === total
+		response.data.tx_ref === transactionRef
+		// response.data.amount === total
 	) {
 		return;
 	}
