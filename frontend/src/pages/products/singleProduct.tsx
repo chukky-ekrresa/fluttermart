@@ -7,7 +7,6 @@ const SingleProduct = () => {
 	const { currProductData } = useSelector(({ products }: any) => products);
 
 	const handleAddToCart = (item: any) => {
-		console.log('Adding to cart');
 		dispatch(setCartItem(item));
 	};
 
@@ -20,7 +19,7 @@ const SingleProduct = () => {
 				</div>
 				<div className="sm:pl-4  sm:flex-60">
 					<p className="text-24 mb-4">{currProductData?.name ?? ''}</p>
-					<p className="font-bold mb-4">{currProductData?.price ?? '0.00'}</p>
+					<p className="font-bold mb-4">${currProductData?.normalized_price ?? '0.00'}</p>
 					<p className="capitalize mb-4">{currProductData?.summary ?? ''}</p>
 
 					<button

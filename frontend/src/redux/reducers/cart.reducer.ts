@@ -34,7 +34,6 @@ export default function cart(state = initialState, action: any) {
 			return {
 				...state,
 				data: [],
-				shop: null,
 			};
 
 		default:
