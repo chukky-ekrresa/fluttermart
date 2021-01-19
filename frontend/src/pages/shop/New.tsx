@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -34,20 +34,26 @@ const formSchema: any = yup.object().shape({
 });
 
 const Shop = () => {
-	const [toCurrency, setToCurrency] = useState('');
+	const [toCurrency, setToCurrency] = useState('NGN');
 	const history = useHistory();
+	const queryClient = useQueryClient();
 
 	const { mutate, isLoading: loading } = useMutation(
 		(formData: any) => {
 			return request.post('shops', formData);
 		},
 		{
-			onSuccess: () => {
+			onSuccess: async () => {
 				Toast({
 					message: 'Shop successfully created!',
 					type: 'success',
 				});
-				history.push('/');
+
+				await queryClient.invalidateQueries('shops');
+
+				setTimeout(() => {
+					history.push('/');
+				}, 1000);
 			},
 			onError: (error: any) => {
 				Toast({
@@ -102,7 +108,7 @@ const Shop = () => {
 		public_key: `${process.env.REACT_APP_FLW_PUBLIC_KEY}`,
 		tx_ref: Date.now(),
 		amount: 20 * currencyData?.[`USD_${toCurrency}`],
-		currency: `${toCurrency ?? ''}`,
+		currency: toCurrency,
 		payment_options: 'card,mobilemoney,ussd',
 		customer: {
 			email: formik.values.email,
