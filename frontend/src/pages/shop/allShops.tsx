@@ -12,8 +12,6 @@ const Shops = () => {
 	});
 
 	const handleClick = (id: string) => {
-		console.log(id);
-
 		history.push(`/shop/products/${id}`);
 	};
 

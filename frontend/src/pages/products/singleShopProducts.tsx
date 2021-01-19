@@ -42,9 +42,9 @@ const SingleShopProducts = () => {
 
 	useEffect(() => {
 		if (cart.shop !== shopId) {
-			setEmptyCart();
+			dispatch(setEmptyCart());
 		}
-	}, [cart.shop, shopId]);
+	}, [cart.shop, dispatch, shopId]);
 
 	const handleDropdown = (id: string) => {
 		setCurrId(id);
