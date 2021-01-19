@@ -6,14 +6,9 @@ export const NEW_PRODUCT = {
 	[Segments.BODY]: Joi.object().keys({
 		category: Joi.string().trim().default('other'),
 		colour: Joi.string().trim().allow(''),
-		discount: Joi.string()
-			.trim()
-			.regex(/^\s*-?0{1}(\.\d{2})?\s*$/),
+		discount: Joi.number(),
 		name: Joi.string().trim().required(),
-		price: Joi.string()
-			.trim()
-			.regex(/^\s*-?\d+(\.\d{2})?\s*$/)
-			.required(),
+		price: Joi.string().trim().required(),
 		quantity: Joi.number().positive().min(0).required(),
 		shop: Joi.string()
 			//@ts-expect-error

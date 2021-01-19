@@ -45,7 +45,7 @@ const Product = () => {
 		summary: '',
 		name: '',
 		colour: '',
-		discount: '',
+		discount: 0,
 	};
 
 	const { mutate, error, isLoading: loading } = useMutation(
@@ -72,12 +72,11 @@ const Product = () => {
 		initialValues: initialState,
 		validationSchema: formSchema,
 		onSubmit: async values => {
-			console.log(values);
 			const formData = new FormData();
 
 			formData.append('image', values.image);
-			formData.set('price', values.price + '.00');
-			formData.set('discount', values.discount + '0');
+			formData.set('price', values.price);
+			formData.set('discount', (values.discount as unknown) as string);
 			formData.set('quantity', `${values.quantity}`);
 			formData.set('shop', values.shop);
 			formData.set('size', values.size);
