@@ -38,14 +38,14 @@ const Product = () => {
 	const { shopId } = useParams<any>();
 	const initialState = {
 		image: '',
-		price: 0,
+		price: '',
 		quantity: 0,
 		shop: `${shopId ?? ''}`,
 		size: '',
 		summary: '',
 		name: '',
 		colour: '',
-		discount: 0,
+		discount: '',
 	};
 
 	const { mutate, error, isLoading: loading } = useMutation(
@@ -72,11 +72,12 @@ const Product = () => {
 		initialValues: initialState,
 		validationSchema: formSchema,
 		onSubmit: async values => {
+			console.log(values);
 			const formData = new FormData();
 
 			formData.append('image', values.image);
-			formData.set('price', `${values.price}`);
-			formData.set('discount', `${values.discount}`);
+			formData.set('price', values.price + '.00');
+			formData.set('discount', values.discount + '0');
 			formData.set('quantity', `${values.quantity}`);
 			formData.set('shop', values.shop);
 			formData.set('size', values.size);

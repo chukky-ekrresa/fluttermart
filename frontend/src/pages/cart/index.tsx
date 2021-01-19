@@ -1,8 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { CgClose } from 'react-icons/cg';
 
-import { setEmptyCart, changeCartItemQuantity } from '../../redux/reducers/cart.reducer';
+import {
+	setEmptyCart,
+	changeCartItemQuantity,
+	removeCartItem,
+} from '../../redux/reducers/cart.reducer';
 
 const Row = styled.div`
 	.name {
@@ -16,6 +21,11 @@ const Row = styled.div`
 	.discount,
 	.total {
 		flex: 2 2 15%;
+	}
+	.action {
+		flex: 0 0 10%;
+		display: flex;
+		align-items: center;
 	}
 `;
 const Cart = () => {
@@ -51,6 +61,7 @@ const Cart = () => {
 					<p className="capitalize qty font-bold hidden sm:block">quantity</p>
 					<p className="capitalize discount font-bold hidden sm:block">price</p>
 					<p className="capitalize total font-bold">total</p>
+					<p className="capitalize action text-red-400"></p>
 				</Row>
 
 				{!data.length ? (
@@ -73,6 +84,13 @@ const Cart = () => {
 								</p>
 								<p className="discount hidden sm:block">{item.normalized_price}</p>
 								<p className="total">{item.normalized_price * item.quantity}</p>
+								<p className="action">
+									<CgClose
+										color="rgba(220, 38, 38)"
+										cursor="pointer"
+										onClick={() => dispatch(removeCartItem({ productId: item.id }))}
+									/>
+								</p>
 							</Row>
 						);
 					})

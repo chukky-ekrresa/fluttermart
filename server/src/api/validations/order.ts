@@ -12,6 +12,12 @@ export const NEW_ORDER = {
 			.items(
 				Joi.object().keys({
 					category: Joi.string().default('other'),
+					id: Joi.string()
+						.trim()
+						//@ts-expect-error
+						.custom(joiValidateObjectId)
+						.message('value does not match the pattern of an objectId')
+						.required(),
 					image: Joi.object()
 						.keys({
 							url: Joi.string().required(),
@@ -20,12 +26,6 @@ export const NEW_ORDER = {
 						.required(),
 					name: Joi.string().required(),
 					price: Joi.number().required(),
-					productId: Joi.string()
-						.trim()
-						//@ts-expect-error
-						.custom(joiValidateObjectId)
-						.message('value does not match the pattern of an objectId')
-						.required(),
 					quantity: Joi.number().required(),
 				})
 			)
