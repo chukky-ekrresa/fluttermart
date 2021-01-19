@@ -37,7 +37,7 @@ export const NEW_ORDER = {
 			.required(),
 		total: Joi.number().required(),
 		transactionId: Joi.number().required(),
-		transactionRef: Joi.number().required(),
+		transactionRef: Joi.string().required(),
 	}),
 };
 
