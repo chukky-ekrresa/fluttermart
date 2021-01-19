@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from 'react-query';
 import { FormikValues, useFormik } from 'formik';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import * as yup from 'yup';
 
 import Input, { Select } from '../../components/Input';
+import { setEmptyCart } from '../../redux/reducers/cart.reducer';
 import { calculateCartQty, calculateCartTotal } from '../../utils/cartUtils';
 import { useAppQuery } from '../../hooks/useAppQuery';
 import { Toast } from '../../utils/toats-utils';
@@ -20,6 +21,7 @@ const DELIVERY_FEE = 10;
 
 const Checkout = () => {
 	const history = useHistory();
+	const dispatch = useDispatch();
 	const [currency, setCurrency] = useState('NGN');
 	const [visible, setVisible] = useState(false);
 	const { authentication, cart } = useSelector((state: any) => state);
@@ -45,6 +47,8 @@ const Checkout = () => {
 					message: 'Shop successfully created!',
 					type: 'success',
 				});
+
+				dispatch(setEmptyCart());
 
 				setTimeout(() => {
 					history.push('/orders');
